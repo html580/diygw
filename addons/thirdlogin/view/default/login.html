@@ -1,0 +1,155 @@
+<extend name="base/common"/>
+<block name="header"></block>
+
+<block name="body">
+<link type="text/css" rel="stylesheet" href="/addons/thirdlogin/css/login.css">
+  <div id="page-wrap">
+    <div class="reg-wrap">
+      <!--设置账号-->
+      <div class="reg-main">
+        <neq name='config.register_type' value='closed'>
+        <div>
+        <div class="article boxShadow">
+          <div class="title">
+            <dl class="account-links clearfix">
+              <dt><img src="{$user.userface}" width="50" height="50" /></dt>
+              <dd><h4>欢迎你，{$user.uname}，您的{$typeName}帐号授权成功！</h4><p>接下来完成简单的设置，即可用{$typeName}帐号直接登录。</p></dd>
+            </dl>
+          </div>
+          <div class="tab-menu">
+            <ul>
+              <li class="current"><span><a href="#" uri="tab-pannel-1">新帐号</a></span></li>
+              <if condition="$config['bindemail'] neq 1">
+              <li><span><a href="#" uri="tab-pannel-2">绑定已有帐号</a></span></li>
+              </if>
+            </ul>
+          </div>
+
+          <div id="tab-pannel-1">
+            <form model-node="normal_form" method="POST" action="{:url('home/addons/execute',array('_addons'=>'Thirdlogin','_controller'=>'Register','_action'=>'doregister'))}" name="ajax_register_form" id="ajax_register_form">
+            <input type="hidden" name="other_type" value="{$type}" >
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" >
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+            <input type="hidden" name="other_uid" value="{$user.id}" >
+            <input type="hidden" name="other_face" value="{$user.userface}" >
+            <input type="hidden" name="other_signature" value="{$user.signature}" >
+            <dl class="item">
+              <dd>
+                <div class="form-tt"><i class="text-required">*</i>昵称：</div>
+                <div class="form-row">
+                  <div style="overflow:hidden;*zoom:1">
+                    <input event-node="uname" name="uname"  autocomplete="off" type="text" value="{$user.uname}" />
+                  </div>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-tt"><i class="text-required">*</i>邮箱：</div>
+                <div class="form-row" style="z-index:99">
+                  <input event-node="email"  autocomplete="off" type="text" value="" />
+                </div>
+              </dd>
+              <dd>
+                <div class="form-tt" ><i class="text-required">*</i>密码：</div>
+                <div class="form-row">
+                    <input style="float:left;margin-right:5px;" event-node="password" name="password" type="password" value=""/>
+                </div>
+              </dd>
+              <dd>
+                <div class="form-tt"><i class="text-required">*</i>确认密码：</div>
+                <div class="form-row">
+                  <input event-node="repassword" name="repassword" type="password" />
+                </div>
+              </dd>
+
+
+            <!--<dd>
+                <div class="form-tt"><i class="text-required">*</i>使用头像：</div>
+                <div class="form-row">
+                  <img src="{$user.userface}" width="50" height="50" />
+                  <br />
+                  <label><input type="radio" name="avatar" value="1" checked="checked" class="s-radio"  />是</label>
+                  <label><input type="radio" name="avatar" value="0" class="s-radio"  />否</label>
+                </div>
+              </dd> -->
+              <dd><div class="form-row"><div class="controls Validform_checktip text-warning"></div></div></dd>
+              <dd class="mt15">
+                <div class="form-tt"></div>
+                <div class="form-row actionBtn">
+                  <input style="float:left;" class="btn-register" type="submit" value="提交" />
+                </div>
+              </dd>
+            </dl>
+          </form>
+        </div>
+        <div id="tab-pannel-2" style="display:none;">
+          <form method="POST" action="{:url('home/addons/execute',array('_addons'=>'Thirdlogin','_controller'=>'Register','_action'=>'dobind'))}" name="ajax_other_bind_form" id="ajax_other_bind_form" >
+            <input type="hidden" name="other_type" value="{$type}" >
+            <input type="hidden" name="oauth_token" value="{$oauth_token}" >
+            <input type="hidden" name="oauth_token_secret" value="{$oauth_token_secret}" >
+            <input type="hidden" name="other_uid" value="{$user.id}" >
+            <input type="hidden" name="other_face" value="{$user.userface}" >
+            <input type="hidden" name="other_signature" value="{$user.signature}" >
+            <dl class="item">
+              <dd>
+                <div class="form-tt"><i class="text-required">*</i>邮箱：</div>
+                <div class="form-row" style="z-index:99">
+                  <input event-node="input_text" name="email" type="text" value="" />
+                </div>
+              </dd>
+              <dd>
+                <div class="form-tt"><i class="text-required">*</i>密码：</div>
+                <div class="form-row">
+                  <input event-node="input_text" name="password" type="password" value="" />
+                </div>
+              </dd>
+              <dd><div class="form-row"><div class="controls Validform_checktip text-warning"></div></div></dd>
+              <dd class="mt15">
+                <div class="form-tt"></div>
+                <div class="form-row actionBtn">
+                  <input class="btn-register" type="submit" value="绑定" />
+                </div>
+              </dd>
+            </dl>
+          </form>
+        </div>
+        </div>
+        <else />
+         <div class="item-find-psd"><neq name='config.register_close' value=''>{$config.register_close}</neq></div>
+        </neq>
+      </div>
+    </div>
+  </div></div>
+  <script type="text/javascript">
+    $(function() {
+        $(".tab-menu ul > li > span > a").click(function(e) {
+            $(this).parent().parent().parent().children('li').removeClass('current');
+            $(this).parent().parent().addClass('current');
+            if ($(this).attr('uri') == 'tab-pannel-1'){
+              $('#tab-pannel-1').show();
+              $('#tab-pannel-2').hide();
+              $(".Validform_checktip").html('');
+            }else{
+              $('#tab-pannel-2').show();
+              $('#tab-pannel-1').hide();
+              $(".Validform_checktip").html('');
+            }
+        });
+    	//$("#ajax_register_form,#ajax_other_bind_form").submit(function(){
+    	//	var self = $(this);
+    	//	$.post(self.attr("action"), self.serialize(), success, "json");
+    	//	return false;
+    	//	function success(data){
+    	//		if(data.status){
+    	//			//self.find(".Validform_checktip").text(data.info);
+        //			 alert({$jumpUrl});
+    	//			 window.location.href = data.url;
+    	//			 return true;
+    	//		} else {
+    	//			self.find(".Validform_checktip").text(data.info);
+    	//		}
+    	//	}
+    	//});
+    });
+
+  </script>
+</block>

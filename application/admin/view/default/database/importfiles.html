@@ -1,0 +1,74 @@
+{extend name="public/base" /}
+
+{block name="body"}
+    <!-- 标题栏 -->
+    <div class="main-title">
+        <h2>安装应用</h2>
+    </div>
+    <!-- /标题栏 -->
+
+    <!-- 应用列表 -->
+    <div class="data-table table-striped">
+        <table>
+            <thead>
+                <tr>
+                    <th width="200">文件名称</th>
+                    <th width="300">时间</th>
+                    <th>状态</th>
+                    <th width="120">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {volist name="list" id="data"}
+                    <tr>
+                        <td>{$data.filename}</td>
+                        <td>{$data.time}</td>
+                        <td>-</td>
+                        <td class="action">
+                            <a class="db-import" href="{:url('importfiles?filename='.$data['filename'])}">安装</a>&nbsp;
+                            <a class="ajax-get confirm" href="{:url('importfiles?del=1&filename='.$data['filename'])}">删除</a>
+                        </td>
+                    </tr>
+                {/volist}
+            </tbody>
+        </table>
+    </div>
+    <!-- /应用列表 -->
+{/block}
+
+{block name="script"}
+    <script type="text/javascript">
+        $(".db-import").click(function(){
+            var self = this, code = ".";
+            $.get(self.href, success, "json");
+            window.onbeforeunload = function(){ return "正在还原数据库，请不要关闭！" }
+            return false;
+        
+            function success(data){
+                if(data.code){
+                    if(data.data.gz){
+                        data.msg += code;
+                        if(code.length === 5){
+                            code = ".";
+                        } else {
+                            code += ".";
+                        }
+                    }
+                    $(self).parent().prev().text(data.msg);
+                    updateAlert(data.msg,'alert-success');
+                    if(data.data.part){
+                        $.get(self.href, 
+                            {"part" : data.data.part, "start" : data.data.start}, 
+                            success, 
+                            "json"
+                        );
+                    }  else {
+                        window.onbeforeunload = function(){ return null; }
+                    }
+                } else {
+                    updateAlert(data.msg,'alert-error');
+                }
+            }
+        });
+    </script>
+{/block}

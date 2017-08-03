@@ -1,0 +1,7 @@
+
+<if condition="in_array('sina',$third_login)">
+   <a href="{:url('member/addons/execute',array('_addons'=>'Thirdlogin','_controller'=>'Oauth','_action'=>'sina'))}">新浪微博</a>
+</if>
+<if condition="in_array('qq',$third_login)">
+   <a href="{:url('member/addons/execute',array('_addons'=>'Thirdlogin','_controller'=>'Oauth','_action'=>'qzone'))}"><img alt="qq登录" src="http://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_6.png"></a>
+</if>

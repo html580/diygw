@@ -1,0 +1,40 @@
+{extend name="base/common"/}
+
+{block name="header"}
+	<header class="jumbotron subhead" id="overview">
+		<div class="container">
+			<h2>源自相同起点，演绎不同精彩！</h2>
+			<p class="lead"></p>
+		</div>
+	</header>
+{/block}
+
+{block name="body"}
+      <div class="span9">
+        <!-- Contents
+        ================================================== -->
+        <section id="contents">
+					{volist name="list" id="data"}
+						<div class="row">
+									<div class="span2">
+											<a href="{:url('Article/detail?id='.$data['id'])}"><img class="img-thumbnail" src="__ROOT__{$data.cover_id|get_cover_path}" /></a>
+									</div>
+									<div class="span7">
+										<h3 class="ellipsis"><a href="{:url('Article/detail?id='.$data['id'])}">{$data.title}</a></h3>
+										<p class="lead">{$data.description}</p>
+										<span><a href="{:url('Article/detail?id='.$data['id'])}">查看全文</a></span>
+										<span class="pull-right">
+											<span class="author">{$data.uid|get_username}</span>&nbsp;&nbsp;
+											<span>发表于 {$data.create_time}</span>
+											<span>阅读({$data.view})</span>&nbsp;&nbsp;
+										</span>
+									</div>
+									<hr/>
+						</div>
+	        {/volist}
+            <div class="twothink pagination pagination-right pagination-large">
+	            {article:page cate="$category['id']" listrow="$category['list_row']" /}
+            </div>
+        </section>
+      </div>
+{/block}

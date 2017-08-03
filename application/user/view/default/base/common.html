@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{:config('WEB_SITE_TITLE')}</title>
+<link href="__STATIC__/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="__STATIC__/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<link href="__STATIC__/bootstrap/css/docs.css" rel="stylesheet">
+<link href="__STATIC__/bootstrap/css/twothink.css" rel="stylesheet">
+
+<!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="__STATIC__/bootstrap/js/html5shiv.js"></script>
+<![endif]-->
+{block name="style"}{/block}
+<!--[if lt IE 9]>
+<script type="text/javascript" src="__STATIC__/jquery-1.10.2.min.js"></script>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<script type="text/javascript" src="__STATIC__/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
+<!--<![endif]-->
+<!-- 页面header钩子，一般用于加载插件CSS文件和代码 -->
+{:hook('pageHeader')}
+</head>
+<body>
+	<!-- 头部 -->
+	<!-- 导航条
+	================================================== -->
+	<div class="navbar navbar-inverse navbar-fixed-top">
+	    <div class="navbar-inner">
+	        <div class="container">
+	            <a class="brand" href="{:url('/home/index')}">DiyGw</a>
+	            <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	                <span class="icon-bar"></span>
+	            </button>
+	            <div class="nav-collapse collapse">
+	                <ul class="nav"> 
+		                {think:nav name="nav"/} 
+		                    {eq name="nav.pid" value="0"}
+		                        <li>
+		                            <a href="{$nav.url|get_nav_url}" target="{eq name='nav.target' value='1'}_blank{else/}_self{/eq}">{$nav.title}</a>
+		                        </li>
+                        	{/eq}
+                    	{/think:nav} 
+	                </ul>
+	            </div>
+	            <div class="nav-collapse collapse pull-right">
+	                {if condition="is_login()"}
+	                    <ul class="nav" style="margin-right:0">
+	                        <li class="dropdown">
+	                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-left:0;padding-right:0">{:get_username()} <b class="caret"></b></a>
+	                            <ul class="dropdown-menu">
+	                                <li><a href="{:url('User/profile')}">修改密码</a></li>
+	                                <li><a href="{:url('Login/logout')}">退出</a></li>
+	                            </ul>
+	                        </li>
+	                    </ul>
+	                {else/}
+	                    <ul class="nav" style="margin-right:0">
+	                        <li>
+	                            <a href="{:url('User/login')}">登录</a>
+	                        </li>
+	                        <li>
+	                            <a href="{:url('User/register')}" style="padding-left:0;padding-right:0">注册</a>
+	                        </li>
+	                    </ul>
+	                {/if}
+	            </div>
+	        </div>
+	    </div>
+	</div>
+
+	<!-- /头部 -->
+	
+	<!-- 主体 -->
+	{block name="header"}{/block}
+	<div id="main-container" class="container">
+	    <div class="row">
+	        {block name="side"}
+	        <!-- 左侧 nav
+	        ================================================== -->
+	            <div class="span3 bs-docs-sidebar">
+	                {block name="publish"}{/block}
+	                <ul class="nav nav-list bs-docs-sidenav">
+	                   {:widget('Category/lists', array($category['id'], request()->action() == 'index'))}
+	                </ul>
+	            </div>
+	        {/block}
+	        {block name="body"}{/block}
+	    </div>
+	</div>
+
+	<script type="text/javascript">
+	    $(function(){
+	        $(window).resize(function(){
+	            $("#main-container").css("min-height", $(window).height() - 343);
+	        }).resize();
+	    })
+	</script>
+	<!-- /主体 -->
+
+	<!-- 底部 -->
+	
+    <!-- 底部
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+          <p> 本站由 <strong><a href="http://www.diygw.com" target="_blank">DiyGw</a></strong> 强力驱动</p>
+      </div>
+    </footer>
+
+	{include file="base/var"/}
+	{block name="script"}{/block} <!-- 用于加载js代码 -->
+	<!-- 页面footer钩子，一般用于加载插件JS文件和JS代码 -->
+	{:hook('pageFooter', 'widget')}
+	<div class="hidden"><!-- 用于加载统计代码等隐藏元素 -->
+		{block name="hidden"}{/block}
+	</div>
+
+	<!-- /底部 -->
+</body>
+</html>

@@ -1,0 +1,31 @@
+
+<div class="span9">
+    <!-- Contents
+    ================================================== -->
+    <section id="contents">
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th width="50">
+                    <input class="check-all" type="checkbox">序号
+                </th>
+                {volist name="list.list_grid" id="vo" }
+                <th>{$vo.title}</th>
+                {/volist}
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="list.list" id="lv" key="vo" }
+            <tr>
+                <td><input class="ids" type="checkbox" value="{$lv.id}" name="ids[]">{$lv.id}</td>
+                {volist name="list.list_grid" id="lk" }
+                <td>{:get_addonlist_field($lv, $lk, $list['addon'],$list['controller'])}</td>
+                {/volist}
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <div>{$list.page}</div>
+    </section>
+</div>

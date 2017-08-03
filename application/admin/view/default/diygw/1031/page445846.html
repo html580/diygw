@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <meta name="title" content="可视化设计工具" /> 
+  <meta name="description" content="DIY官网做最好的拖拽式可视化设计工具，提供最微信小程序设计、Bootstrap页面设计、单页动画设计、WebApp可视化设计、代码生成器及导出工具" /> 
+  <meta name="keywords" content="DIY官网,diygw.com,做最好的拖拽式可视化设计工具,微信小程序设计工具,微信小程序可视化设计工具,可视化代码生成器" /> 
+  <title>表格维护</title> 
+  <meta name="author" content="DIY官网 http://www.diygw.com" /> 
+  <link rel="icon" href="__PUBLIC__/static/diygw/static/img/favicon.ico" type="image/x-icon" /> 
+  <link rel="shortcut icon" href="__PUBLIC__/static/diygw/static/img/favicon.ico" type="image/x-icon" /> 
+  <meta name="mobile-web-app-capable" content="yes" /> 
+  <meta name="apple-mobile-web-app-capable" content="yes" /> 
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
+  <link href="__PUBLIC__/static/diygw/static/lib/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" /> 
+  <link href="__PUBLIC__/static/diygw/static/lib/bootstrap/css/bootstrap-extend.css" rel="stylesheet" type="text/css" /> 
+  <link href="__PUBLIC__/static/diygw/static/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" /> 
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/diygw/static/lib/jquery-confirm/css/jquery-confirm.css" /> 
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/diygw/static/lib/bootstrapValidator/css/bootstrapValidator.css" /> 
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/static/diygw/static/lib/bootstrap-table/bootstrap-table.css" /> 
+  <!--[if lt IE 9]>
+    <script type="text/javascript" src="__PUBLIC__/static/diygw/static/lib/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/static/diygw/static/lib/respond/1.4.2/respond.min.js"></script>
+  	<![endif]--> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/jquery.js"></script> 
+  <script charset="utf-8" type="text/javascript" src="__PUBLIC__/static/diygw/static/lib/underscore.js"></script> 
+  <script charset="utf-8" type="text/javascript">
+		_.templateSettings = {
+			interpolate : /[\$\{]\{(.+?)\}\}?/g,
+			evaluate : /<%([\s\S]+?)%>/g
+		};
+  		window.UEDITOR_HOME_URL = "__PUBLIC__/static/diygw/static/lib/ueditor/";
+		window.UEDITOR_SERVER_URL = "/ueditor/index";
+	</script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/ueditor/ueditor.config.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/ueditor/ueditor.all.js"> </script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/ueditor/lang/zh-cn/zh-cn.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/bootstrap/js/bootstrap.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/jquery-confirm/js/jquery-confirm.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/bootstrap/js/bootstrap-extend.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/jquery.form.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/bootstrapValidator/js/bootstrapValidator.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/bootstrap-table/bootstrap-table.js"></script> 
+  <script type="text/javascript" charset="utf-8" src="__PUBLIC__/static/diygw/static/lib/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script> 
+ </head> 
+ <body> 
+  <div id="container" class="container"> 
+   <div id="toolbar271583"> 
+    <textarea class="hide" id="columns271583">[{&quot;field&quot;:&quot;create_time&quot;,&quot;id&quot;:&quot;id_154425_3&quot;,&quot;title&quot;:&quot;创建时间&quot;,&quot;label&quot;:&quot;创建时间&quot;,&quot;parentid&quot;:&quot;form154425&quot;,&quot;dashboard_id&quot;:1031,&quot;form_id&quot;:154425,&quot;type&quot;:&quot;0&quot;,&quot;checked&quot;:true},{&quot;field&quot;:&quot;name_656839&quot;,&quot;id&quot;:&quot;568&quot;,&quot;title&quot;:&quot;标题&quot;,&quot;label&quot;:&quot;标题&quot;,&quot;parentid&quot;:&quot;form154425&quot;,&quot;dashboard_id&quot;:1031,&quot;form_id&quot;:154425,&quot;type&quot;:&quot;1&quot;,&quot;checked&quot;:true},{&quot;field&quot;:&quot;name_711575&quot;,&quot;id&quot;:&quot;569&quot;,&quot;title&quot;:&quot;封面&quot;,&quot;label&quot;:&quot;封面&quot;,&quot;parentid&quot;:&quot;form154425&quot;,&quot;dashboard_id&quot;:1031,&quot;form_id&quot;:154425,&quot;type&quot;:&quot;1&quot;,&quot;checked&quot;:true},{&quot;field&quot;:&quot;name_282522&quot;,&quot;id&quot;:&quot;570&quot;,&quot;title&quot;:&quot;关键词&quot;,&quot;label&quot;:&quot;关键词&quot;,&quot;parentid&quot;:&quot;form154425&quot;,&quot;dashboard_id&quot;:1031,&quot;form_id&quot;:154425,&quot;type&quot;:&quot;1&quot;,&quot;checked&quot;:true},{&quot;field&quot;:&quot;id&quot;,&quot;id&quot;:&quot;id_154425_1&quot;,&quot;title&quot;:&quot;编号&quot;,&quot;label&quot;:&quot;编号&quot;,&quot;parentid&quot;:&quot;form154425&quot;,&quot;dashboard_id&quot;:1031,&quot;form_id&quot;:154425,&quot;type&quot;:&quot;0&quot;,&quot;checked&quot;:&quot;false&quot;,&quot;hidekey&quot;:&quot;1&quot;,&quot;visible&quot;:false,&quot;cardVisible&quot;:false}]</textarea> 
+    <textarea class="hide" id="links271583">{}</textarea> 
+    <div class="btn-group"> 
+     <button id="add271583" href="page653117" class="btn btn-primary"> <i class="glyphicon glyphicon-plus"></i>增加 </button> 
+     <button id="edit271583" data-formid="154425" data-dashboardid="1031" href="page653117" class="btn btn-primary" disabled=""> <i class="glyphicon glyphicon-edit"></i>编辑 </button> 
+     <button id="remove271583" class="btn btn-danger" disabled=""> <i class="glyphicon glyphicon-remove"></i>删除 </button> 
+    </div> 
+   </div> 
+   <table id="table271583" class="table" data-toggle="table" data-toolbar="#toolbar271583" data-search="false" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-pagination="true" data-id-field="id_154425_1" data-page-list="[10, 25, 50, 100]" data-query-params="queryParams271583" data-content-type="application/x-www-form-urlencoded;charset=utf-8" data-method="post" data-side-pagination="server" data-url="/data/data.html"> 
+    <thead> 
+     <tr> 
+      <th data-field="state" data-checkbox="true"></th> 
+      <th data-field="id_154425_3">创建时间</th> 
+      <th data-field="name_656839">标题</th> 
+      <th data-field="name_711575">封面</th> 
+      <th data-field="name_282522">关键词</th> 
+     </tr> 
+    </thead> 
+   </table> 
+   <script type="text/javascript">
+    var $table271583 = $('#table271583');
+    var $remove271583 = $('#remove271583');
+    var $edit271583 = $('#edit271583');
+    var $add271583 = $('#add271583');
+    $table271583.on('check.bs.table uncheck.bs.table ' + 'check-all.bs.table uncheck-all.bs.table', function() {
+        $remove271583.prop('disabled', !$table271583.bootstrapTable('getSelections').length);
+        $edit271583.prop('disabled', $table271583.bootstrapTable('getSelections').length != 1);
+    });
+    $edit271583.click(function() {
+        var ids = getIdSelections271583();
+        if (ids.length == 1) {
+            var url = $(this).attr('href');
+            url += ((url.indexOf('?') == -1) ? '?' : '&') + $.getParamData($(this), {
+                id: ids[0],
+                _ajax_edit_page: '1'
+            });
+            location.href = url;
+        }
+    });
+    $add271583.click(function() {
+        var url = $(this).attr('href');
+        location.href = url;
+    });
+    $remove271583.click(function() {
+        var ids = getIdSelections271583();
+        $.ajax({
+            type: "post",
+            dataType: 'json',
+            url: '/data/remove.html',
+            data: {
+                field: 'id_154425_1',
+                formid: '154425',
+                dashboardid: '1031',
+                values: ids
+            },
+            beforeSend: function() {
+                jc = $.dialog({
+                    title: '温馨提示',
+                    content: '正在删除数据，请等待...'
+                })
+            },
+            success: function(result) {
+                if (jc) {
+                    jc.close()
+                }
+                $.confirm({
+                    keyboardEnabled: true,
+                    title: '温馨提示',
+                    content: result.message,
+                    confirmButton: false,
+                    columnClass: 'col-xs-4 col-xs-offset-4',
+                    autoClose: 'cancel|2000',
+                    buttons: {
+                        cancel: {
+                            btnClass: 'btn-primary',
+                            text: '确定',
+                        }
+                    }
+                });
+                if (result.status == true || result.status == 'true' || result.status == 'success') {
+                    $table271583.bootstrapTable('remove', {
+                        field: 'id_154425_1',
+                        values: ids
+                    });
+                    $remove271583.prop('disabled', true);
+                }
+            }
+        });
+    });
+
+    function getIdSelections271583() {
+        return $.map($table271583.bootstrapTable('getSelections'), function(row) {
+            return row[$table271583.data("id-field")]
+        });
+    }
+
+    function queryParams271583(params) {
+        params.columns = $("#columns271583").val();
+        params.links = $("#links271583").val();
+        return params;
+    }
+</script> 
+  </div> 
+  <div class="hide">
+   <script type="text/plain" id="upload_ue" name="upload_ue"></script>
+  </div>   
+ </body>
+</html>

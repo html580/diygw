@@ -1,15 +1,8 @@
+# DiyGw提供微信小程序及WebApp基础解决方案
+你可以从[diygw官网](http://www.diygw.com "diygw官网") http://www.diygw.com 进行在线设计，设计完成后可以管理数据，展示的界面同时支持微信小程序及移动WebApp。无需要编写一行代码，实现后台数据管理，前台数据展现的功能。
+
 DiyGw是一个基于TwoTHink开源的内容管理框架,由Onethink基础上升级到最新的ThinkPHP5.0.6版本开发，提供更方便、更安全的WEB应用开发体验，采用了全新的架构设计和命名空间机制，融合了模块化、驱动化和插件化的设计理念于一体，开启了国内WEB应用傻瓜式开发的新潮流。 
 
-## DiyGw提供PHP微信小程序解决方案
-感谢以下的作者提供的开源解决方案：
-
-OneThink开源的内容管理框架：https://github.com/liu21st/onethink
-
-diygw开源的内容管理框架：https://github.com/593657688/diygw
-
-ThinkPHP5.0的微信小程序登录流程封装：https://github.com/wulongtao/think-wxminihelper
-
-微信小程序商城前台：https://github.com/skyvow/m-mall
 
 ### 主要特性：
     基于ThinkPHP最新5.0.7版本。
@@ -42,15 +35,8 @@ ThinkPHP5.0的微信小程序登录流程封装：https://github.com/wulongtao/t
 
 ### 安装
 
-   域名/public/install.php
+   域名/install.php
 
-### 项目截图:
-[![微信小程序商城解决方案](http://lib.diygw.com/upload/1/image/20170512/1.png "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
-[![微信小程序商城解决方案](http://lib.diygw.com/upload/1/image/20170512/2.png "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
-[![微信小程序商城解决方案](http://lib.diygw.com/upload/1/image/20170512/3.png "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
-[![微信小程序商城解决方案](http://lib.diygw.com/upload/1/image/20170512/4.png "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
-[![微信小程序商城解决方案](http://lib.diygw.com/upload/1/image/20170512/5.png "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
-[![微信小程序商城解决方案](http://lib.diygw.com/upload/1/image/20170512/6.png "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
 
 ### 分享精神
 
@@ -62,7 +48,6 @@ ThinkPHP5.0的微信小程序登录流程封装：https://github.com/wulongtao/t
 [![微信小程序商城解决方案](http://static.html580.com/assets/images/weixin-pay.gif "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
 
 
-
 如果您对DiyGw有任何建议、想法、评论或发现了bug，请联系我们280160522@qq.com。
 Onethink官网的应用仓库包含了官方和第三方的各类插件，您可以将插件稍作修改即可应用到DiyGw中。
 
@@ -72,7 +57,6 @@ DiyGw基于Apache第二版开源协议发布。
 [[ OneThink手册 ]](http://document.onethink.cn/manual_1_0.html) 
 
 DiyGw官方技术交流群 [482112340](https://jq.qq.com/?_wv=1027&k=48Dm8gg)
-
 
 
  

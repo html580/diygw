@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2017 巿08 暿03 敿09:20
+-- 生成日期: 2017 巿08 暿04 敿10:20
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.6.27
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- 数据库: `diygwcc`
+-- 数据库: `diygw111`
 --
 
 -- --------------------------------------------------------
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `diygw_action_log` (
   KEY `action_ip_ix` (`action_ip`),
   KEY `action_id_ix` (`action_id`),
   KEY `user_id_ix` (`user_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表' AUTO_INCREMENT=41 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ROW_FORMAT=FIXED COMMENT='行为日志表' AUTO_INCREMENT=42 ;
 
 --
 -- 转存表中的数据 `diygw_action_log`
@@ -124,7 +124,8 @@ INSERT INTO `diygw_action_log` (`id`, `action_id`, `user_id`, `action_ip`, `mode
 (37, 10, 1, 2130706433, 'Menu', 130, '操作url：/index.php/admin/menu/add.html', 1, 1501749151),
 (38, 10, 1, 2130706433, 'Menu', 131, '操作url：/index.php/admin/menu/add.html', 1, 1501749202),
 (39, 10, 1, 2130706433, 'Menu', 1, '操作url：/index.php/admin/menu/edit.html', 1, 1501749219),
-(40, 10, 1, 2130706433, 'Menu', 131, '操作url：/index.php/admin/menu/edit.html', 1, 1501749227);
+(40, 10, 1, 2130706433, 'Menu', 131, '操作url：/index.php/admin/menu/edit.html', 1, 1501749227),
+(41, 10, 1, 2130706433, 'Menu', 162, '操作url：/admin/menu/add.html', 1, 1501837310);
 
 -- --------------------------------------------------------
 
@@ -238,6 +239,7 @@ CREATE TABLE IF NOT EXISTS `diygw_attribute` (
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态',
   `update_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `valids` text,
   `validate_rule` varchar(255) NOT NULL DEFAULT '',
   `validate_time` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `error_info` varchar(100) NOT NULL DEFAULT '',
@@ -247,60 +249,69 @@ CREATE TABLE IF NOT EXISTS `diygw_attribute` (
   `auto_type` varchar(25) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `model_id` (`model_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='模型属性表' AUTO_INCREMENT=305 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='模型属性表' AUTO_INCREMENT=1958 ;
 
 --
 -- 转存表中的数据 `diygw_attribute`
 --
 
-INSERT INTO `diygw_attribute` (`id`, `name`, `title`, `field`, `type`, `value`, `remark`, `is_show`, `extra`, `model_id`, `is_must`, `status`, `update_time`, `create_time`, `validate_rule`, `validate_time`, `error_info`, `validate_type`, `auto_rule`, `auto_time`, `auto_type`) VALUES
-(1, 'uid', '用户ID', 'int(10) unsigned NOT NULL ', 'num', '0', '', 0, '', 1, 0, 1, 1384508362, 1383891233, '', 0, '', '', '', 0, ''),
-(2, 'name', '标识', 'char(40) NOT NULL ', 'string', '', '同一根节点下标识不重复', 1, '', 1, 0, 1, 1383894743, 1383891233, '', 0, '', '', '', 0, ''),
-(3, 'title', '标题', 'char(80) NOT NULL ', 'string', '', '文档标题', 1, '', 1, 0, 1, 1383894778, 1383891233, '', 0, '', '', '', 0, ''),
-(4, 'category_id', '所属分类', 'int(10) unsigned NOT NULL ', 'string', '', '', 0, '', 1, 0, 1, 1384508336, 1383891233, '', 0, '', '', '', 0, ''),
-(5, 'description', '描述', 'char(140) NOT NULL ', 'textarea', '', '', 1, '', 1, 0, 1, 1383894927, 1383891233, '', 0, '', '', '', 0, ''),
-(6, 'root', '根节点', 'int(10) unsigned NOT NULL ', 'num', '0', '该文档的顶级文档编号', 0, '', 1, 0, 1, 1384508323, 1383891233, '', 0, '', '', '', 0, ''),
-(7, 'pid', '所属ID', 'int(10) unsigned NOT NULL ', 'num', '0', '父文档编号', 0, '', 1, 0, 1, 1384508543, 1383891233, '', 0, '', '', '', 0, ''),
-(8, 'model_id', '内容模型ID', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '该文档所对应的模型', 0, '', 1, 0, 1, 1384508350, 1383891233, '', 0, '', '', '', 0, ''),
-(9, 'type', '内容类型', 'tinyint(3) unsigned NOT NULL ', 'select', '2', '', 1, '1:目录\r\n2:主题\r\n3:段落', 1, 0, 1, 1384511157, 1383891233, '', 0, '', '', '', 0, ''),
-(10, 'position', '推荐位', 'smallint(5) unsigned NOT NULL ', 'checkbox', '0', '多个推荐则将其推荐值相加', 1, '[DOCUMENT_POSITION]', 1, 0, 1, 1383895640, 1383891233, '', 0, '', '', '', 0, ''),
-(11, 'link_id', '外链', 'int(10) unsigned NOT NULL ', 'num', '0', '0-非外链，大于0-外链ID,需要函数进行链接与编号的转换', 1, '', 1, 0, 1, 1383895757, 1383891233, '', 0, '', '', '', 0, ''),
-(12, 'cover_id', '封面', 'int(10) unsigned NOT NULL ', 'picture', '0', '0-无封面，大于0-封面图片ID，需要函数处理', 1, '', 1, 0, 1, 1384147827, 1383891233, '', 0, '', '', '', 0, ''),
-(13, 'display', '可见性', 'tinyint(3) unsigned NOT NULL ', 'radio', '1', '', 1, '0:不可见\r\n1:所有人可见', 1, 0, 1, 1386662271, 1383891233, '', 0, '', 'regex', '', 0, 'function'),
-(14, 'deadline', '截至时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '0-永久有效', 1, '', 1, 0, 1, 1387163248, 1383891233, '', 0, '', 'regex', '', 0, 'function'),
-(15, 'attach', '附件数量', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '', 0, '', 1, 0, 1, 1387260355, 1383891233, '', 0, '', 'regex', '', 0, 'function'),
-(16, 'view', '浏览量', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 1, 0, 1, 1383895835, 1383891233, '', 0, '', '', '', 0, ''),
-(17, 'comment', '评论数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 1, 0, 1, 1383895846, 1383891233, '', 0, '', '', '', 0, ''),
-(18, 'extend', '扩展统计字段', 'int(10) unsigned NOT NULL ', 'num', '0', '根据需求自行使用', 0, '', 1, 0, 1, 1384508264, 1383891233, '', 0, '', '', '', 0, ''),
-(19, 'level', '优先级', 'int(10) unsigned NOT NULL ', 'num', '0', '越高排序越靠前', 1, '', 1, 0, 1, 1383895894, 1383891233, '', 0, '', '', '', 0, ''),
-(20, 'create_time', '创建时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', 1, '', 1, 0, 1, 1383895903, 1383891233, '', 0, '', '', '', 0, ''),
-(21, 'update_time', '更新时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', 0, '', 1, 0, 1, 1384508277, 1383891233, '', 0, '', '', '', 0, ''),
-(22, 'status', '数据状态', 'tinyint(4) NOT NULL ', 'radio', '0', '', 0, '-1:删除\r\n0:禁用\r\n1:正常\r\n2:待审核\r\n3:草稿', 1, 0, 1, 1384508496, 1383891233, '', 0, '', '', '', 0, ''),
-(23, 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', 0, '0:html\r\n1:ubb\r\n2:markdown', 2, 0, 1, 1384511049, 1383891243, '', 0, '', '', '', 0, ''),
-(24, 'content', '文章内容', 'text NOT NULL ', 'editor', '', '', 1, '', 2, 0, 1, 1477845595, 1383891243, '', 3, '', 'regex', '', 0, 'function'),
-(25, 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '参照display方法参数的定义', 1, '', 2, 0, 1, 1383896190, 1383891243, '', 0, '', '', '', 0, ''),
-(26, 'bookmark', '收藏数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 2, 0, 1, 1383896103, 1383891243, '', 0, '', '', '', 0, ''),
-(27, 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', 0, '0:html\r\n1:ubb\r\n2:markdown', 3, 0, 1, 1387260461, 1383891252, '', 0, '', 'regex', '', 0, 'function'),
-(28, 'content', '下载详细描述', 'text NOT NULL ', 'editor', '', '', 1, '', 3, 0, 1, 1383896438, 1383891252, '', 0, '', '', '', 0, ''),
-(29, 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '', 1, '', 3, 0, 1, 1383896429, 1383891252, '', 0, '', '', '', 0, ''),
-(30, 'file_id', '文件ID', 'int(10) unsigned NOT NULL ', 'file', '0', '需要函数处理', 1, '', 3, 0, 1, 1383896415, 1383891252, '', 0, '', '', '', 0, ''),
-(31, 'download', '下载次数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 3, 0, 1, 1383896380, 1383891252, '', 0, '', '', '', 0, ''),
-(32, 'size', '文件大小', 'bigint(20) unsigned NOT NULL ', 'num', '0', '单位bit', 1, '', 3, 0, 1, 1383896371, 1383891252, '', 0, '', '', '', 0, ''),
-(288, 'keywords', 'Tags关键词', 'varchar(40) NOT NULL', 'string', '', ' 多个之间用空格分隔', 1, '', 1, 0, 0, 1479963928, 0, '', 3, '', 'regex', '', 3, 'function'),
-(289, 'score', '下载积分', 'mediumint(8) UNSIGNED NOT NULL', 'num', '0', '下载文件所需积分', 1, '', 3, 0, 0, 0, 0, '', 3, '', 'regex', '', 3, 'function'),
-(290, 'id', '主键', 'int(10) UNSIGNED NOT NULL AUTO_INCREMENT', 'num', '', '', 0, '', 25, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(295, 'name', '标题', 'varchar(255) NOT NULL', 'string', '', '', 1, '', 25, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(292, 'category_id', '分类ID', 'int(10) UNSIGNED NOT NULL', 'num', '', '', 0, '', 25, 0, 0, 1496242348, 0, '', 3, '', '', '', 3, ''),
-(293, 'img', '图片', 'int(10) UNSIGNED NOT NULL', 'pictures', '', '', 1, '', 25, 0, 0, 1496239765, 0, '', 3, '', '', '', 3, ''),
-(294, 'remark', '描述', 'varchar(255) NOT NULL', 'string', '', '', 1, '', 25, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(296, 'price', '价格', 'decimal(5,2) NOT NULL', 'pice', '', '', 1, '', 25, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(297, 'status', '状态', 'char(10) NOT NULL', 'radio', '1', '', 1, '0:无效\r\n1:有效', 25, 0, 0, 1496234225, 0, '', 3, '', '', '', 3, ''),
-(298, 'update_time', '更新时间', 'int(10) NOT NULL', 'datetime', '0', '', 0, '', 25, 0, 0, 1496243043, 0, '', 3, '', '', '', 3, ''),
-(299, 'content', '内容', 'text NOT NULL', 'editor', '', '', 1, '', 25, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(300, 'name', '图片名称', 'varchar(255) NOT NULL', 'string', '', '', 1, '', 26, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(302, 'img', '图片地址', 'varchar(1000) UNSIGNED NOT NULL', 'pictures', '', '', 1, '', 26, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(303, 'status', '状态', 'char(10) NOT NULL', 'radio', '', '', 1, '0:无效\r\n1:有效', 26, 0, 0, 0, 0, '', 3, '', '', '', 3, ''),
-(304, 'update_time', '更新时间', 'int(10) NOT NULL', 'datetime', '', '', 1, '', 26, 0, 0, 0, 0, '', 3, '', '', '', 3, '');
+INSERT INTO `diygw_attribute` (`id`, `name`, `title`, `field`, `type`, `value`, `remark`, `is_show`, `extra`, `model_id`, `is_must`, `status`, `update_time`, `create_time`, `valids`, `validate_rule`, `validate_time`, `error_info`, `validate_type`, `auto_rule`, `auto_time`, `auto_type`) VALUES
+(1, 'uid', '用户ID', 'int(10) unsigned NOT NULL ', 'num', '0', '', 0, '', 1, 0, 1, 1384508362, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(2, 'name', '标识', 'char(40) NOT NULL ', 'string', '', '同一根节点下标识不重复', 1, '', 1, 0, 1, 1383894743, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(3, 'title', '标题', 'char(80) NOT NULL ', 'string', '', '文档标题', 1, '', 1, 0, 1, 1383894778, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(4, 'category_id', '所属分类', 'int(10) unsigned NOT NULL ', 'string', '', '', 0, '', 1, 0, 1, 1384508336, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(5, 'description', '描述', 'char(140) NOT NULL ', 'textarea', '', '', 1, '', 1, 0, 1, 1383894927, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(6, 'root', '根节点', 'int(10) unsigned NOT NULL ', 'num', '0', '该文档的顶级文档编号', 0, '', 1, 0, 1, 1384508323, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(7, 'pid', '所属ID', 'int(10) unsigned NOT NULL ', 'num', '0', '父文档编号', 0, '', 1, 0, 1, 1384508543, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(8, 'model_id', '内容模型ID', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '该文档所对应的模型', 0, '', 1, 0, 1, 1384508350, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(9, 'type', '内容类型', 'tinyint(3) unsigned NOT NULL ', 'select', '2', '', 1, '1:目录\r\n2:主题\r\n3:段落', 1, 0, 1, 1384511157, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(10, 'position', '推荐位', 'smallint(5) unsigned NOT NULL ', 'checkbox', '0', '多个推荐则将其推荐值相加', 1, '[DOCUMENT_POSITION]', 1, 0, 1, 1383895640, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(11, 'link_id', '外链', 'int(10) unsigned NOT NULL ', 'num', '0', '0-非外链，大于0-外链ID,需要函数进行链接与编号的转换', 1, '', 1, 0, 1, 1383895757, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(12, 'cover_id', '封面', 'int(10) unsigned NOT NULL ', 'picture', '0', '0-无封面，大于0-封面图片ID，需要函数处理', 1, '', 1, 0, 1, 1384147827, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(13, 'display', '可见性', 'tinyint(3) unsigned NOT NULL ', 'radio', '1', '', 1, '0:不可见\r\n1:所有人可见', 1, 0, 1, 1386662271, 1383891233, NULL, '', 0, '', 'regex', '', 0, 'function'),
+(14, 'deadline', '截至时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '0-永久有效', 1, '', 1, 0, 1, 1387163248, 1383891233, NULL, '', 0, '', 'regex', '', 0, 'function'),
+(15, 'attach', '附件数量', 'tinyint(3) unsigned NOT NULL ', 'num', '0', '', 0, '', 1, 0, 1, 1387260355, 1383891233, NULL, '', 0, '', 'regex', '', 0, 'function'),
+(16, 'view', '浏览量', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 1, 0, 1, 1383895835, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(17, 'comment', '评论数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 1, 0, 1, 1383895846, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(18, 'extend', '扩展统计字段', 'int(10) unsigned NOT NULL ', 'num', '0', '根据需求自行使用', 0, '', 1, 0, 1, 1384508264, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(19, 'level', '优先级', 'int(10) unsigned NOT NULL ', 'num', '0', '越高排序越靠前', 1, '', 1, 0, 1, 1383895894, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(20, 'create_time', '创建时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', 1, '', 1, 0, 1, 1383895903, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(21, 'update_time', '更新时间', 'int(10) unsigned NOT NULL ', 'datetime', '0', '', 0, '', 1, 0, 1, 1384508277, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(22, 'status', '数据状态', 'tinyint(4) NOT NULL ', 'radio', '0', '', 0, '-1:删除\r\n0:禁用\r\n1:正常\r\n2:待审核\r\n3:草稿', 1, 0, 1, 1384508496, 1383891233, NULL, '', 0, '', '', '', 0, ''),
+(23, 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', 0, '0:html\r\n1:ubb\r\n2:markdown', 2, 0, 1, 1384511049, 1383891243, NULL, '', 0, '', '', '', 0, ''),
+(24, 'content', '文章内容', 'text NOT NULL ', 'editor', '', '', 1, '', 2, 0, 1, 1477845595, 1383891243, NULL, '', 3, '', 'regex', '', 0, 'function'),
+(25, 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '参照display方法参数的定义', 1, '', 2, 0, 1, 1383896190, 1383891243, NULL, '', 0, '', '', '', 0, ''),
+(26, 'bookmark', '收藏数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 2, 0, 1, 1383896103, 1383891243, NULL, '', 0, '', '', '', 0, ''),
+(27, 'parse', '内容解析类型', 'tinyint(3) unsigned NOT NULL ', 'select', '0', '', 0, '0:html\r\n1:ubb\r\n2:markdown', 3, 0, 1, 1387260461, 1383891252, NULL, '', 0, '', 'regex', '', 0, 'function'),
+(28, 'content', '下载详细描述', 'text NOT NULL ', 'editor', '', '', 1, '', 3, 0, 1, 1383896438, 1383891252, NULL, '', 0, '', '', '', 0, ''),
+(29, 'template', '详情页显示模板', 'varchar(100) NOT NULL ', 'string', '', '', 1, '', 3, 0, 1, 1383896429, 1383891252, NULL, '', 0, '', '', '', 0, ''),
+(30, 'file_id', '文件ID', 'int(10) unsigned NOT NULL ', 'file', '0', '需要函数处理', 1, '', 3, 0, 1, 1383896415, 1383891252, NULL, '', 0, '', '', '', 0, ''),
+(31, 'download', '下载次数', 'int(10) unsigned NOT NULL ', 'num', '0', '', 1, '', 3, 0, 1, 1383896380, 1383891252, NULL, '', 0, '', '', '', 0, ''),
+(32, 'size', '文件大小', 'bigint(20) unsigned NOT NULL ', 'num', '0', '单位bit', 1, '', 3, 0, 1, 1383896371, 1383891252, NULL, '', 0, '', '', '', 0, ''),
+(288, 'keywords', 'Tags关键词', 'varchar(40) NOT NULL', 'string', '', ' 多个之间用空格分隔', 1, '', 1, 0, 0, 1479963928, 0, NULL, '', 3, '', 'regex', '', 3, 'function'),
+(289, 'score', '下载积分', 'mediumint(8) UNSIGNED NOT NULL', 'num', '0', '下载文件所需积分', 1, '', 3, 0, 0, 0, 0, NULL, '', 3, '', 'regex', '', 3, 'function'),
+(290, 'id', '主键', 'int(10) UNSIGNED NOT NULL AUTO_INCREMENT', 'num', '', '', 0, '', 25, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(295, 'name', '标题', 'varchar(255) NOT NULL', 'string', '', '', 1, '', 25, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(292, 'category_id', '分类ID', 'int(10) UNSIGNED NOT NULL', 'num', '', '', 0, '', 25, 0, 0, 1496242348, 0, NULL, '', 3, '', '', '', 3, ''),
+(293, 'img', '图片', 'int(10) UNSIGNED NOT NULL', 'pictures', '', '', 1, '', 25, 0, 0, 1496239765, 0, NULL, '', 3, '', '', '', 3, ''),
+(294, 'remark', '描述', 'varchar(255) NOT NULL', 'string', '', '', 1, '', 25, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(296, 'price', '价格', 'decimal(5,2) NOT NULL', 'pice', '', '', 1, '', 25, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(297, 'status', '状态', 'char(10) NOT NULL', 'radio', '1', '', 1, '0:无效\r\n1:有效', 25, 0, 0, 1496234225, 0, NULL, '', 3, '', '', '', 3, ''),
+(298, 'update_time', '更新时间', 'int(10) NOT NULL', 'datetime', '0', '', 0, '', 25, 0, 0, 1496243043, 0, NULL, '', 3, '', '', '', 3, ''),
+(299, 'content', '内容', 'text NOT NULL', 'editor', '', '', 1, '', 25, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(300, 'name', '图片名称', 'varchar(255) NOT NULL', 'string', '', '', 1, '', 26, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(302, 'img', '图片地址', 'varchar(1000) UNSIGNED NOT NULL', 'pictures', '', '', 1, '', 26, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(303, 'status', '状态', 'char(10) NOT NULL', 'radio', '', '', 1, '0:无效\r\n1:有效', 26, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(304, 'update_time', '更新时间', 'int(10) NOT NULL', 'datetime', '', '', 1, '', 26, 0, 0, 0, 0, NULL, '', 3, '', '', '', 3, ''),
+(1945, 'name_330468', '标题', 'varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'string', '0', '', 0, '', 812, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1946, 'name_972311', '内容', 'varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'string', '0', '', 0, '', 812, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1947, 'name_842187', '封面', 'varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'textarea', '0', '', 0, '', 812, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1954, 'name_277385', '标题', 'varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'string', '0', '', 0, '', 815, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1955, 'name_288441', '内容', 'varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'string', '0', '', 0, '', 815, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1956, 'name_453443', '选择', 'varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'select', '0', '', 0, '', 815, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1957, 'name_807009', '封面', 'varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'textarea', '0', '', 0, '', 815, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1952, 'name_291719', '标题', 'varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'string', '0', '', 0, '', 814, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, ''),
+(1953, 'name_937247', '封面', 'varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NULL', 'textarea', '0', '', 0, '', 814, 0, 1, 2017, 2017, NULL, '', 0, '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -687,18 +698,19 @@ CREATE TABLE IF NOT EXISTS `diygw_channel` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `target` tinyint(2) unsigned NOT NULL DEFAULT '0' COMMENT '新窗口打开',
+  `dashboard_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000001282 ;
 
 --
 -- 转存表中的数据 `diygw_channel`
 --
 
-INSERT INTO `diygw_channel` (`id`, `pid`, `title`, `url`, `sort`, `create_time`, `update_time`, `status`, `target`) VALUES
-(1, 0, '首页', '/home/index', 1, 1379475111, 1379923177, 1, 0),
-(2, 0, '博客', 'home/Article/index?category=diygw', 3, 1379475131, 1379483713, 1, 0),
-(3, 0, '官网', 'http://www.diygw.com', 2, 1379475154, 1387163458, 1, 1);
+INSERT INTO `diygw_channel` (`id`, `pid`, `title`, `url`, `sort`, `create_time`, `update_time`, `status`, `target`, `dashboard_id`) VALUES
+(1, 0, '首页', '/home/index', 1, 1379475111, 1379923177, 1, 0, NULL),
+(2, 0, '博客', 'home/Article/index?category=diygw', 3, 1379475131, 1379483713, 1, 0, NULL),
+(3, 0, '官网', 'http://www.diygw.com', 2, 1379475154, 1387163458, 1, 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -840,6 +852,24 @@ INSERT INTO `diygw_content` (`category_id`, `id`, `name`, `img`, `remark`, `pric
 (2, 259, 'DiyGw.com微信小程序解决方案', '/static/uploads/picture/20170601/7bb70138eb8ce239cae6b632bc47ea25.png', 'DiyGw.com微信小程序解决方案', 10, '1', 0, '<p>\r\n		</p><p>\r\n			</p><h1>DIY官网助您上线微信小程序</h1><p>\r\n			</p><p>2017年最火热的移动互联网商机，深挖微信8亿用户</p><p>\r\n			</p><p>所见即所得设计工具 不会代码也能轻松制作微信小程序</p><p>\r\n		</p><p>\r\n		</p><p>\r\n			<a class="a-btn1" href="http://www.diygw.com/login.html">立即定制</a>\r\n		</p><p>\r\n		</p><p>\r\n			<img src="http://lib.diygw.com/themes/design/images/pic2.png" title="DIY官网助您上线微信小程序"/>\r\n		</p><p>			\r\n	</p><p>\r\n	</p><p>\r\n		</p><p>\r\n			</p><h2>工欲善其事必先利其器</h2><p>\r\n			</p><p class="">TO DO A GOOD JOB,ONE MUST FIRST SHARPEN ONE&#39;S TOOLS</p><p>\r\n			</p><p class="boxs-span clearfix">一切都那么简单</p><p>\r\n		</p><p>			\r\n		</p><p>\r\n			<img src="http://lib.diygw.com/themes/design/images/pic3.png" title="所见即所得设计工具 不会代码也能轻松制作微信小程序"/>\r\n		</p><p>			\r\n	</p><p>\r\n	</p><p>\r\n		</p><p>\r\n			</p><h2>基于微信小程序量身设计的WeUI组件库</h2><p>\r\n			</p><p class="text-left">WeUI是一套同微信原生视觉体验一致的基础样式库，由微信官方设计团队为微信内网页和微信小程序量身\r\n设计，令用户的使用感知更加统一。包含容器组件、FLEX布局、九宫格、选项卡、底部导航、滑块组件、图文列表、面板组件、文本链接、链接组件、图片组\r\n件、图标、进度条、按钮、单行文本、多行文本、单选列表、多选列表、开关选择、滑动条、上传组件、时间、下拉列表、单选列表等各式元素。</p><p>\r\n		</p><p>\r\n		</p><ul class="box3-img wow fadeInUp  animated list-paddingleft-2" style="padding-top: 20px; margin-bottom: 50px; visibility: visible; animation-name: fadeInUp;"><img src="http://lib.diygw.com/themes/design/images/pic4.png" title="基于微信小程序量身设计的WeUI组件库"/></ul><p>\r\n	</p><p>\r\n	\r\n		</p><p>\r\n			</p><h2>小程序适用行业</h2><p>\r\n			</p><p>微小程序特别适用于电影行业、交通行业、医疗行业、健身俱乐部、咖啡馆、餐饮酒店微信端的O2O平台。同时商超、电器城、服装店、零售商等需\r\n要快速构建微信端电商平台也适用。社群小程序主要面向站长、公众号等网络社群，帮助运营者搭建完善的社群，借助微信获取流量，提升用户黏性。一键导出设计\r\n的微信小程序代码，包括WXML、WXSS、JS、JSON、APP.JS、APP.JSON代码。</p><p>\r\n		</p><p><br/></p>', 0, 25);
 INSERT INTO `diygw_content` (`category_id`, `id`, `name`, `img`, `remark`, `price`, `status`, `update_time`, `content`, `pid`, `model_id`) VALUES
 (2, 260, 'DiyGw.com微信小程序解决方案', '/static/uploads/picture/20170601/3ee653b9f12a1556b348d069b21a9324.png', 'DiyGw.com微信小程序解决方案', 8, '1', 0, '<p>\r\n		</p><p>\r\n			</p><h1>DIY官网助您上线微信小程序</h1><p>\r\n			</p><p>2017年最火热的移动互联网商机，深挖微信8亿用户</p><p>\r\n			</p><p>所见即所得设计工具 不会代码也能轻松制作微信小程序</p><p>\r\n		</p><p>\r\n		</p><p>\r\n			<a class="a-btn1" href="http://www.diygw.com/login.html">立即定制</a>\r\n		</p><p>\r\n		</p><p>\r\n			<img src="http://lib.diygw.com/themes/design/images/pic2.png" title="DIY官网助您上线微信小程序"/>\r\n		</p><p>			\r\n	</p><p>\r\n	</p><p>\r\n		</p><p>\r\n			</p><h2>工欲善其事必先利其器</h2><p>\r\n			</p><p class="">TO DO A GOOD JOB,ONE MUST FIRST SHARPEN ONE&#39;S TOOLS</p><p>\r\n			</p><p class="boxs-span clearfix">一切都那么简单</p><p>\r\n		</p><p>			\r\n		</p><p>\r\n			<img src="http://lib.diygw.com/themes/design/images/pic3.png" title="所见即所得设计工具 不会代码也能轻松制作微信小程序"/>\r\n		</p><p>			\r\n	</p><p>\r\n	</p><p>\r\n		</p><p>\r\n			</p><h2>基于微信小程序量身设计的WeUI组件库</h2><p>\r\n			</p><p class="text-left">WeUI是一套同微信原生视觉体验一致的基础样式库，由微信官方设计团队为微信内网页和微信小程序量身\r\n设计，令用户的使用感知更加统一。包含容器组件、FLEX布局、九宫格、选项卡、底部导航、滑块组件、图文列表、面板组件、文本链接、链接组件、图片组\r\n件、图标、进度条、按钮、单行文本、多行文本、单选列表、多选列表、开关选择、滑动条、上传组件、时间、下拉列表、单选列表等各式元素。</p><p>\r\n		</p><p>\r\n		</p><ul class="box3-img wow fadeInUp  animated list-paddingleft-2" style="padding-top: 20px; margin-bottom: 50px; visibility: visible; animation-name: fadeInUp;"><img src="http://lib.diygw.com/themes/design/images/pic4.png" title="基于微信小程序量身设计的WeUI组件库"/></ul><p>\r\n	</p><p>\r\n	\r\n		</p><p>\r\n			</p><h2>小程序适用行业</h2><p>\r\n			</p><p>微小程序特别适用于电影行业、交通行业、医疗行业、健身俱乐部、咖啡馆、餐饮酒店微信端的O2O平台。同时商超、电器城、服装店、零售商等需\r\n要快速构建微信端电商平台也适用。社群小程序主要面向站长、公众号等网络社群，帮助运营者搭建完善的社群，借助微信获取流量，提升用户黏性。一键导出设计\r\n的微信小程序代码，包括WXML、WXSS、JS、JSON、APP.JS、APP.JSON代码。</p><p>\r\n		</p><p><br/></p>', 0, 25);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `diygw_dashboard`
+--
+
+DROP TABLE IF EXISTS `diygw_dashboard`;
+CREATE TABLE IF NOT EXISTS `diygw_dashboard` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
+  `title` varchar(100) DEFAULT NULL COMMENT '应用名称',
+  `app_id` varchar(100) DEFAULT NULL,
+  `app_secret` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='应用' AUTO_INCREMENT=1237 ;
 
 -- --------------------------------------------------------
 
@@ -1052,7 +1082,7 @@ CREATE TABLE IF NOT EXISTS `diygw_member` (
 --
 -- 转存表中的数据 `diygw_member`
 --
-
+ 
 -- --------------------------------------------------------
 
 --
@@ -1072,130 +1102,132 @@ CREATE TABLE IF NOT EXISTS `diygw_menu` (
   `is_dev` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否仅开发者模式可见',
   `module` varchar(100) DEFAULT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态',
+  `dashboard_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`),
   KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=132 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=163 ;
 
 --
 -- 转存表中的数据 `diygw_menu`
 --
 
-INSERT INTO `diygw_menu` (`id`, `title`, `pid`, `sort`, `url`, `hide`, `tip`, `group`, `is_dev`, `module`, `status`) VALUES
-(1, '首页', 0, 0, 'Index/index', 0, '', '', 0, 'admin', 1),
-(2, '内容', 0, 2, 'Article/index', 0, '', '', 0, NULL, 1),
-(3, '文档列表', 2, 0, 'article/index', 1, '', '内容', 0, NULL, 1),
-(4, '新增', 3, 0, 'article/add', 0, '', '', 0, NULL, 1),
-(5, '编辑', 3, 0, 'article/edit', 0, '', '', 0, NULL, 1),
-(6, '改变状态', 3, 0, 'article/setStatus', 0, '', '', 0, NULL, 1),
-(7, '保存', 3, 0, 'article/update', 0, '', '', 0, NULL, 1),
-(8, '保存草稿', 3, 0, 'article/autoSave', 0, '', '', 0, NULL, 1),
-(9, '移动', 3, 0, 'article/move', 0, '', '', 0, NULL, 1),
-(10, '复制', 3, 0, 'article/copy', 0, '', '', 0, NULL, 1),
-(11, '粘贴', 3, 0, 'article/paste', 0, '', '', 0, NULL, 1),
-(12, '导入', 3, 0, 'article/batchOperate', 0, '', '', 0, NULL, 1),
-(13, '回收站', 2, 0, 'article/recycle', 1, '', '内容', 0, NULL, 1),
-(14, '还原', 13, 0, 'article/permit', 0, '', '', 0, NULL, 1),
-(15, '清空', 13, 0, 'article/clear', 0, '', '', 0, NULL, 1),
-(16, '用户', 0, 3, 'User/index', 0, '', '', 0, NULL, 1),
-(17, '用户信息', 16, 0, 'User/index', 0, '', '用户管理', 0, NULL, 1),
-(18, '新增用户', 17, 0, 'User/add', 0, '添加新用户', '', 0, NULL, 1),
-(19, '用户行为', 16, 0, 'User/action', 0, '', '行为管理', 0, NULL, 1),
-(20, '新增用户行为', 19, 0, 'User/addaction', 0, '', '', 0, NULL, 1),
-(21, '编辑用户行为', 19, 0, 'User/editaction', 0, '', '', 0, NULL, 1),
-(22, '保存用户行为', 19, 0, 'User/saveAction', 0, '"用户->用户行为"保存编辑和新增的用户行为', '', 0, NULL, 1),
-(23, '变更行为状态', 19, 0, 'User/setStatus', 0, '"用户->用户行为"中的启用,禁用和删除权限', '', 0, NULL, 1),
-(24, '禁用会员', 19, 0, 'User/changeStatus?method=forbidUser', 0, '"用户->用户信息"中的禁用', '', 0, NULL, 1),
-(25, '启用会员', 19, 0, 'User/changeStatus?method=resumeUser', 0, '"用户->用户信息"中的启用', '', 0, NULL, 1),
-(26, '删除会员', 19, 0, 'User/changeStatus?method=deleteUser', 0, '"用户->用户信息"中的删除', '', 0, NULL, 1),
-(27, '权限管理', 16, 0, 'AuthManager/index', 0, '', '用户管理', 0, NULL, 1),
-(28, '删除', 27, 0, 'AuthManager/changeStatus?method=deleteGroup', 0, '删除用户组', '', 0, NULL, 1),
-(29, '禁用', 27, 0, 'AuthManager/changeStatus?method=forbidGroup', 0, '禁用用户组', '', 0, NULL, 1),
-(30, '恢复', 27, 0, 'AuthManager/changeStatus?method=resumeGroup', 0, '恢复已禁用的用户组', '', 0, NULL, 1),
-(31, '新增', 27, 0, 'AuthManager/createGroup', 0, '创建新的用户组', '', 0, NULL, 1),
-(32, '编辑', 27, 0, 'AuthManager/editGroup', 0, '编辑用户组名称和描述', '', 0, NULL, 1),
-(33, '保存用户组', 27, 0, 'AuthManager/writeGroup', 0, '新增和编辑用户组的"保存"按钮', '', 0, NULL, 1),
-(34, '授权', 27, 0, 'AuthManager/group', 0, '"后台 \\ 用户 \\ 用户信息"列表页的"授权"操作按钮,用于设置用户所属用户组', '', 0, NULL, 1),
-(35, '访问授权', 27, 0, 'AuthManager/access', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"访问授权"操作按钮', '', 0, NULL, 1),
-(36, '成员授权', 27, 0, 'AuthManager/user', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"成员授权"操作按钮', '', 0, NULL, 1),
-(37, '解除授权', 27, 0, 'AuthManager/removeFromGroup', 0, '"成员授权"列表页内的解除授权操作按钮', '', 0, NULL, 1),
-(38, '保存成员授权', 27, 0, 'AuthManager/addToGroup', 0, '"用户信息"列表页"授权"时的"保存"按钮和"成员授权"里右上角的"添加"按钮)', '', 0, NULL, 1),
-(39, '分类授权', 27, 0, 'AuthManager/category', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"分类授权"操作按钮', '', 0, NULL, 1),
-(40, '保存分类授权', 27, 0, 'AuthManager/addToCategory', 0, '"分类授权"页面的"保存"按钮', '', 0, NULL, 1),
-(41, '模型授权', 27, 0, 'AuthManager/modelauth', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"模型授权"操作按钮', '', 0, NULL, 1),
-(42, '保存模型授权', 27, 0, 'AuthManager/addToModel', 0, '"分类授权"页面的"保存"按钮', '', 0, NULL, 1),
-(43, '扩展', 0, 7, 'Addons/index', 0, '', '', 0, NULL, 1),
-(44, '插件管理', 43, 1, 'Addons/index', 0, '', '扩展', 0, NULL, 1),
-(45, '创建', 44, 0, 'Addons/create', 0, '服务器上创建插件结构向导', '', 0, NULL, 1),
-(46, '检测创建', 44, 0, 'Addons/checkForm', 0, '检测插件是否可以创建', '', 0, NULL, 1),
-(47, '预览', 44, 0, 'Addons/preview', 0, '预览插件定义类文件', '', 0, NULL, 1),
-(48, '快速生成插件', 44, 0, 'Addons/build', 0, '开始生成插件结构', '', 0, NULL, 1),
-(49, '设置', 44, 0, 'Addons/config', 0, '设置插件配置', '', 0, NULL, 1),
-(50, '禁用', 44, 0, 'Addons/disable', 0, '禁用插件', '', 0, NULL, 1),
-(51, '启用', 44, 0, 'Addons/enable', 0, '启用插件', '', 0, NULL, 1),
-(52, '安装', 44, 0, 'Addons/install', 0, '安装插件', '', 0, NULL, 1),
-(53, '卸载', 44, 0, 'Addons/uninstall', 0, '卸载插件', '', 0, NULL, 1),
-(54, '更新配置', 44, 0, 'Addons/saveconfig', 0, '更新插件配置处理', '', 0, NULL, 1),
-(55, '插件后台列表', 44, 0, 'Addons/adminList', 0, '', '', 0, NULL, 1),
-(56, 'URL方式访问插件', 44, 0, 'Addons/execute', 0, '控制是否有权限通过url访问插件控制器方法', '', 0, NULL, 1),
-(57, '钩子管理', 43, 2, 'Addons/hooks', 0, '', '扩展', 0, NULL, 1),
-(58, '模型管理', 68, 3, 'Model/index', 0, '', '系统设置', 0, NULL, 1),
-(59, '新增', 58, 0, 'model/add', 0, '', '', 0, NULL, 1),
-(60, '编辑', 58, 0, 'model/edit', 0, '', '', 0, NULL, 1),
-(61, '改变状态', 58, 0, 'model/setStatus', 0, '', '', 0, NULL, 1),
-(62, '保存数据', 58, 0, 'model/update', 0, '', '', 0, NULL, 1),
-(63, '属性管理', 68, 0, 'Attribute/index', 1, '网站属性配置。', '', 0, NULL, 1),
-(64, '新增', 63, 0, 'Attribute/add', 0, '', '', 0, NULL, 1),
-(65, '编辑', 63, 0, 'Attribute/edit', 0, '', '', 0, NULL, 1),
-(66, '改变状态', 63, 0, 'Attribute/setStatus', 0, '', '', 0, NULL, 1),
-(67, '保存数据', 63, 0, 'Attribute/update', 0, '', '', 0, NULL, 1),
-(68, '系统', 0, 4, 'Config/group', 0, '', '', 0, NULL, 1),
-(69, '网站设置', 68, 1, 'Config/group', 0, '', '系统设置', 0, NULL, 1),
-(70, '配置管理', 68, 4, 'Config/index', 0, '', '系统设置', 0, NULL, 1),
-(71, '编辑', 70, 0, 'Config/edit', 0, '新增编辑和保存配置', '', 0, NULL, 1),
-(72, '删除', 70, 0, 'Config/del', 0, '删除配置', '', 0, NULL, 1),
-(73, '新增', 70, 0, 'Config/add', 0, '新增配置', '', 0, NULL, 1),
-(74, '保存', 70, 0, 'Config/save', 0, '保存配置', '', 0, NULL, 1),
-(75, '菜单管理', 68, 5, 'Menu/index', 0, '', '系统设置', 0, NULL, 1),
-(76, '导航管理', 68, 6, 'Channel/index', 0, '', '系统设置', 0, NULL, 1),
-(77, '新增', 76, 0, 'Channel/add', 0, '', '', 0, NULL, 1),
-(78, '编辑', 76, 0, 'Channel/edit', 0, '', '', 0, NULL, 1),
-(79, '删除', 76, 0, 'Channel/del', 0, '', '', 0, NULL, 1),
-(80, '分类管理', 68, 2, 'Category/index', 0, '', '系统设置', 0, NULL, 1),
-(81, '编辑', 80, 0, 'Category/edit', 0, '编辑和保存栏目分类', '', 0, NULL, 1),
-(82, '新增', 80, 0, 'Category/add', 0, '新增栏目分类', '', 0, NULL, 1),
-(83, '删除', 80, 0, 'Category/remove', 0, '删除栏目分类', '', 0, NULL, 1),
-(84, '移动', 80, 0, 'Category/operate/type/move', 0, '移动栏目分类', '', 0, NULL, 1),
-(85, '合并', 80, 0, 'Category/operate/type/merge', 0, '合并栏目分类', '', 0, NULL, 1),
-(86, '备份数据库', 68, 0, 'Database/index?type=export', 0, '', '数据备份', 0, NULL, 1),
-(87, '备份', 86, 0, 'Database/export', 0, '备份数据库', '', 0, NULL, 1),
-(88, '优化表', 86, 0, 'Database/optimize', 0, '优化数据表', '', 0, NULL, 1),
-(89, '修复表', 86, 0, 'Database/repair', 0, '修复数据表', '', 0, NULL, 1),
-(90, '还原数据库', 68, 0, 'Database/index?type=import', 0, '', '数据备份', 0, NULL, 1),
-(91, '恢复', 90, 0, 'Database/import', 0, '数据库恢复', '', 0, NULL, 1),
-(92, '删除', 90, 0, 'Database/del', 0, '删除备份文件', '', 0, NULL, 1),
-(93, '其他', 0, 5, 'other', 1, '', '', 0, NULL, 1),
-(96, '新增', 75, 0, 'Menu/add', 0, '', '系统设置', 0, NULL, 1),
-(98, '编辑', 75, 0, 'Menu/edit', 0, '', '', 0, NULL, 1),
-(106, '行为日志', 16, 0, 'Action/actionlog', 0, '', '行为管理', 0, NULL, 1),
-(108, '修改密码', 16, 0, 'User/updatePassword', 1, '', '', 0, NULL, 1),
-(109, '修改昵称', 16, 0, 'User/updateNickname', 1, '', '', 0, NULL, 1),
-(110, '查看行为日志', 106, 0, 'action/edit', 1, '', '', 0, NULL, 1),
-(112, '新增数据', 58, 0, 'think/add', 1, '', '', 0, NULL, 1),
-(113, '编辑数据', 58, 0, 'think/edit', 1, '', '', 0, NULL, 1),
-(114, '导入', 75, 0, 'Menu/import', 0, '', '', 0, NULL, 1),
-(115, '生成', 58, 0, 'Model/generate', 0, '', '', 0, NULL, 1),
-(116, '新增钩子', 57, 0, 'Addons/addHook', 0, '', '', 0, NULL, 1),
-(117, '编辑钩子', 57, 0, 'Addons/edithook', 0, '', '', 0, NULL, 1),
-(118, '文档排序', 3, 0, 'Article/sort', 1, '', '', 0, NULL, 1),
-(119, '排序', 70, 0, 'Config/sort', 1, '', '', 0, NULL, 1),
-(120, '排序', 75, 0, 'Menu/sort', 1, '', '', 0, NULL, 1),
-(121, '排序', 76, 0, 'Channel/sort', 1, '', '', 0, NULL, 1),
-(122, '数据列表', 58, 0, 'think/lists', 1, '', '', 0, NULL, 1),
-(123, '审核列表', 3, 0, 'Article/examine', 1, '', '', 0, NULL, 1),
-(129, '图片轮播', 2, 0, 'Think/lists?model=banner', 0, '', '内容', 0, 'admin', 1),
-(130, '安装应用', 68, 0, 'Database/importfiles', 0, '', '数据备份', 0, 'admin', 1),
-(131, '应用', 0, 1, 'Index/system', 0, '', '', 0, 'admin', 1);
+INSERT INTO `diygw_menu` (`id`, `title`, `pid`, `sort`, `url`, `hide`, `tip`, `group`, `is_dev`, `module`, `status`, `dashboard_id`) VALUES
+(1, '首页', 0, 0, 'Index/index', 0, '', '', 0, 'admin', 1, NULL),
+(2, '内容', 0, 2, 'Article/index', 0, '', '', 0, NULL, 1, NULL),
+(3, '文档列表', 2, 0, 'article/index', 1, '', '内容', 0, NULL, 1, NULL),
+(4, '新增', 3, 0, 'article/add', 0, '', '', 0, NULL, 1, NULL),
+(5, '编辑', 3, 0, 'article/edit', 0, '', '', 0, NULL, 1, NULL),
+(6, '改变状态', 3, 0, 'article/setStatus', 0, '', '', 0, NULL, 1, NULL),
+(7, '保存', 3, 0, 'article/update', 0, '', '', 0, NULL, 1, NULL),
+(8, '保存草稿', 3, 0, 'article/autoSave', 0, '', '', 0, NULL, 1, NULL),
+(9, '移动', 3, 0, 'article/move', 0, '', '', 0, NULL, 1, NULL),
+(10, '复制', 3, 0, 'article/copy', 0, '', '', 0, NULL, 1, NULL),
+(11, '粘贴', 3, 0, 'article/paste', 0, '', '', 0, NULL, 1, NULL),
+(12, '导入', 3, 0, 'article/batchOperate', 0, '', '', 0, NULL, 1, NULL),
+(13, '回收站', 2, 0, 'article/recycle', 1, '', '内容', 0, NULL, 1, NULL),
+(14, '还原', 13, 0, 'article/permit', 0, '', '', 0, NULL, 1, NULL),
+(15, '清空', 13, 0, 'article/clear', 0, '', '', 0, NULL, 1, NULL),
+(16, '用户', 0, 3, 'User/index', 0, '', '', 0, NULL, 1, NULL),
+(17, '用户信息', 16, 0, 'User/index', 0, '', '用户管理', 0, NULL, 1, NULL),
+(18, '新增用户', 17, 0, 'User/add', 0, '添加新用户', '', 0, NULL, 1, NULL),
+(19, '用户行为', 16, 0, 'User/action', 0, '', '行为管理', 0, NULL, 1, NULL),
+(20, '新增用户行为', 19, 0, 'User/addaction', 0, '', '', 0, NULL, 1, NULL),
+(21, '编辑用户行为', 19, 0, 'User/editaction', 0, '', '', 0, NULL, 1, NULL),
+(22, '保存用户行为', 19, 0, 'User/saveAction', 0, '"用户->用户行为"保存编辑和新增的用户行为', '', 0, NULL, 1, NULL),
+(23, '变更行为状态', 19, 0, 'User/setStatus', 0, '"用户->用户行为"中的启用,禁用和删除权限', '', 0, NULL, 1, NULL),
+(24, '禁用会员', 19, 0, 'User/changeStatus?method=forbidUser', 0, '"用户->用户信息"中的禁用', '', 0, NULL, 1, NULL),
+(25, '启用会员', 19, 0, 'User/changeStatus?method=resumeUser', 0, '"用户->用户信息"中的启用', '', 0, NULL, 1, NULL),
+(26, '删除会员', 19, 0, 'User/changeStatus?method=deleteUser', 0, '"用户->用户信息"中的删除', '', 0, NULL, 1, NULL),
+(27, '权限管理', 16, 0, 'AuthManager/index', 0, '', '用户管理', 0, NULL, 1, NULL),
+(28, '删除', 27, 0, 'AuthManager/changeStatus?method=deleteGroup', 0, '删除用户组', '', 0, NULL, 1, NULL),
+(29, '禁用', 27, 0, 'AuthManager/changeStatus?method=forbidGroup', 0, '禁用用户组', '', 0, NULL, 1, NULL),
+(30, '恢复', 27, 0, 'AuthManager/changeStatus?method=resumeGroup', 0, '恢复已禁用的用户组', '', 0, NULL, 1, NULL),
+(31, '新增', 27, 0, 'AuthManager/createGroup', 0, '创建新的用户组', '', 0, NULL, 1, NULL),
+(32, '编辑', 27, 0, 'AuthManager/editGroup', 0, '编辑用户组名称和描述', '', 0, NULL, 1, NULL),
+(33, '保存用户组', 27, 0, 'AuthManager/writeGroup', 0, '新增和编辑用户组的"保存"按钮', '', 0, NULL, 1, NULL),
+(34, '授权', 27, 0, 'AuthManager/group', 0, '"后台 \\ 用户 \\ 用户信息"列表页的"授权"操作按钮,用于设置用户所属用户组', '', 0, NULL, 1, NULL),
+(35, '访问授权', 27, 0, 'AuthManager/access', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"访问授权"操作按钮', '', 0, NULL, 1, NULL),
+(36, '成员授权', 27, 0, 'AuthManager/user', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"成员授权"操作按钮', '', 0, NULL, 1, NULL),
+(37, '解除授权', 27, 0, 'AuthManager/removeFromGroup', 0, '"成员授权"列表页内的解除授权操作按钮', '', 0, NULL, 1, NULL),
+(38, '保存成员授权', 27, 0, 'AuthManager/addToGroup', 0, '"用户信息"列表页"授权"时的"保存"按钮和"成员授权"里右上角的"添加"按钮)', '', 0, NULL, 1, NULL),
+(39, '分类授权', 27, 0, 'AuthManager/category', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"分类授权"操作按钮', '', 0, NULL, 1, NULL),
+(40, '保存分类授权', 27, 0, 'AuthManager/addToCategory', 0, '"分类授权"页面的"保存"按钮', '', 0, NULL, 1, NULL),
+(41, '模型授权', 27, 0, 'AuthManager/modelauth', 0, '"后台 \\ 用户 \\ 权限管理"列表页的"模型授权"操作按钮', '', 0, NULL, 1, NULL),
+(42, '保存模型授权', 27, 0, 'AuthManager/addToModel', 0, '"分类授权"页面的"保存"按钮', '', 0, NULL, 1, NULL),
+(43, '扩展', 0, 7, 'Addons/index', 0, '', '', 0, NULL, 1, NULL),
+(44, '插件管理', 43, 1, 'Addons/index', 0, '', '扩展', 0, NULL, 1, NULL),
+(45, '创建', 44, 0, 'Addons/create', 0, '服务器上创建插件结构向导', '', 0, NULL, 1, NULL),
+(46, '检测创建', 44, 0, 'Addons/checkForm', 0, '检测插件是否可以创建', '', 0, NULL, 1, NULL),
+(47, '预览', 44, 0, 'Addons/preview', 0, '预览插件定义类文件', '', 0, NULL, 1, NULL),
+(48, '快速生成插件', 44, 0, 'Addons/build', 0, '开始生成插件结构', '', 0, NULL, 1, NULL),
+(49, '设置', 44, 0, 'Addons/config', 0, '设置插件配置', '', 0, NULL, 1, NULL),
+(50, '禁用', 44, 0, 'Addons/disable', 0, '禁用插件', '', 0, NULL, 1, NULL),
+(51, '启用', 44, 0, 'Addons/enable', 0, '启用插件', '', 0, NULL, 1, NULL),
+(52, '安装', 44, 0, 'Addons/install', 0, '安装插件', '', 0, NULL, 1, NULL),
+(53, '卸载', 44, 0, 'Addons/uninstall', 0, '卸载插件', '', 0, NULL, 1, NULL),
+(54, '更新配置', 44, 0, 'Addons/saveconfig', 0, '更新插件配置处理', '', 0, NULL, 1, NULL),
+(55, '插件后台列表', 44, 0, 'Addons/adminList', 0, '', '', 0, NULL, 1, NULL),
+(56, 'URL方式访问插件', 44, 0, 'Addons/execute', 0, '控制是否有权限通过url访问插件控制器方法', '', 0, NULL, 1, NULL),
+(57, '钩子管理', 43, 2, 'Addons/hooks', 0, '', '扩展', 0, NULL, 1, NULL),
+(58, '模型管理', 68, 3, 'Model/index', 0, '', '系统设置', 0, NULL, 1, NULL),
+(59, '新增', 58, 0, 'model/add', 0, '', '', 0, NULL, 1, NULL),
+(60, '编辑', 58, 0, 'model/edit', 0, '', '', 0, NULL, 1, NULL),
+(61, '改变状态', 58, 0, 'model/setStatus', 0, '', '', 0, NULL, 1, NULL),
+(62, '保存数据', 58, 0, 'model/update', 0, '', '', 0, NULL, 1, NULL),
+(63, '属性管理', 68, 0, 'Attribute/index', 1, '网站属性配置。', '', 0, NULL, 1, NULL),
+(64, '新增', 63, 0, 'Attribute/add', 0, '', '', 0, NULL, 1, NULL),
+(65, '编辑', 63, 0, 'Attribute/edit', 0, '', '', 0, NULL, 1, NULL),
+(66, '改变状态', 63, 0, 'Attribute/setStatus', 0, '', '', 0, NULL, 1, NULL),
+(67, '保存数据', 63, 0, 'Attribute/update', 0, '', '', 0, NULL, 1, NULL),
+(68, '系统', 0, 4, 'Config/group', 0, '', '', 0, NULL, 1, NULL),
+(69, '网站设置', 68, 1, 'Config/group', 0, '', '系统设置', 0, NULL, 1, NULL),
+(70, '配置管理', 68, 4, 'Config/index', 0, '', '系统设置', 0, NULL, 1, NULL),
+(71, '编辑', 70, 0, 'Config/edit', 0, '新增编辑和保存配置', '', 0, NULL, 1, NULL),
+(72, '删除', 70, 0, 'Config/del', 0, '删除配置', '', 0, NULL, 1, NULL),
+(73, '新增', 70, 0, 'Config/add', 0, '新增配置', '', 0, NULL, 1, NULL),
+(74, '保存', 70, 0, 'Config/save', 0, '保存配置', '', 0, NULL, 1, NULL),
+(75, '菜单管理', 68, 5, 'Menu/index', 0, '', '系统设置', 0, NULL, 1, NULL),
+(76, '导航管理', 68, 6, 'Channel/index', 0, '', '系统设置', 0, NULL, 1, NULL),
+(77, '新增', 76, 0, 'Channel/add', 0, '', '', 0, NULL, 1, NULL),
+(78, '编辑', 76, 0, 'Channel/edit', 0, '', '', 0, NULL, 1, NULL),
+(79, '删除', 76, 0, 'Channel/del', 0, '', '', 0, NULL, 1, NULL),
+(80, '分类管理', 68, 2, 'Category/index', 0, '', '系统设置', 0, NULL, 1, NULL),
+(81, '编辑', 80, 0, 'Category/edit', 0, '编辑和保存栏目分类', '', 0, NULL, 1, NULL),
+(82, '新增', 80, 0, 'Category/add', 0, '新增栏目分类', '', 0, NULL, 1, NULL),
+(83, '删除', 80, 0, 'Category/remove', 0, '删除栏目分类', '', 0, NULL, 1, NULL),
+(84, '移动', 80, 0, 'Category/operate/type/move', 0, '移动栏目分类', '', 0, NULL, 1, NULL),
+(85, '合并', 80, 0, 'Category/operate/type/merge', 0, '合并栏目分类', '', 0, NULL, 1, NULL),
+(86, '备份数据库', 68, 0, 'Database/index?type=export', 0, '', '数据备份', 0, NULL, 1, NULL),
+(87, '备份', 86, 0, 'Database/export', 0, '备份数据库', '', 0, NULL, 1, NULL),
+(88, '优化表', 86, 0, 'Database/optimize', 0, '优化数据表', '', 0, NULL, 1, NULL),
+(89, '修复表', 86, 0, 'Database/repair', 0, '修复数据表', '', 0, NULL, 1, NULL),
+(90, '还原数据库', 68, 0, 'Database/index?type=import', 0, '', '数据备份', 0, NULL, 1, NULL),
+(91, '恢复', 90, 0, 'Database/import', 0, '数据库恢复', '', 0, NULL, 1, NULL),
+(92, '删除', 90, 0, 'Database/del', 0, '删除备份文件', '', 0, NULL, 1, NULL),
+(93, '其他', 0, 5, 'other', 1, '', '', 0, NULL, 1, NULL),
+(96, '新增', 75, 0, 'Menu/add', 0, '', '系统设置', 0, NULL, 1, NULL),
+(98, '编辑', 75, 0, 'Menu/edit', 0, '', '', 0, NULL, 1, NULL),
+(106, '行为日志', 16, 0, 'Action/actionlog', 0, '', '行为管理', 0, NULL, 1, NULL),
+(108, '修改密码', 16, 0, 'User/updatePassword', 1, '', '', 0, NULL, 1, NULL),
+(109, '修改昵称', 16, 0, 'User/updateNickname', 1, '', '', 0, NULL, 1, NULL),
+(110, '查看行为日志', 106, 0, 'action/edit', 1, '', '', 0, NULL, 1, NULL),
+(112, '新增数据', 58, 0, 'think/add', 1, '', '', 0, NULL, 1, NULL),
+(113, '编辑数据', 58, 0, 'think/edit', 1, '', '', 0, NULL, 1, NULL),
+(114, '导入', 75, 0, 'Menu/import', 0, '', '', 0, NULL, 1, NULL),
+(115, '生成', 58, 0, 'Model/generate', 0, '', '', 0, NULL, 1, NULL),
+(116, '新增钩子', 57, 0, 'Addons/addHook', 0, '', '', 0, NULL, 1, NULL),
+(117, '编辑钩子', 57, 0, 'Addons/edithook', 0, '', '', 0, NULL, 1, NULL),
+(118, '文档排序', 3, 0, 'Article/sort', 1, '', '', 0, NULL, 1, NULL),
+(119, '排序', 70, 0, 'Config/sort', 1, '', '', 0, NULL, 1, NULL),
+(120, '排序', 75, 0, 'Menu/sort', 1, '', '', 0, NULL, 1, NULL),
+(121, '排序', 76, 0, 'Channel/sort', 1, '', '', 0, NULL, 1, NULL),
+(122, '数据列表', 58, 0, 'think/lists', 1, '', '', 0, NULL, 1, NULL),
+(123, '审核列表', 3, 0, 'Article/examine', 1, '', '', 0, NULL, 1, NULL),
+(129, '图片轮播', 2, 0, 'Think/lists?model=banner', 0, '', '内容', 0, 'admin', 1, NULL),
+(130, '安装应用', 68, 0, 'Database/importfiles', 0, '', '数据备份', 0, 'admin', 1, NULL),
+(131, '应用', 0, 1, 'Index/system', 0, '', '', 0, 'admin', 1, NULL),
+(132, '应用', 131, 0, 'Index/system', 0, '', '', 0, 'admin', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -1226,19 +1258,21 @@ CREATE TABLE IF NOT EXISTS `diygw_model` (
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '状态',
   `engine_type` varchar(25) NOT NULL DEFAULT 'MyISAM' COMMENT '数据库引擎',
+  `form_id` int(10) DEFAULT NULL,
+  `dashboard_id` int(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='文档模型表' AUTO_INCREMENT=27 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='文档模型表' AUTO_INCREMENT=816 ;
 
 --
 -- 转存表中的数据 `diygw_model`
 --
 
-INSERT INTO `diygw_model` (`id`, `name`, `title`, `extend`, `relation`, `need_pk`, `field_sort`, `field_group`, `attribute_list`, `attribute_alias`, `template_list`, `template_add`, `template_edit`, `list_grid`, `list_row`, `search_key`, `search_list`, `create_time`, `update_time`, `status`, `engine_type`) VALUES
-(1, 'document', '基础文档', 0, '', 1, '{"1":["2","3","288","5","9","10","11","12","13","14","16","17","19","20"]}', '1:基础', '', '', '', '', '', 'id:编号\r\ntitle:标题:[EDIT]\r\ntype:类型\r\nupdate_time:最后更新\r\nstatus:状态\r\nview:浏览\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', 0, '', '', 1383891233, 1479651166, 1, 'MyISAM'),
-(2, 'article', '文章', 1, '', 1, '{"1":["3","24","12","2","288","5"],"2":["9","13","19","10","16","17","26","20","14","11","25"]}', '1:基础,2:扩展', '', '', '', '', '', '', 0, '', '', 1383891243, 1496060930, 1, 'MyISAM'),
-(3, 'download', '下载', 1, '', 1, '{"1":["3","2","288","5","289","28","30","32","31"],"2":["13","10","9","12","16","17","19","11","20","14","29"]}', '1:基础,2:扩展', '', '', '', '', '', '', 0, '', '', 1383891252, 1479964263, 1, 'MyISAM'),
-(25, 'content', '文章', 0, '', 1, '{"1":["295","294","296","293","299","297","298","292"]}', '1:基础', '', '', '', '', '', 'id:编号\r\nname:标题:[EDIT]\r\nprice:价格\r\nstatus:状态\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', 10, '', '', 1496071521, 1496235133, 1, 'MyISAM'),
-(26, 'banner', '图片轮播', 0, '', 1, '{"1":["300","302","304","303"]}', '1:基础', '', '', '', '', '', 'id:编号\r\nname:标题:[EDIT]\r\nimg:图像地址\r\nstatus:状态\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', 10, '', '', 1496285189, 1496286918, 1, 'MyISAM');
+INSERT INTO `diygw_model` (`id`, `name`, `title`, `extend`, `relation`, `need_pk`, `field_sort`, `field_group`, `attribute_list`, `attribute_alias`, `template_list`, `template_add`, `template_edit`, `list_grid`, `list_row`, `search_key`, `search_list`, `create_time`, `update_time`, `status`, `engine_type`, `form_id`, `dashboard_id`) VALUES
+(1, 'document', '基础文档', 0, '', 1, '{"1":["2","3","288","5","9","10","11","12","13","14","16","17","19","20"]}', '1:基础', '', '', '', '', '', 'id:编号\r\ntitle:标题:[EDIT]\r\ntype:类型\r\nupdate_time:最后更新\r\nstatus:状态\r\nview:浏览\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', 0, '', '', 1383891233, 1479651166, 1, 'MyISAM', NULL, NULL),
+(2, 'article', '文章', 1, '', 1, '{"1":["3","24","12","2","288","5"],"2":["9","13","19","10","16","17","26","20","14","11","25"]}', '1:基础,2:扩展', '', '', '', '', '', '', 0, '', '', 1383891243, 1496060930, 1, 'MyISAM', NULL, NULL),
+(3, 'download', '下载', 1, '', 1, '{"1":["3","2","288","5","289","28","30","32","31"],"2":["13","10","9","12","16","17","19","11","20","14","29"]}', '1:基础,2:扩展', '', '', '', '', '', '', 0, '', '', 1383891252, 1479964263, 1, 'MyISAM', NULL, NULL),
+(25, 'content', '文章', 0, '', 1, '{"1":["295","294","296","293","299","297","298","292"]}', '1:基础', '', '', '', '', '', 'id:编号\r\nname:标题:[EDIT]\r\nprice:价格\r\nstatus:状态\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', 10, '', '', 1496071521, 1496235133, 1, 'MyISAM', NULL, NULL),
+(26, 'banner', '图片轮播', 0, '', 1, '{"1":["300","302","304","303"]}', '1:基础', '', '', '', '', '', 'id:编号\r\nname:标题:[EDIT]\r\nimg:图像地址\r\nstatus:状态\r\nid:操作:[EDIT]|编辑,[DELETE]|删除', 10, '', '', 1496285189, 1496286918, 1, 'MyISAM', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1331,6 +1365,10 @@ CREATE TABLE IF NOT EXISTS `diygw_ucenter_member` (
   UNIQUE KEY `email` (`email`),
   KEY `status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='用户表' AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `diygw_ucenter_member`
+--
 
 -- --------------------------------------------------------
 

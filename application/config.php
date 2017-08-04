@@ -41,14 +41,14 @@ return  [
 	// +----------------------------------------------------------------------
 	// | 系统数据加密设置
 	// +----------------------------------------------------------------------
-	'data_auth_key' => 'Es[d_Hl^8VcJ@M/(X?%.gNS*YwG6)9!;&]z2<5"Q', //默认数据加密KEY
-	'data_cache_key'=> 'Es[d_Hl^8VcJ@M/(X?%.gNS*YwG6)9!;&]z2<5"Q',
+	'data_auth_key' => 'Etigw2Z=T0+3e8nqIAGYPUQ%&.#-5[Lc*O/FHaJ;', //默认数据加密KEY
+	'data_cache_key'=> 'Etigw2Z=T0+3e8nqIAGYPUQ%&.#-5[Lc*O/FHaJ;',
     // +----------------------------------------------------------------------
     // | UCenter客户端配置
     // +----------------------------------------------------------------------
     'uc_app_id'   => 1,   //应用ID
     'uc_api_type' =>'Model',    //可选值 Model / Service
-    'uc_auth_key' =>'Es[d_Hl^8VcJ@M/(X?%.gNS*YwG6)9!;&]z2<5"Q', //加密KEY
+    'uc_auth_key' =>'Etigw2Z=T0+3e8nqIAGYPUQ%&.#-5[Lc*O/FHaJ;', //加密KEY
 
 	'app_init'=>array('app\common\addon\InitHookBehavior'),
 

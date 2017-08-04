@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <script type="text/javascript" src="../internal.js"></script>
+    <style type="text/css">
+        .content{width:530px; height: 350px;margin: 10px auto;}
+        .content table{width: 100%}
+        .content table td{vertical-align: middle;}
+        #address{width:220px;height:21px;background: #FFF;border:1px solid #d7d7d7; line-height: 21px;}
+    </style>
+    <script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+</head>
+<body>
+<div class="content">
+    <table>
+        <tr>
+            <td><label for="address"><var id="lang_input_address"></var></label></td>
+            <td><input id="address" type="text" /></td>
+            <td><a id="doSearch" href="javascript:void(0)" class="button"><var id="lang_input_search"></var></a></td>
+        </tr>
+    </table>
+    <div id="container" style="width: 100%; height: 340px;margin: 5px auto; border: 1px solid gray;"></div>
+</div>
+<script type="text/javascript">
+    domUtils.on(window,"load",function(){
+		    var center = new qq.maps.LatLng(39.916527,116.397128);
+		    var marker;
+		    var map = new qq.maps.Map(document.getElementById('container'),{
+		        center: center,
+		        zoom: 16
+		    });
+		    
+		    //获取城市列表接口设置中心点
+		    citylocation = new qq.maps.CityService({
+		        complete : function(result){
+		            map.setCenter(result.detail.latLng);
+		            document.getElementById('address').value = result.detail.name;
+		            marker = new qq.maps.Marker({
+		        		position: result.detail.latLng,
+		        		draggable: true,
+		        		map: map
+		    		});
+		        }
+		    });
+		    //调用searchLocalCity();方法    根据用户IP查询城市信息。
+		    citylocation.searchLocalCity();
+		    
+		    var latlngBounds = new qq.maps.LatLngBounds();
+		    //调用Poi检索类
+		    searchService = new qq.maps.SearchService({
+		        complete : function(results){
+		           console.log(results);
+		            var pois = results.detail.pois;
+		            for(var i = 0,l = pois.length;i < l; i++){
+		                var poi = pois[i];
+		                latlngBounds.extend(poi.latLng); 
+		                marker.setPosition(poi.latLng); 
+		                break;
+		            }
+		            map.fitBounds(latlngBounds);
+		        }
+		    });
+		    
+            function doSearch(){
+                var address = document.getElementById('address').value;
+    			searchService.search(address);
+            }
+            
+            $G('address').onkeydown = function (evt){
+                evt = evt || event;
+                if (evt.keyCode == 13) {
+                    doSearch();
+                }
+            };
+            $G("doSearch").onclick = doSearch;
+            
+            dialog.onok = function (){
+                var center = map.getCenter();
+                var point = marker.getPosition();
+                var url = "http://apis.map.qq.com/ws/staticmap/v2/?center="+point.getLat()+","+point.getLng()+"&zoom=16&size=320*160&maptype=roadmap&markers=size:large|color:0xFFCCFF|label:k|"+point.getLat()+","+point.getLng()+"&key=4PABZ-ZKNW3-WYZ3N-3FFDM-HKCM2-QSBFY";
+            	if(top.window&&top.window.$){
+            		var mapPickerInput = top.window.$("body").data("mapPickerInput");
+            		mapPickerInput.val(url);
+            		mapPickerInput.data({lng:point.lng,lat:point.lat});
+            		top.window.$("#latitude").val(point.lat);
+            		top.window.$("#longitude").val(point.lng);
+            		mapPickerInput.trigger('change.map');
+            		top.window.$("#latitude").trigger('change');
+            		top.window.$("#longitude").trigger('change');
+            	}else{
+            		editor.execCommand('inserthtml', '<img width="520" height="340" src="' + url + '"' + (imgcss ? ' style="' + imgcss + '"' :'') + '/>');
+            	}
+            };
+
+            /*function getPars(str,par){
+                var reg = new RegExp(par+"=((\\d+|[.,])*)","g");
+                return reg.exec(str)[1];
+            }
+            var img = editor.selection.getRange().getClosedNode();
+            if(img && img.src.indexOf("http://maps.googleapis.com/maps/api/staticmap")!=-1){
+                var url = img.getAttribute("src");
+                var centers = getPars(url,"center").split(",");
+                point = new google.maps.LatLng(Number(centers[0]),Number(centers[1]));
+                map.setCenter(point);
+                map.setZoom(Number(getPars(url,"zoom")));
+                centers = getPars(url,"markers").split(",");
+                marker.setPosition(new google.maps.LatLng(Number(centers[0]),Number(centers[1])));
+                imgcss = img.style.cssText;
+            }else{
+                setTimeout(function(){
+                    doSearch();
+                },30)
+            }*/
+    });
+
+</script>
+</body>
+</html>

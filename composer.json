@@ -19,7 +19,9 @@
         "php": ">=5.4.0",
         "topthink/framework": "^5.0",
         "topthink/think-captcha": "^1.0",
-        "xxh/think-wxminihelper": "^1.0"
+        "xxh/think-wxminihelper": "^1.0",
+        "phpoffice/phpexcel": "^1.8",
+        "vipsoft/unzip": "^1.2"
     },
     "extra": {
         "think-path": "thinkphp"

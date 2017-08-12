@@ -9,6 +9,8 @@
 
 namespace app\admin\controller; 
 
+use VIPSoft\Unzip\Unzip;
+
 class Database extends Admin {
 	/**
 	 * 数据库备份/还原列表
@@ -292,10 +294,12 @@ class Database extends Admin {
             $list = array();
             foreach ($glob as $name => $file) {
                 $extension        = strtoupper(pathinfo($file->getFilename(), PATHINFO_EXTENSION));
-                $info['filename'] = basename($name,".sql");
-                $info['size'] = $file->getSize();
-                $info['time'] = date ( "Y-m-d H:i:s", $file->getMTime() );
-                $list[] = $info;
+                if($extension=="SQL"){
+                    $info['filename'] = basename($name,".sql");
+                    $info['size'] = $file->getSize();
+                    $info['time'] = date ( "Y-m-d H:i:s", $file->getMTime() );
+                    $list[] = $info;
+                }
             }
             krsort($list);
             $this->assign('list',   $list);
@@ -313,6 +317,38 @@ class Database extends Admin {
             execute_sql_file($filePath);
             return $this->success('安装应用完成！');
         }
+    }
 
+    public function upload(){
+        if(request()->isPost()){
+            $files = request()->file('uploadFile');
+            if (empty($files)) {
+                $this->error('请选择上传文件');
+            }
+            echo $this->fetch();
+            $folder = ROOT_PATH . 'public' . DS . 'static' . DS . 'uploads'. DS . 'download';
+            $info = $files->move($folder);
+            $filePath = $folder. DS .$info->getSaveName();
+            $this->showMsg('文件上传成功');
+            $this->showMsg('开始解压文件...');
+            $unzipper  = new Unzip();
+            $unzipper->extract($filePath, ROOT_PATH);
+            $this->showMsg('解压文件成功', 'success');
+        } else {
+            $this->assign('meta_title', '上传应用');
+            return $this->fetch();
+        }
+    }
+
+    /**
+     * 实时显示提示信息
+     * @param  string $msg 提示信息
+     * @param  string $class 输出样式（success:成功，error:失败）
+     * @author 艺品网络  <twothink.cn>
+     */
+    private function showMsg($msg, $class = ''){
+        echo "<script type=\"text/javascript\">showmsg(\"{$msg}\",\"{$class}\")</script>";
+        flush();
+        ob_flush();
     }
 }

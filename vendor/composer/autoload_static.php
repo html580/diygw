@@ -42,11 +42,29 @@ class ComposerStaticInitaabd0a024691ad7763f8d14e261d9a9d
         ),
     );
 
+    public static $prefixesPsr0 = array (
+        'V' => 
+        array (
+            'VIPSoft\\Unzip' => 
+            array (
+                0 => __DIR__ . '/..' . '/vipsoft/unzip/src',
+            ),
+        ),
+        'P' => 
+        array (
+            'PHPExcel' => 
+            array (
+                0 => __DIR__ . '/..' . '/phpoffice/phpexcel/Classes',
+            ),
+        ),
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitaabd0a024691ad7763f8d14e261d9a9d::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitaabd0a024691ad7763f8d14e261d9a9d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitaabd0a024691ad7763f8d14e261d9a9d::$prefixesPsr0;
 
         }, null, ClassLoader::class);
     }

@@ -1,0 +1,22 @@
+{
+    "name": "vipsoft/unzip",
+    "type": "library",
+    "description": "Unzip library - a ZipArchive wrapper",
+    "keywords": ["unzip", "ziparchive", "zip", "pclzip"],
+    "homepage": "http://github.com/vipsoft/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anthon Pang",
+            "email": "apang@softwaredevelopment.ca",
+            "role": "developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.6",
+        "ext-zip": "*"
+    },
+    "autoload": {
+        "psr-0": { "VIPSoft\\Unzip": "src/" }
+    }
+}

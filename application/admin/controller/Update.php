@@ -41,7 +41,7 @@ class Update extends Admin{
 	 */
 	private function checkVersion(){ 
 		if(extension_loaded('curl')){
-			$url = 'http://www.twothink.cn/index.php/index/index/check_version';
+			$url = 'https://xcx.diygw.com/index.php?m=home&c=check_version';
 			$params = array(
 					'version' => TWOTHINK_VERSION,
 					'domain'  => $_SERVER['HTTP_HOST'],

@@ -39,7 +39,7 @@ use app\common\controller\Addon;
             $config = $this->getConfig();
             
             if(extension_loaded('curl')){
-                $url = 'http://xcx.diygw.com/index.php/index/index/check_version';
+                $url = 'https://xcx.diygw.com/index.php/index/index/check_version';
                 $params = array(
                     'version' => TWOTHINK_VERSION,
                     'domain'  => $_SERVER['HTTP_HOST'],

@@ -85,6 +85,12 @@ class Data extends Controller
         if(empty($formid)){
             $formid = input("formId", '');
         }
+
+        $map["name"] = $dashboardid."_".$formid;
+        $result = db("model")->where($map)->find();
+        if(!empty($result)){
+            return $result["name"];
+        }
         $map["dashboard_id"] = $dashboardid;
         $map["form_id"] = $formid;
         $result = db("model")->where($map)->find();
@@ -162,10 +168,15 @@ class Data extends Controller
                 $selectTables = array();
                 $wheres = array();
                 foreach ($tables as $formid => $columns) {
-                    $map["dashboard_id"] = $dashboardid;
-                    $map["form_id"] = $formid;
 
+                    $map=[];
+                    $map["name"]=$dashboardid."_".$formid;
                     $result = db("model")->where($map)->find();
+                    if(empty($result)){
+                        $map["dashboard_id"] = $dashboardid;
+                        $map["form_id"] = $formid;
+                        $result = db("model")->where($map)->find();
+                    }
                     $tableName =  $result["name"];
                     $tableAlias["name"]=$tableName;
                     $alias = "t".$formid;

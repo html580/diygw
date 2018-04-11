@@ -85,13 +85,13 @@ class Admin extends Controller {
      * @return boolean
      */
     final protected function checkRule($rule, $type=AuthRule::rule_url, $mode='url'){
-        static $Auth    =   null;
+        /*static $Auth    =   null;
         if (!$Auth) {
             $Auth       =   new \com\Auth();
         }
         if(!$Auth->check($rule,UID,$type,$mode)){
             return false;
-        }
+        }*/
         return true;
     }
 

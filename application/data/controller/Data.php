@@ -91,6 +91,7 @@ class Data extends Controller
         if(!empty($result)){
             return $result["name"];
         }
+        $map=[];
         $map["dashboard_id"] = $dashboardid;
         $map["form_id"] = $formid;
         $result = db("model")->where($map)->find();

@@ -32,7 +32,11 @@ class Data extends Controller
         $options    =   array();
         $REQUEST    =  (array)input('request.');
         if(is_string($model)){
-            $model  =   \think\Db::name($model);
+            if(input('dbid')!=0){
+                $model = \think\Db::table($model)->setTable($model);//获得带前缀的表名
+            }else{
+                $model  =   \think\Db::name($model);
+            }
         }
         $pk         =   $model->getPk();
 
@@ -48,7 +52,7 @@ class Data extends Controller
         }
         unset($REQUEST['_order'],$REQUEST['_field']);
 
-        if(empty($where)){
+        if(input('dbid')==0 && empty($where)){
             $where  =   array('status'=>array('egt',0));
         }
         if( !empty($where)){
@@ -96,7 +100,24 @@ class Data extends Controller
         $map["form_id"] = $formid;
         $result = db("model")->where($map)->find();
         //$table = input("table", '');
-        return $result["name"];
+        $result["name"];
+        if(!empty($result)){
+            return $result["name"];
+        }
+        if(!empty(input("dbid", ''))){
+            $table_name = $formid;
+            $sql = <<<sql
+                SHOW TABLES LIKE '{$table_name}';
+sql;
+            $table_exist = \think\Db::connect()->query($sql);
+            if($table_exist){
+                return $table_name;
+            }else{
+                return null;
+            }
+        }
+        return null;
+
     }
     /**
      * 获取分页数据
@@ -347,6 +368,9 @@ class Data extends Controller
     public function removeMap($table, $map)
     {
         $tableFullName = config('database.prefix') . $table;//获得带前缀的表名
+        if(input('dbid')!=0){
+            $tableFullName = $table;//获得带前缀的表名
+        }
         //获取表所有字段
         $columns = db()->query('SHOW FULL COLUMNS FROM ' . $tableFullName);
         $fields = array();

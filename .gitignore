@@ -12,3 +12,4 @@
 config/database.php
 application/tags.php
 application/middleware.php
+config/install.lock

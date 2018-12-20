@@ -23,9 +23,9 @@ Documentation
 认真看看文档可能会对你的开发有所帮助哦！
 
 
-开发技术交流（QQ群 513350915）
+开发技术交流（QQ群 217549678）
 
-[![PHP微信开发群 (SDK)](http://pub.idqqimg.com/wpa/images/group.png)](http://shang.qq.com/wpa/qunwpa?idkey=ae25cf789dafbef62e50a980ffc31242f150bc61a61164458216dd98c411832a) 
+[![开发交流群](http://pub.idqqimg.com/wpa/images/group.png)](https://jq.qq.com/?_wv=1027&k=48D4Afw) 
 
 
 Repositorie

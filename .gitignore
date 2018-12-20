@@ -9,3 +9,6 @@
 !composer.json
 /composer.lock
 /static/upload
+config/database.php
+application/tags.php
+application/middleware.php

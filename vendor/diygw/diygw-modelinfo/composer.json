@@ -1,0 +1,30 @@
+{
+    "name": "diygw/diygw-modelinfo",
+    "description": "modelinfo package for diygw",
+    "homepage": "https://github.com/diygw/diygw-modelinfo",
+    "license": "Apache-2.0",
+    "minimum-stability": "dev",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "diygwcom",
+            "email": "diygwcom@foxmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/diygw/diygw-modelinfo/issues"
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "topthink/think-helper": ">=1.0.4",
+        "topthink/think-installer": ">=1.0.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "think\\": "src/"
+        },
+        "files": [
+            "src/common.php"
+        ]
+    }
+}

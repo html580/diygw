@@ -1,0 +1,28 @@
+{
+    "name": "diygw/diygw-helper",
+    "description": "modelinfo package for diygw",
+    "homepage": "https://gitee.com/ypwl/diygw-helper",
+    "license": "Apache-2.0",
+    "minimum-stability": "dev",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "diygw",
+            "email": "diygwcom@foxmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://gitee.com/ypwl/diygw-helper"
+    },
+    "require": {
+        "php": ">=5.6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "diygw\\": "src/"
+        },
+        "files": [
+            "src/common.php"
+        ]
+    }
+}

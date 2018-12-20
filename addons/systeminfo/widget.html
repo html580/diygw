@@ -1,0 +1,32 @@
+<div class="col-md-{php}echo 12/$addons_config['width']; {/php}">
+	<div class="panel panel-default">
+		<div class="panel-heading">{$addons_config.title}</div>
+		<div class="sys_info">
+			<table class="table">
+				<tr>
+					<th>ThinkPHP版本</th>
+					<td>{$Think.VERSION}</td>
+				</tr>
+				<tr>
+					<th>运行环境</th>
+					<td>{$_SERVER['SERVER_SOFTWARE']}{:PHP_VERSION}</td>
+				</tr>
+				<tr>
+					<th>PHP版本</th>
+					<td>{:PHP_VERSION}</td>
+				</tr>
+				<tr>
+					<th>MYSQL版本</th>
+					{php}
+					$system_info_mysql = db()->query("select version() as v;");
+					{/php}
+					<td>{$system_info_mysql.0.v}</td>
+				</tr>
+				<tr>
+					<th>上传限制</th>
+					<td>{:ini_get('upload_max_filesize')}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>

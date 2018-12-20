@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="title" content="{$SITE.title}">
+	<meta name="description" content="{$SITE.description}">
+	<meta name="keywords" content="{$SITE.keywords}">
+	<title>{$title}</title>
+	<meta name="author" content="DIY官网 http://www.diygw.com" />
+	<link rel="stylesheet" href="__STATIC__/diygw/assests/diygw-mobile-all.min.css"/>
+	<script charset="utf-8" type="text/javascript" src="__STATIC__/diygw/assests/underscore.js"></script>
+	<script charset="utf-8" type="text/javascript">
+        _.templateSettings = {
+            interpolate : /[\$\{]\{(.+?)\}\}?/g,
+            evaluate : /<%([\s\S]+?)%>/g
+        };
+        window.GlobalConfig={
+            cookieName:'uid{$mpid}',
+            loginUrl:'{:url("@index/login/index")}',
+            registerUrl:'{:url("@index/login/register")}',
+            loginCheckUrl:'{:url("@index/login/check")}'
+        }
+        window.UEDITOR_URLPREFIX="";
+        window.mpid='{$mpid}';
+        window.ASSESTS='__STATIC__/diygw/assests/'
+        window.STATIC_URL = "__STATIC__";
+        window.UEDITOR_HOME_URL = "__STATIC__/diygw/assests/ueditor/";
+	</script>
+	<script charset="utf-8" type="text/javascript" src="__STATIC__/diygw/assests/diygw-mobile-all.min.js"></script>
+</head>
+<body  data-dashboardid="{$dashboardid}" data-redirecturl="{$redirecturl}">    

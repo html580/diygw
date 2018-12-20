@@ -1,0 +1,135 @@
+{include file="public/head" /}
+	<div class="container">
+		  <div class="top"><h1 class="page__title" style="background-color:{$appStyle['navigationBarBackgroundColor']}">订单确认<span url="{:url('@index/cart/index')}" data-dashboardid="{$dashboardid}" id="PageBack" class="back" style="display:block">返回</span><a class="home fa fa-home ajax-page" href="{:url('@index/home/index')}"></a></h1></div>
+		  <div class="page" id="page" style="bottom:41px;"> 
+		  <div class="carts"  > 
+			    <div class="pp"  style="display:none;"> 
+				     <img class="kong" src="__STATIC__/diygw/assests/images/cart.jpg" mode="aspectFill" />
+				     <div class="cla">订单空空如也</div> 
+			    </div>
+			    <div class="weui-cells weui-cells_checkbox" id="cartid" data-ids="{$ids}" data-trigger='.triggercartid'  url="{:url('@index/cart/data')}"  data-login="1" data-user="1" data-param="1" data-ride="loadData" data-dashboardid="{$dashboardid}">
+			      <script type="text/template" id="templatecartid">
+					    <div class="weui-cell cart-item user-load" data-checked="1" data-linkprice="{{link_price}}" data-id="{{id}}" data-linktotal="{{link_total}}">
+					    <img class="carts-image" src="{{link_img}}" mode="aspectFill" /> 
+					    <div class="carts-text"> 
+						      <div class="carts-title">
+						       		{{link_title}}
+						      </div> 
+						      <div class="carts-subtitle"> 
+							       <div class="carts-price">
+							        	￥{{link_price}}*{{link_total}}
+							       </div> 
+						      </div> 
+					     </div> 
+					  </div> 
+					 </script> 
+				 </div>
+				 <div class="weui-cells weui-cells_checkbox">
+				 	<div id="Address" url="{:url('@index/address/data')}" data-isdef="1"  data-trigger='.editAddress' class="table-container" data-login="1" data-user="1" data-param="1" data-ride="loadData" data-dashboardid="{$dashboardid}">
+		            <script type="text/template" id="templateAddress">
+			            <div class="weui-cell weui-check_address {{templateclz}}"  data-id="{{id}}">
+		                	<div  class="weui-cell__hd">
+						      <input  name="addressid" class="weui-check weui-checkbox check-item"  checked="checked" type="radio" />
+						      <i class="weui-icon-checked"></i>
+						    </div>
+						    <div  class="weui-cell__bd">
+						    	  <span class='weui-pr'>姓名:{{name}}</span><span class='weui-pr'>电话:{{tel}}</span><br/>
+							      <div class='weui-pr'><div>地址:{{address}}{{address_xq}}</div></div>
+							      <span class='weui-pr'>
+							      <a class="ajax-page" data-dashboardid="{$dashboardid}" data-_ajax_edit_page="1" href="{:url('@index/address/edit')}" data-formid="address" data-id="{{id}}" data-redirecturl="{:url('@index/order/confirm')}?ids={$ids}">
+							      	修改地址
+							      </a>
+							      </span>
+						    </div>
+		                </div>
+		            </script>
+		            </div>
+		            <div class="weui-media-box weui-media-box_text editAddress" style="display:none">
+	                    <a class="ajax-page" data-dashboardid="{$dashboardid}"  href="{:url('@index/address/edit')}" data-redirecturl="{:url('@index/order/confirm')}?ids={$ids}">
+		                <div class="weui-media-box__title weui-media-box__title_in-text">
+		                	新增地址
+		                </div>
+		                <div class="weui-media-box__in-access">
+		                </div>
+		                </a>
+	                </div>
+	                <div class="weui-cell weui-check_address" data-id="">
+	                	<div  class="weui-cell__hd">
+					      <input  name="addressid" class="weui-check weui-checkbox check-item noaddress" type="radio" />
+						  <i class="weui-icon-checked"></i>
+					    </div>
+					    <div  class="weui-cell__bd">
+					    	   无需配送
+					    </div>
+	                </div> 
+	                <form id="form" method="post">
+	                <div class="weui-cell">
+					    <div class="weui-cell__bd"> <textarea rows="3" placeholder="请输入备注" name="remark" id="remark" class="weui-textarea"></textarea> </div>
+				    </div>
+				    </form>
+		          </div>
+		   </div> 
+        </div>
+	    <div class="bottom carts-footer weui-cells_checkbox"> 
+			<div class="weui-cell weui-noborder">
+		      	<div  class="weui-cell__hd weui-check_address_all">
+			      <span class="carts-price triggercartid"></span>
+			    </div>
+			    <div class="button order" url="{:url('pay')}" data-addressid="" data-dashboardid="{$dashboardid}" data-ids="{$ids}"  data-price="">
+			     	微信支付
+			    </div> 
+			    
+			 </div>
+	     </div>   
+	</div>
+	<script>
+	function totalPrice(){
+		  if($(".cart-item").length==0){
+	 	  	   $(".pp").show();
+	 	  }
+		  var price = 0;
+		  $(".cart-item").each(function(){
+		  		var cartItem=$(this);
+	  			price+=cartItem.data("linkprice")*cartItem.data("linktotal");
+          });
+          $(".triggercartid").html("￥"+price);
+          $(".order").data('price',price);
+	}
+	
+	$(document).off('click.weui-check_address','.weui-check_address').on('click.weui-check_address','.weui-check_address',function(e){
+		$('.weui-check_address').prop("checked",false);
+		var input = $(this).find("input:eq(0)");
+		input.prop("checked",true);
+		$(".order").data("addressid",$(this).data("id"));
+	});
+	
+	$(document).off('click.order','.order').on('click.order','.order',function(e){
+          var url = $(this).attr('url');
+    	  url += ((url.indexOf('?') == -1) ? '?' : '&')+$.getParamData($(this));
+    	  $("#form").attr("action",url); 
+	      $("#form")[0].submit();
+	}); 
+	
+	$(function(){
+		 $(".triggercartid").on('loadSuccess',function(){
+		 	   totalPrice();
+	     });
+	     $(".triggercartid").on('removeSuccess',function(){
+		 	   totalPrice();
+	     });
+	     $(".editAddress").on('loadSuccess',function(){
+	 	   	   if($("#Address>.user-load").length==0){
+	 	   	   	  $(this).show();
+	 	   	   }else{
+	 	   	   	  $(".order").data("addressid",$("#Address>.user-load:eq(0)").data("id"));
+	 	   	   };
+	     });
+	     $("#PageBack").off('click').on('click',function(){
+		      var url = $(this).attr('url');
+	    	  url += ((url.indexOf('?') == -1) ? '?' : '&')+$.getParamData($(this));
+	    	  location.href=url;
+	     });
+						
+	});
+	</script>
+{include file="public/footer" /}

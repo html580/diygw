@@ -1,0 +1,83 @@
+{extend name="admin@public/content"}
+
+{block name="content"}
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+    {if isset($auth)}
+    <table class="layui-table"  lay-skin="line">
+        <tbody>
+        <tr>
+            <th colspan="2" class="text-center">
+                绑定信息
+            </th>
+        </tr>
+        <tr>
+            <td>
+                授权站点
+            </td>
+            <td>
+                {$auth['referrer']}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                用户名
+            </td>
+            <td>
+                {$auth['username']}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                应用编号
+            </td>
+            <td>
+                {$auth['appid']}
+            </td>
+        </tr>
+
+
+        <tr>
+            <td>
+                应用密钥
+            </td>
+            <td>
+                {$auth['appsecret']}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2" class="text-center">
+                <input name="submit" id="bind" value="重新绑定" class="layui-btn"  type="button"/>
+            </th>
+        </tr>
+        </tbody>
+    </table>
+    {/if}
+    <form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+    <div class="{if isset($auth)}hide{/if}" id="formdiv">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text"   name="username" value="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="text"  name="password" value="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item text-center">
+            <button class="layui-btn" type="submit">绑定</button>
+        </div>
+        <div>如果还没有用户，请点击<a href="http://www.diygw.com" target="_blank" style="color: #ff0000;">DIY官网http://www.diygw.com进行注册</a></div>
+    </div>
+    </form>
+</form>
+<script>
+    var $= layui.$;
+    $("#bind").click(function () {
+        $("#formdiv").toggleClass("hide");
+    })
+</script>
+{/block}
+

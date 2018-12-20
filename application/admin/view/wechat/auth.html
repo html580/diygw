@@ -1,0 +1,31 @@
+{extend name='admin@public/content'}
+{block name="content"}
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+    <table class="layui-table" lay-skin="line">
+    <tr>
+        <td>URL(服务器地址)</td>
+        <td>
+            {$wechat.url}
+        </td>
+    </tr>
+    <tr>
+        <td>Token(令牌)</td>
+        <td>
+            {$wechat.valid_token}
+        </td>
+    </tr>
+    <tr>
+        <td>EncodingAESKey(消息加解密密钥)</td>
+        <td>
+            {$wechat.encodingaeskey}
+        </td>
+    </tr>
+    <tr>
+        <td>IP白名单</td>
+        <td>
+            {:get_server_ip()}
+        </td>
+    </tr>
+    </table>
+</form>
+{/block}

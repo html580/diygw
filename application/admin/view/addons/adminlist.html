@@ -1,0 +1,226 @@
+{extend name="public/base" /}
+
+{block name="body"}
+{empty name="custom_adminlist"}
+
+
+<div class="row">
+	<div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-5">
+		<!-- 按钮组 -->
+		<div class="two-btn">
+			{notempty name="model_info.button"}
+			{volist name="model_info.button" id="button"}
+			{present name="button['type']"}
+			<div class="btn-group" role="group">
+				<button type="button" class="btn btn-sm {$button.class} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{$button.title}
+					<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					{volist name="button.extra" id="extra"}
+					<li><a href="{$extra.url|url}">{$extra.title}</a></li>
+					{/volist}
+				</ul>
+			</div>
+			{else /}
+			<div type="button" class="btn btn-sm {$button.class}" url="{$button.url|url}" {$button.ExtraHTML}><i class="{$button.icon}"></i>{$button.title}</div>
+			{/present}
+			{/volist}
+			{/notempty}
+		</div>
+	</div>
+	<form id="data-seach-Form">
+		<div class="col-md-6 col-sm-12 col-xs-12 margin-bottom-5">
+			<!-- 搜索 -->
+			<div class="btn-toolbar pull-right" role="toolbar" aria-label="Toolbar with button groups">
+				<div class="btn-group" role="group" aria-label="First group">
+					<input name="like_seach" class="btn btn-default" type="text" placeholder="模糊搜索">
+					<button id="seach" type="button" class="btn btn-default" title="搜索"><i class="glyphicon glyphicon-search text-success"></i></button>
+					<button id="seach_all" type="button" class="btn btn-default" title="添加搜索条件"><i class="glyphicon glyphicon-plus text-success"></i></button>
+				</div>
+			</div>
+		</div>
+		<!-- 高级搜索条件 -->
+		<div class="col-xs-12 margin-bottom-5">
+
+			<div class="layui-form seach_all">
+				{volist name="model_info.search_list" id="vo"}
+				<div class="btn-group seach-main col-md-6 col-sm-6 col-xs-12">
+					<div class="layui-input-inline">
+						<select name="seach_all[name][]" lay-filter="field_name">
+							{volist name="model_info.search_list" id="vos"}
+							<option value="{$vos.name}" title="{$vos.title}" {eq name="$vos.name" value="$vo.name"} selected="selected" {/eq}>{$vos.title}</option>
+							{/volist}
+						</select>
+					</div>
+					<div class="layui-input-inline">
+						<select name="seach_all[exp][]">
+							<option value="">不参与搜索</option>
+							<option value="eq" {eq name="$vo.exp" value="eq"}selected="selected"{/eq}>等于</option>
+							<option value="neq" {eq name="$vo.exp" value="neq"}selected="selected"{/eq}>不等</option>
+							<option value="lt" {eq name="$vo.exp" value="lt"}selected="selected"{/eq}>小于</option>
+							<option value="elt" {eq name="$vo.exp" value="elt"}selected="selected"{/eq}>小于等于</option>
+							<option value="gt" {eq name="$vo.exp" value="gt"}selected="selected"{/eq}>大于</option>
+							<option value="egt" {eq name="$vo.exp" value="egt"}selected="selected"{/eq}>大于等于</option>
+							<option value="like" {eq name="$vo.exp" value="like"}selected="selected"{/eq}>包含</option>
+						</select>
+					</div>
+					<div class="layui-input-inline value-html">
+						{switch name="vo.type"}
+						{case value="select"}
+						<select name="seach_all[value][]" lay-filter="{$name}_name">
+							{foreach name=":parse_field_attr($vo['extra'])" item="vos" key="k" }
+							<option value="{$k}" {eq name="$k" value="$vo.value"} selected="selected" {/eq}>{$vos}</option>
+							{/foreach}
+						</select>
+						{/case}
+						{case value="date"}date{/case}
+						{case value="datetime"}date{/case}
+						{default /}<input name="seach_all[value][]" class="layui-input" type="text" value="{$vo.value}">
+						{/switch}
+					</div>
+					<button type="button" class="layui-btn seach_all_delte">删除</button>
+				</div>
+				{/volist}
+
+
+			</div>
+		</div>
+
+	</form>
+
+	<div class="col-xs-12">
+		<table class="layui-hide" id="LAY_table_user" lay-filter="user"></table>
+	</div>
+</div>
+
+<div class="extra_list" style="display: none;">
+	{volist name="model_info.search_list" id="vo"}
+	<div class="{$vo.name}_extra_html">
+		{switch name="vo.type"}
+		{case value="select"}
+		<select name="seach_all[value][]" lay-filter="{$name}_name">
+			{foreach name=":parse_field_attr($vo['extra'])" item="vos" key="k" }
+			<option value="{$k}" {eq name="$k" value="$vo.value"} selected="selected" {/eq}>{$vos}</option>
+			{/foreach}
+		</select>
+		{/case}
+		{case value="date"}date{/case}
+		{case value="datetime"}date{/case}
+		{default /}<input name="seach_all[value][]" class="layui-input" type="text" value="{$vo.value}">
+		{/switch}
+	</div>
+	{/volist}
+</div>
+
+<div class="search_html" style="display: none;">
+	<div class="btn-group seach-main col-md-6 col-sm-6 col-xs-12">
+		<div class="layui-input-inline">
+			<select name="seach_all[name][]" lay-filter="field_name">
+				<option value="">请选择字段</option>
+				{volist name="model_info.search_list" id="vos"}
+				<option value="{$vos.name}">{$vos.title}</option>
+				{/volist}
+			</select>
+		</div>
+		<div class="layui-input-inline">
+			<select name="seach_all[exp][]">
+				<option value="">不参与搜索</option>
+				<option value="eq">等于</option>
+				<option value="neq">不等</option>
+				<option value="lt">小于</option>
+				<option value="elt">小于等于</option>
+				<option value="gt">大于</option>
+				<option value="egt">大于等于</option>
+				<option value="like">包含</option>
+			</select>
+		</div>
+		<div class="layui-input-inline value-html">
+			<input name="seach_all[value][]" class="layui-input" type="text" value="" placeholder="请输入参数">
+		</div>
+		<button type="button" class="layui-btn seach_all_delte">删除</button>
+	</div>
+</div>
+
+<style>
+	.seach-main{
+		padding-left: 0px;
+		padding-right: 0px;
+		margin-bottom: 5px;
+	}
+</style>
+<script>
+     $(function () {
+         layui.use(['table','form'], function(){
+             var table = layui.table
+                 ,form = layui.form
+                 ,tableWidth = $("#LAY_table_user").parent().width();
+             //方法级渲染
+             var tableIns = table.render({
+                 elem: '#LAY_table_user'
+                 ,url: '{$model_info["url"]}'
+                 ,method:'post'
+                 ,cols: [[
+                     {checkbox: true, fixed: true}
+                     {volist name="model_info.list_field" id="vo"  key="k"}
+                     ,{field:'{$k}', title: '{$vo.title}'}
+                     {/volist}
+                 ]]
+                 ,id: 'testReload'
+                 ,page: true
+                 ,height: 'full-335'
+                 ,response: {
+                     statusName: 'code' //数据状态的字段名称，默认：code
+                     ,statusCode: 1 //成功的状态码，默认：0
+                     ,msgName: 'msg' //状态信息的字段名称，默认：msg
+                     ,countName: 'total' //数据总数的字段名称，默认：count
+                     ,dataName: 'data' //数据列表的字段名称，默认：data
+                 }
+             });
+             //点击搜索 数据重载
+             $("#seach").on('click', function(){
+                 tableIns.reload({
+                     where:getFormJson("#data-seach-Form")
+                 });
+             });
+             form.on('select(field_name)', function(data){
+                 var _this = data.elem
+                     ,value_html = $('.extra_list .'+data.value+'_extra_html').html()
+                     ,this_html = $(this).parents('.btn-group');
+                 $(this_html).find('.value-html').html(value_html);
+                 form.render('select');
+             });
+
+             //添加搜索条件
+             $("#seach_all").click(function () {
+                 var html = $(".search_html").html();
+                 $(".seach_all").append(html);
+                 form.render('select');
+             });
+             //删除搜索条件
+             $(document).on("click",".seach_all_delte",function(){
+                 $(this).parents('.btn-group').remove();
+             });
+             //导航高亮
+             {php}
+             $url = isset($highlight_subnav)?$highlight_subnav:url(request()->action());
+             {/php}
+                 var gl_id = $('.side-sub-menu').find('a[href="{$url}"]').html();
+                 if((gl_id == "" || gl_id == undefined || gl_id == null)){
+                     highlight_subnav('{:url("index")}');
+                 }else {
+                     highlight_subnav('{$url}');
+                 }
+             });
+     })
+</script>
+
+
+{else/}
+	{present name="custom_adminlist"}
+		{$custom_adminlist}
+	{/present}
+{/empty}
+{/block}
+{block name="script"}
+{/block}

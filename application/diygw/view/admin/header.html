@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>{$dashboardtitle}</title>
+    <meta name="apple-mobile-web-app-title" content="${sysDesignDashboard.title}">
+    <link rel="shortcut icon" href="__STATIC__/diygw/assests/static/img/favicon.ico">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="${SITE.title}"/>
+    <link href="__STATIC__/diygw/assests/bootstrap/css/bootstrap.css"  rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/diygw/assests/font-awesome/css/font-awesome.min.css" rel="stylesheet"  type="text/css" />
+    <!--[if lt IE 9]>
+    <script src="__STATIC__/diygw/assests/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="__STATIC__/diygw/assests/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        var globalApp={
+            baseUrl:'__STATIC__/diygw/assests/'
+        }
+    </script>
+    <link type="text/css" rel="stylesheet" href="__STATIC__/diygw/assests/uadmin/css/themes/style1/orange-blue.css" id="theme-change" class="style-change color-change">
+    <link type="text/css" rel="stylesheet" href="__STATIC__/diygw/assests/uadmin/css/style-responsive.css">
+
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery.cookie.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrap-hover-dropdown/bootstrap-hover-dropdown.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/uadmin/js/main.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery.browser.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/nicescroll/jquery.nicescroll.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery.iframe-auto-height.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/uadmin/js/jquery.menu.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/metisMenu/jquery.metisMenu.js"></script>
+
+    <style>
+        .navbar-static-side ul li a {
+            display:flex;
+        }
+        #side-menu>li .menu-title{
+            width:100%;
+            overflow:hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .design{
+            border-radius: 15px;
+            margin:20px 0 0 20px;
+            width: 350px;
+            padding:35px 15px;
+            border: 1px solid #DDDDDD;
+            position:relative;
+            word-wrap: break-word;
+            background-color: #eeeeee;
+            overflow:hidden;
+            height:90%;
+            max-height:550px;
+            display: inline-block;
+        }
+        .design iframe{
+            min-height:250px;
+        }
+        .design:after{
+            background-color: #616161;
+            border-radius: 5px;
+            height: 10px;
+            left: 0;
+            margin: 0 auto;
+            position: absolute;
+            right: 0;
+            top: 12px;
+            width: 64px;
+            z-index: 1;
+            content:'';
+        }
+        .design:before{
+            background-color: #616161;
+            border-radius: 15px;
+            height: 20px;
+            left: 0;
+            margin: 0 auto;
+            position: absolute;
+            right: 0;
+            bottom:8px;
+            width: 20px;
+            z-index: 1;
+            content:'';
+        }
+        .pages {
+            padding: 20px;
+            width: 350px;
+            background: #fff none repeat scroll 0 0;
+            border: 1px solid #e6e6e6;
+            border-radius: 15px;
+            box-shadow: -1px -1px 5px #eee, 1px 1px 5px #eee;
+            display: inline-block;
+            height:90%;
+            max-height:550px;
+            margin: 20px 0 0 20px;
+            overflow: auto;
+            position: relative;
+            text-align: center;
+        }
+        .pages h2 {
+            border-bottom: 1px solid #ccc;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            overflow: hidden;
+            padding-bottom: 10px;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+        }
+        .qview{
+            margin:30px 0;
+        }
+    </style>
+</head>
+<body class="home skin-blue" style="overflow:hidden;">
+<!-- 内容页主体开始 -->
+<div id="wrapper">
+    {include file='admin/top'/}
+    {include file='admin/sidebar'/}
+    <div id="page-wrapper">

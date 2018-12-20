@@ -1,0 +1,92 @@
+{include file="public/head" /}
+	<style>
+	.weui-pl{
+	  display: flex;
+	  justify-content:space-between;
+	  padding:5px 0;
+	}
+	.weui-pl + .weui-pl{
+	  padding-left:0;
+	}
+	.weui-form-preview__value_in-hd{
+	  font-size:25px;
+	}
+	.order-action{
+	  display: flex;
+	  justify-content:flex-end;
+	}
+	.order-action a{
+	  margin:0 5px;
+	  color: #ff0000;
+	  cursor: pointer;
+	}
+	</style>
+	<div class="container">
+		  <div class="top"><h1 class="page__title" style="background-color:{$appStyle['navigationBarBackgroundColor']}">我的订单<span url="{:url('@index/cart/index')}" data-dashboardid="{$dashboardid}" id="PageBack" class="back" style="display:block">返回</span><a class="home fa fa-home ajax-page" href="{$extendValues['homePage']}"></a></h1></div>
+		  <div class="page" id="page"> 
+				 <div class="pagebg"></div>
+					<div class="pagemain">
+					    <div class="weui-tab" id="weui-tabOrder">
+					        <div class="weui-navbar" id="Order" url="{:url('@index/order/nav')}" data-trigger=".triggerOrder" data-ride="loadData" data-type="0" data-login="1" data-load="1" data-row="10" data-page="1"  data-dashboardid="{$dashboardid}">
+					            <script type="text/template" id="templateOrder">
+					                <div data-status="{{status}}" class="weui-navbar__item {{templateclz}} <% if(i==0) {%>weui-bar__item_on<% } %>">{{title}}</div>
+					            </script>
+					        </div>
+					        <div class="weui-tab__panel">
+					            <div class="weui-tab__content_on pcontainer triggerOrder" data-load="0">
+					                <div id="infinitedetail" class="weui-container">
+					                    <div id="detail" url="{:url('@index/order/data')}" class="table-container" data-login="1" data-user="0" data-param="1" data-ride="loadData" data-isinfinite="true" data-type="0" data-load="1" data-row="10" data-page="1"   data-dashboardid="{$dashboardid}">
+					                    
+					                    <script type="text/template" id="templatedetail"> 
+					                    <div class="weui-media-box weui-media-box_appmsg <%if(i==0){%>weui-noborder<%}%> {{templateclz}}">
+											<div class="weui-media-box__hd" style="">
+												<%
+												var cartList=JSON.parse(cart_list,true);
+												var img =cartList[0].link_img;
+												%>
+									            <img alt="{{pay_title}}" data-src="{{img}}"  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGwAAABsCAIAAAAABMCaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyBpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBXaW5kb3dzIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkQzQ0NEMTVFMjg1QzExRThCOTk0ODEyNzZCRjk2RDJGIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkQzQ0NEMTVGMjg1QzExRThCOTk0ODEyNzZCRjk2RDJGIj4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RDNDQ0QxNUMyODVDMTFFOEI5OTQ4MTI3NkJGOTZEMkYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RDNDQ0QxNUQyODVDMTFFOEI5OTQ4MTI3NkJGOTZEMkYiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz7b9xNiAAAAoElEQVR42uzQMREAAAgEILV/wy9jCDcPItBJiptRIFGiRCRKlCgRiRIlSkSiRIkSkShRokQkSpQoEYkSJSJRokSJSJQoUSISJUqUiESJEiUiUaJEiUiUKFEiEiVKRKJEiRKRKFGiRCRKlCgRiRIlSkSiRIkSkShRokQkSpSIRIkSJSJRokSJSJQoUSISJUqUiESJEiUiUaJEJEqU+McKMABUrANp/PT8DAAAAABJRU5ErkJggg=="  class="weui-media-box__thumb lazyload">
+									        </div>
+											<div class="weui-media-box__bd">
+									            <h4 class="weui-media-box__title" style="">
+								            		<div>{{pay_title}}</div>
+								            		<div>{{cart_price}}</div>
+									            </h4>
+									            <div class="weui-media-box__desc" style="">
+									            	<div class="order-action">
+													  <a  class="ajax-page" url="{:url('@index/pay/index')}" data-ispay="0" data-id='{{id}}'>订单详情</a>
+													  <% if(status==1){%>
+													  <a class="ajax-remove" data-removemsg="您确定要取消订单吗？" data-successmsg="取消订单成功" data-status="0" url="{:url('@index/order/changeStatus')}" data-id='{{id}}'>取消订单</a>
+													  <% }%>
+													 </div>
+									            </div>
+										    </div>
+									    </div>
+								     </script>
+					                    </div>
+					                    <div class="weui-loadmore weui-loadmore-detail"> <i class="weui-loading"></i> <span class="weui-loadmore__tips weui-loadmore_data">正在加载中</span> <span class="weui-loadmore__tips weui-loadmore_nodata hide">没有更多订单了哟</span> </div>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					    <script type="text/javascript">
+					        $(".triggerOrder").on('loadSuccess', function() {
+					            $(this).data($("#Order").find(".weui-bar__item_on").data());
+					            $(this).data("load", "1");
+					        })
+					        $('#weui-tabOrder').on('click', '.weui-navbar__item', function(e) {
+					            e.preventDefault();
+					            if ($(this).is('.weui-bar__item_on')) {
+					                return;
+					            }
+					            $(this).addClass('weui-bar__item_on').siblings('.weui-bar__item_on').removeClass('weui-bar__item_on');
+					            $('#weui-tabOrder>.weui-tab__panel').children('div.weui-tab__content_on').data($(this).data());
+					            $('.triggerOrder').find(".user-load").remove();
+					            $('.triggerOrder').find(".pcontainer").data("load", "0");
+					            $('.triggerOrder').find('[data-ride="loadData"]').trigger("reload");
+					        })
+					    </script>
+				 </div>
+          </div>
+	</div>
+{include file="public/footer" /}
+

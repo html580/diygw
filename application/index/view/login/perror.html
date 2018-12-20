@@ -1,0 +1,31 @@
+{include file="public/head" /}
+	<div class="container">
+		  <div class="page" id="page" style="top:0px;">
+			  	<div class="weui-msg">
+			        <div class="weui-msg__icon-area"><i class="weui-icon-warn weui-icon_msg"></i></div>
+			        <div class="weui-msg__text-area">
+			            <h2 class="weui-msg__title">{$title}</h2>
+			            <p class="weui-msg__desc">{$message}</p>
+			        </div>
+			        <div class="weui-msg__opr-area">
+			            <p class="weui-btn-area">
+			            	{if !empty($dashboardid)}
+			            	<span url="{:url("@index/home/index")}" data-dashboardid="{$dashboardid}" id="PageBack" class="weui-btn weui-btn_primary" style="display:block">返回</span>
+			           		{/if}
+			            </p>
+			        </div>
+			    </div>
+          </div>
+	</div>
+	<script>
+
+	$(function(){
+	     $("#PageBack").off('click').on('click',function(){
+		      var url = $(this).attr('url');
+	    	  url += ((url.indexOf('?') == -1) ? '?' : '&')+$.getParamData($(this));
+	    	  location.href=url;
+	     })
+	});
+	</script>
+{include file="public/footer" /}
+

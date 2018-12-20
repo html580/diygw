@@ -1,0 +1,38 @@
+{extend name='admin/main'}
+{block name="content"}
+    {if condition="$template=='mobile'"}
+    <div id="design" class="design">
+        <iframe src="{$src}" style="width:100%;height:100%;" id="pathFrame" name="pathFrame" width="100%" height="100%" frameborder="0"></iframe>
+    </div>
+    <div class="pages about">
+        <div>
+            <h2 class="title">打开手机扫一扫体验</h2>
+        </div>
+        <div class="qview"><canvas width="150" height="150"></canvas></div>
+    </div>
+<script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/qrcode/jquery.qrcode.min.js"></script>
+    <script>
+        function qrcode(){
+            $('.qview').html("");
+            $('.qview').qrcode({
+                width: 150,
+                height:150,
+                text:$("#pathFrame").attr("src")
+            });
+        }
+        qrcode();
+        $(document).off('click.li.a', '.nav-second-level>li>a').on('click.li.a', '.nav-second-level>li>a', function (e) {
+            var obj=$(this).parent();
+            if(obj.parent().is(".active")){
+                return;
+            }else{
+                obj.addClass("active").siblings(".active").removeClass("active");
+                qrcode();
+            }
+        });
+    </script>
+    {else/}
+    <iframe width="100%" height="100%"  scrolling="no" style="width:100%;height:100%;" frameborder="0" src="{$src}" id="pathFrame" name="pathFrame"></iframe>
+    {/if}
+{/block}
+

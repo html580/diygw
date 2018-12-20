@@ -1,0 +1,49 @@
+{include file="public/head" /}
+<style>
+	.weui-panel-norborer:before{
+		border-top:0 !important;
+	}
+	.weui-panel__hd{
+		display: flex;
+		justify-content:space-between;
+		padding-right:10px;
+		margin-top: 0px;
+	}
+	.weui-media-box__desc{
+		color:#333;
+		font-size: 16px;
+	}
+
+	.weui-pl{
+		display: flex;
+		justify-content:space-between;
+		padding:5px 0;
+	}
+	.weui-pl + .weui-pl{
+		padding-left:0;
+	}
+	.weui_btn_area{
+		padding: 10px;
+	}
+</style>
+<div class="container">
+	<div class="page" id="page" style="top:0px;">
+		<div class="weui-panel weui-panel_access">
+			<div class="weui-panel__hd">
+				<div class="weui-cell__bd">{$order.pay_title}</div>
+			</div>
+			<div class="weui-panel__hd">
+				<div class="weui-cell__bd">订单总价</div>
+				<div class="text-orangered">￥{$order.pay_price}</div>
+			</div>
+			<div class="weui-panel__hd weui-panel-norborer">
+				<div class="weui-cell__bd">订单状态</div>
+				<div class="text-orangered">{$order.orderstatus}</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>
+

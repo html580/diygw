@@ -1,0 +1,98 @@
+{extend name='admin@public/content'}
+{block name="content"}
+<form autocomplete="off" class="layui-form layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">公众号名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="name" value="{$vo.name|default=""}" required lay-verify="required" placeholder="请输入公众号名称" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型</label>
+        <div class="layui-input-block">
+            <input type="radio" {if $vo and isset($vo.type)}{eq name="$vo.type" value="1"} checked {/eq}{/if} name="type" value="1" title="普通订阅号">
+            <input type="radio" {if $vo and isset($vo.type)}{eq name="$vo.type" value="2"} checked {/eq}{/if} name="type" value="2" title="认证订阅号">
+            <input type="radio" {if $vo and isset($vo.type)}{eq name="$vo.type" value="3"} checked {/eq}{/if} name="type" value="3" title="普通服务号">
+            <input type="radio" {if $vo and isset($vo.type)}{eq name="$vo.type" value="4"} checked {/eq}{/if} name="type" value="4" title="认证服务号/认证媒体/政府订阅号">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">APPID</label>
+        <div class="layui-input-block">
+            <input type="text" name="appid" value="{$vo.appid|default=""}" required lay-verify="required" placeholder="请输入APPID" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">APPSECRET</label>
+        <div class="layui-input-block">
+            <input type="text" name="appsecret" value="{$vo.appsecret|default=""}" required lay-verify="required" placeholder="请输入APPSECRET"
+                   autocomplete="off" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">原始ID</label>
+        <div class="layui-input-block">
+            <input type="text" name="origin_id" value="{$vo.origin_id|default=""}"  placeholder="请输入原始ID" autocomplete="off"
+                   class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">微信号:</label>
+        <div class="layui-input-block">
+            <input type="text" name="mp_number"  value="{$vo.mp_number|default=""}" placeholder="请输入公众号微信号"
+                   autocomplete="off" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">LOGO</label>
+        <div class="layui-input-block">
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{$vo.logo|default="__STATIC__/theme/img/logo.png"}"/>
+            <input type="hidden" name="logo" onchange="$(this).prev('img').attr('src', this.value)" value="{$vo.logo|default=""}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="ico,png" data-field="logo">上传图片</a>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">二维码</label>
+        <div class="layui-input-block">
+            <img data-tips-image style="height:auto;max-height:32px;min-width:32px" src="{$vo.qrcode|default="__STATIC__/theme/img/logo.png"}"/>
+            <input type="hidden" name="qrcode" onchange="$(this).prev('img').attr('src', this.value)" value="{$vo.qrcode|default=""}" class="layui-input">
+            <a class="btn btn-link" data-file="one" data-uptype="local" data-type="ico,png" data-field="qrcode">上传图片</a>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">开关状态</label>
+        <div class="layui-input-block">
+            <input name="status" value="1" {if $vo and isset($vo.status)}{eq name="$vo.status" value="1"} checked {/eq}{/if}  title="开启"  type="radio">
+            <input name="status" value="0" {if $vo and isset($vo.status)}{eq name="$vo.status" value="0"} checked {/eq}{/if} title="关闭" type="radio">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">自动注册用户</label>
+        <div class="layui-input-block">
+            <input name="autologin" value="1" {if $vo and isset($vo.autologin)}{eq name="$vo.autologin" value="1"} checked {/eq}{/if}  title="是"  type="radio">
+            <input name="autologin" value="0" {if $vo and isset($vo.autologin)}{eq name="$vo.autologin" value="0"} checked {/eq}{/if} title="否" type="radio">
+        </div>
+    </div>
+
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">描述</label>
+        <div class="layui-input-block">
+            <textarea name="desc"  placeholder="请输入内容" class="layui-textarea">{$vo.desc|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($vo['id'])}<input type='hidden' value='{$vo.id}' name='id'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-back>取消编辑</button>
+    </div>
+    <script>layui.form.render();</script>
+</form>
+{/block}

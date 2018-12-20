@@ -1,0 +1,146 @@
+{include file="public/head" /}
+<style>
+	.weui-panel-norborer:before{
+		border-top:0 !important;
+	}
+	.weui-panel__hd{
+		display: flex;
+		justify-content:space-between;
+		padding-right:10px;
+		margin-top: 0px;
+	}
+	.weui-media-box__desc{
+		color:#333;
+		font-size: 16px;
+	}
+
+	.weui-pl{
+		display: flex;
+		justify-content:space-between;
+		padding:5px 0;
+	}
+	.weui-pl + .weui-pl{
+		padding-left:0;
+	}
+	.weui_btn_area{
+		padding: 10px;
+	}
+</style>
+<div class="container">
+	<div class="top"><h1 class="page__title" style="background-color:{$appStyle['navigationBarBackgroundColor']}">订单详情<span url="{:url('@index/order/index')}" data-dashboardid="{$dashboardid}" id="PageBack" class="back" style="display:block">返回</span><a class="home fa fa-home ajax-page" href="{$extendValues['homePage']}"></a></h1></div>
+	<div class="page" id="page">
+		<div class="weui-panel weui-panel_access">
+			<div class="weui-panel__hd">
+				<div class="weui-cell__bd">订单总价</div>
+				<div class="text-orangered">￥{$order.pay_price}</div>
+			</div>
+			<div class="weui-panel__hd weui-panel-norborer">
+				<div class="weui-cell__bd">订单状态</div>
+				<div class="text-orangered">{$order.orderstatus}</div>
+			</div>
+			<div class="weui-panel__hd weui-panel-norborer">配送信息</div>
+			<div class="weui-panel__bd">
+				{if order.client_name!=''}
+				<div class="weui-media-box weui-media-box_text">
+					<div class="weui-media-box__desc">
+						<div class="weui-pl">
+							<div>收货人: {$order.client_name}{if order.client_gender=='0'}女士{else}先生{/if}</div>
+							<div>{$order.client_tel}</div>
+						</div>
+						<div class="weui-pl">
+							收货地址：{$order.client_address}
+						</div>
+						{neq name="order.client_remark" value=""}
+						<div class="weui-pl">
+							备注：{$order.client_remark}
+						</div>
+						{/neq}
+					</div>
+				</div>
+				{else}
+				<div class="weui-panel__bd">
+					<div class="weui-media-box weui-media-box_text">
+						<div class="weui-media-box__desc">
+							<div class="weui-pl">
+								<div>无需配送</div>
+							</div>
+							{neq name="order.client_remark" value=""}
+							<div class="weui-pl">
+								{$order.client_remark}
+							</div>
+							{/neq}
+						</div>
+					</div>
+				</div>
+				{/if}
+			</div>
+			{if pay.trade_no!=''}
+			<div class="weui-panel__hd">订单信息</div>
+			<div class="weui-panel__bd">
+				<div class="weui-media-box weui-media-box_text">
+					<div class="weui-media-box__desc">
+						<div class="weui-pl">
+							<div>订单号：{$pay.trade_no}</div>
+						</div>
+						<div class="weui-pl">
+							<div>下单时间：{$pay.pay_time}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{/if}
+			<div class="weui_btn_area weui_btn_area_inline">
+				<a class="weui-btn weui-btn_primary ajax-page" url="{:url('@index/order/index')}" data-dashboardid="{$order.dashboardId}" data-status="{$order.status}" data-id="{$order.orderId}" data-ispay="1">返回</a>
+				{eq name='order.status' value='1'}
+				<a class="weui-btn weui-btn_primary" id="pay">微信支付</a>
+				{/eq}
+			</div>
+		</div>
+	</div>
+</div>
+{eq name='order.status' value='1'}
+<script src='//res.wx.qq.com/open/js/jweixin-1.2.0.js'></script>
+<script>
+    wx.config({$weixin.config|raw});
+	function  pay() {
+        WeixinJSBridge.invoke(
+            'getBrandWCPayRequest',
+            {$weixin.option|raw},
+            function(res){
+                if(res.err_msg == 'get_brand_wcpay_request:ok') {
+                    $.ajax({
+                        type: 'POST',
+                        url: '{:url('payresult')}',
+                        data: {'trade_no':'{$pay.trade_no}'} ,
+                        dataType: 'json',
+                        success: function(res){
+                            if(res.status=='success'){
+                                $.toast(res.message,'text');
+                                location.href='{:url('@index/order/index')}';
+                            }else{
+                                $.toast(res.msg,'forbidden');
+                            }
+                        },
+                        error: function(xhr, type){
+                            $.toast("支付失败，如果你已经支付过，请联系管理员！",'forbidden');
+                        }
+                    });
+                }else if(res.err_msg == 'get_brand_wcpay_request:cancel'){
+
+                    $.toast("您已经取消支付！",'forbidden');
+
+                }else if(res.err_msg == 'get_brand_wcpay_request:fail'){
+                    $.toast("支付失败，如果你已经支付过，请联系管理员！",'forbidden');
+
+                }else {
+                    $.toast("调起微信支付失败，请联系管理员！".res.err_msg,'forbidden');
+                }
+            }
+        );
+    }
+    $("#pay").click(function () {
+        pay();
+    });
+</script>
+{/eq}
+{include file="public/footer" /}

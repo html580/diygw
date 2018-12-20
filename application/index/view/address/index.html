@@ -1,0 +1,45 @@
+{include file="public/head" /}
+
+	<div class="container">
+		  <div class="top"><h1 class="page__title" style="background-color:{$extendValues['navigationBarBackgroundColor']}">地址管理<span id="PageBack" class="back" style="display:block">返回</span><a class="home fa fa-home ajax-page" href="{$extendValues['homePage']}"></a></h1></div>
+		  <div class="page" id="page"> 
+				<div class="pagemain">
+				    <div id="infiniteAddress" class="weui-container">
+				        <div class="btn-plus">
+				            <a href="{:url('edit')}"  data-dashboardid="{$dashboardid}" class="weui-btn weui-btn_mini weui-btn_default edit"><i class="fa fa-plus"></i>新增地址</a>
+				        </div>
+				        <div id="Address" url="{:url('data')}" data-trigger='#Address' class="table-container" data-formid="address"  data-login="1" data-user="1" data-param="1" data-ride="loadData" data-dashboardid="{$dashboardid}">
+				            <script type="text/template" id="templateAddress">
+				                <div class="weui-media-box weui-media-box_text user-load">
+				                    <div class="ajax-page" data-id="{{id}}"  data-dashboardid="{$dashboardid}"  href="{:url('edit')}">
+					                <h4 class="weui-media-box__title" style=""><span class='weui-pr'>姓名:{{name}}</span><span class='weui-pr'>电话:{{tel}}</span></h4>
+					                <div class="weui-media-box__desc" style="">
+					                	<span class='weui-pr'>地址:{{address}}{{address_xq}}</span><br/>
+					                </div>
+					                <div class="weui-media-box__info">
+					                	<view class="weui-media-box__info__meta text-orangered" style="display:<% if(is_def=='1'){%>block<%}else{%>none<%}%>">默认地址</view>
+                        				<view class="weui-media-box__info__meta save hidetoast trigger{{id}}" url="{:url('changeDef')}"  style="display:<% if(is_def=='1'){%>none<%}else{%>block<%}%>" data-trigger=".trigger{{id}}"  data-id="{{ id }}"  data-dashboardid="{$dashboardid}">设为默认</view>
+					                </div>
+					                </div>
+				                    <div class="btn-plus-right"><i class="fa fa-edit ajax-edit"  data-id="{{id}}"  data-dashboardid="{$dashboardid}"  url="{:url('edit')}"></i> <i class="fa fa-remove ajax-remove" data-id="{{id}}"  data-dashboardid="{$dashboardid}"  url="{:url('delete')}"></i></div>
+				                </div>
+				            </script>
+				        </div>
+				    </div>
+				</div>
+          </div>  
+	</div>
+	<script>
+	$(function(){
+		 $("#Address").on('loadSuccess',function(){
+		 	   $("#Address").find(".save").each(function(){
+		 	   		$(this).off('saveSuccess').on('saveSuccess',function(){
+		 	   			  $("#Address").find(".text-orangered").hide();
+		 	   			  $("#Address").find(".save").show();
+		 	   			  $(this).hide().siblings(".text-orangered").show();
+		 	   		});
+		 	   });
+	     });
+	})
+	</script>
+{include file="public/footer" /}

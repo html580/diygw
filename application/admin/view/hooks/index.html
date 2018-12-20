@@ -1,0 +1,40 @@
+{extend name='admin@public/content'}
+{block name="button"}
+{if auth("$classuri/add")}
+<button data-modal='{:url("$classuri/add")}' data-title="创建" class='layui-btn layui-btn-sm layui-btn-primary'>新增钩子</button>
+{/if}
+{/block}
+
+{block name="content"}
+	{empty name='list'}
+	<p class="help-block text-center well">没 有 记 录 哦！</p>
+	{else}
+	<table class="layui-table" lay-skin="line">
+		<thead>
+		<tr>
+
+			<th>名称</th>
+			<th>描述</th>
+			<th>类型</th>
+			<th>操作</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name="list" id="vo"}
+		<tr>
+			<td><a href="{:url("$classuri/edit")}?id={$vo.id}">{$vo.name}</a></td>
+			<td>{$vo.description}</td>
+			<td>{$vo.type_text}</td>
+			<td>
+				<a data-title="编辑" href="{:url("$classuri/edit")}?id={$vo.id}">编辑</a>
+				<a data-title="删除" href="{:url("$classuri/del")}?id={$vo.id}">删除</a>
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	<!-- 分页 -->
+	{if isset($page)}<p>{$page|raw}</p>{/if}
+	{/empty}
+<script>layui.form.render()</script>
+{/block}

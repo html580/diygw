@@ -1,0 +1,112 @@
+{extend name='admin@public/content'}
+{block name="style"}
+	<style>
+		.dragsort {
+		    width:400px;
+			padding-left: 0px;
+		}
+		.dragsort li b {
+			display: none;
+			float: right;
+			padding: 0 6px;
+			font-weight: bold;
+			color: #000;
+		}
+		.dragsort li:hover b {
+			display: block;
+		}
+		.dragsort li {
+			margin-bottom: 5px;
+			padding: 0 6px;
+			height: 30px;
+			line-height: 30px;
+			border: 1px solid #eee;
+			background-color: #fff;
+			overflow: hidden;
+		}
+		.dragsort li em {
+			font-style: normal;
+		}
+	</style>
+{/block}
+
+{block name="content"}
+<div class="row">
+	<div class="col-xs-12">
+		<!-- 修改密码表单 -->
+		<form action="{:request()->url()}" method="post" autocomplete="off" class="layui-form layui-box">
+			<div class="form-group">
+				<label class="item-label">钩子名称<span class="check-tips">（需要在程序中先添加钩子，否则无效）</span></label>
+				<div class="controls">
+					<input type="text" value="{$vo.name}" name="name" class="layui-input">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="item-label">钩子描述<span class="check-tips">（钩子的描述信息）</span></label>
+				<div class="controls">
+					<textarea class="layui-textarea" name="description" >{$vo.description}</textarea>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="item-label">钩子类型<span class="check-tips">（区分钩子的主要用途）</span></label>
+				<div class="controls">
+					<select name="type" class="layui-select">
+						<option value="1" {eq name='vo.id' value='1'}selected=""{/eq}>视图</option>
+						<option value="2" {eq name='vo.id' value='2'}selected=""{/eq}>控制器</option>
+					</select>
+				</div>
+			</div>
+			{present name="vo"}
+				<div class="form-group">
+					<label class="item-label">钩子挂载的插件排序<span class="check-tips">（拖动后保存顺序，影响同一个钩子挂载的插件执行先后顺序）</span></label>
+					<div class="controls">
+						<input type="hidden" name="addons" value="{$vo.addons}" readonly>
+						{empty name="vo.addons"}
+							暂无插件，无法排序
+						{else/}
+						<ul id="sortUl" class="dragsort">
+							{volist name=":explode(',',$vo['addons'])" id="addons_vo"}
+								<li class="getSort"><b>&times;</b><em>{$addons_vo}</em></li>
+							{/volist}
+						</ul>
+						<script type="text/javascript">
+                            require(['jquery','jquery.dragsort'], function ($) {
+								$("#sortUl").dragsort({
+									dragSelector:'li',
+									placeHolderTemplate: '<li class="draging-place">&nbsp;</li>',
+									dragEnd:function(){
+										updateVal();
+									}
+								});
+
+								$('#sortUl li b').click(function(){
+									$(this).parent().remove();
+									updateVal();
+								});
+
+								// 更新排序后的隐藏域的值
+								function updateVal() {
+									var sortVal = [];
+									$('#sortUl li').each(function(){
+										sortVal.push($('em',this).text());
+									});
+									$("input[name='addons']").val(sortVal.join(','));
+								}
+							})
+						</script>
+						{/empty}
+					</div>
+				</div>
+			{/present}
+			<input type="hidden" name="id" value="{$vo.id}">
+			<div class="btn-submit-group  text-center">
+				<button class="layui-btn" type='submit'>保存数据</button>
+				<button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-back>取消编辑</button>
+			</div>
+		</form>
+	</div>
+</div>
+<script>
+    layui.form.render();
+</script>
+{/block}

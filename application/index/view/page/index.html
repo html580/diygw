@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="title" content="{$pageTitle}">
+    <meta name="description" content="DIY官网 微信小程序可视化开发工具 Webapp可视化开发工具">
+    <meta name="keywords" content="DIY官网 http://www.diygw.com">
+    <title>{$page['title']}</title>
+    <meta name="author" content="DIY官网 http://www.diygw.com" />
+    <link rel="icon" href="__STATIC__/diygw/assests/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="__STATIC__/diygw/assests/images/favicon.ico" type="image/x-icon">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" type="text/css" href="__STATIC__/diygw/assests/diygw-mobile-all.min.css"/>
+    <script charset="utf-8" type="text/javascript" src="__STATIC__/diygw/assests/underscore.js"></script>
+    <script charset="utf-8" type="text/javascript">
+        _.templateSettings = {
+            interpolate : /[\$\{]\{(.+?)\}\}?/g,
+            evaluate : /<%([\s\S]+?)%>/g
+        };
+        window.GlobalConfig={
+            loginUrl:'{:url("@index/login/index")}',
+            registerUrl:'{:url("@index/login/register")}',
+            loginCheckUrl:'{:url("@index/login/check")}'
+        }
+        window.UEDITOR_URLPREFIX="";
+        window.mpid='{$mpid}';
+        window.ASSESTS='__STATIC__/diygw/assests/'
+        window.STATIC_URL = "__STATIC__";
+        window.UEDITOR_HOME_URL = "__STATIC__/diygw/assests/ueditor/";
+    </script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/diygw-mobile-all.min.js"></script>
+    <style type="text/css">
+        {$styles}
+    </style>
+</head>
+<body data-ride="animatebox" style="background-color:{$backgroundColor};" data-homepage="{$homePage}" data-dashboardid="{$page['dashboard_id']}" data-page_id="{$page['id']}"  data-page_name="{$page['name']}">
+<div class="container">
+    <div class="top"><h1 class="page__title" style="background-color:{$navigationBarBackgroundColor}">{$page['title']}<span id="PageBack" class="back">返回</span><a class="home fa fa-home ajax-page" id="home" href="{$homePage}"></a></h1></div>
+    <div class="page" id="page">
+        {$page['content']|raw}
+    </div>
+</div>
+</body>
+
+</body>
+</html>

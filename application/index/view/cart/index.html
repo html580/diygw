@@ -1,0 +1,160 @@
+{include file="public/head" /}
+	<div class="container">
+		  <div class="top"><h1 class="page__title" style="background-color:{$appStyle['navigationBarBackgroundColor']}">我的购物车<span id="PageBack" class="back">返回</span><a class="home fa fa-home ajax-page" href="{$extendValues['homePage']}"></a></h1></div>
+		  <div class="page" id="page" style="bottom:41px;"> 
+		  <div class="carts"  > 
+			    <div class="pp"  style="display:none;"> 
+				     <img class="kong" src="__STATIC__/diygw/assests/images/cart.jpg" mode="aspectFill" />
+				     <div class="cla">购物车空空如也</div> 
+			    </div>
+			    <div class="weui-cells weui-cells_checkbox" id="cartid" data-trigger='.triggercartid'  url="{:url('data')}"  data-login="1" data-user="1" data-param="1" data-append="0" data-ride="loadData" data-dashboardid="{$dashboardid}">
+			      <script type="text/template" id="templatecartid">
+				  <div class="weui-cell cart-item user-load" data-checked="1" data-linkprice="{{link_price}}" data-id="{{id}}" data-linktotal="{{link_total}}">
+				    <div  class="weui-cell__hd  weui-check_cart">
+				      <input id="cart{{id}}" name="id" value="{{id}}"  class="weui-check weui-checkbox check-item" checked="checked" type="checkbox" />
+				      <i class="weui-icon-checked"></i>
+				    </div>
+				    <img class="carts-image" src="{{link_img}}" mode="aspectFill" /> 
+				    <div class="carts-text"> 
+					      <div class="carts-title">
+					       		{{link_title}}
+					      </div> 
+					      <div class="carts-subtitle"> 
+						       <div class="carts-price">
+						        	￥{{link_price}}
+						       </div> 
+						       <div class="stepper"> 
+							       <div class="quantity-decrease stepper-item"></div> 
+							       <input class="quantity"type="input" data-value="{{link_total}}"  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"  value="{{link_total}}"/> 
+							       <div class="quantity-increase stepper-item"></div> 
+							       <div class="save hidetoast changeCount"  style="display:none"  url="{:url('changeCount')}" data-dashboardid="{$dashboardid}" data-id="{{id}}" data-linktotal="{{link_total}}"></div>
+						      </div> 
+					      </div> 
+					      <div class="btn-plus-right carts-delete"><i class="fa fa-remove ajax-remove" url="{:url('delete')}" data-trigger=".triggercartid" data-id="{{id}}" data-dashboardid="{$dashboardid}"></i></div>
+				     </div> 
+				  </div> 
+				  </script> 
+				</div>
+		   </div> 
+        </div>
+        
+	    <div class="bottom carts-footer weui-cells_checkbox"> 
+			<div class="weui-cell weui-noborder">
+		      	<div  class="weui-cell__hd weui-check_cart_all">
+			      <input class="weui-check weui-checkbox" checked="checked" type="checkbox" />
+			      <i class="weui-icon-checked"></i>
+			      <span class="carts-price triggercartid"></span>
+			    </div>
+			    <div class="button clear save" data-trigger=".clear" savemsg="正在清空购物车..." url="{:url('clear')}" data-dashboardid="{$dashboardid}">
+			     	清空
+			    </div> 
+			    <div class="button order" url="{:url('@index/order/confirm')}" data-dashboardid="{$dashboardid}" data-ids="" data-price="">
+			     	立即结算 
+			    </div> 
+			 </div>
+	     </div>   
+	</div>
+	<script>
+	function totalPrice(){
+		  if($(".cart-item").length==0){
+	 	  	   $(".pp").show();
+	 	  }
+		  var price = 0;
+		  var length = 0;
+		  $(".check-item").each(function(){
+		  		if($(this).is(":checked")){
+		  			var cartItem=$(this).closest(".cart-item");
+		  			price+=cartItem.data("linkprice")*cartItem.data("linktotal");
+		  			length++;
+		  		}
+          });
+          $(".weui-check_cart_all>input").prop("checked",length==$(".cart-item").length)
+          $(".triggercartid").html("￥"+price);
+	}
+	
+	$(document).off('keyup.quantity,afterpaste.quantity','.quantity').on('keyup.quantity,afterpaste.quantity','.quantity',function(e){
+		var value = $(this).val();
+		if(value.length==1){
+			$(this).val(value.replace(/[^1-9]/g,''));
+		}else{
+			$(this).val(value.replace(/\D/g,''));
+		};
+		if($(this).val()==""){
+			$(this).val($(this).data("value"));
+		}else{
+			$(this).data("value",$(this).val())
+		}
+		$(this).closest(".cart-item").data("linktotal",$(this).val());
+		totalPrice();
+	});
+	
+	
+	$(document).off('click.order','.order').on('click.order','.order',function(e){
+		  var length = 0;
+		  var ids=[];
+		  $(".check-item").each(function(){
+		  		if($(this).is(":checked")){
+		  			var cartItem=$(this).closest(".cart-item");
+		  			ids.push(cartItem.data("id"));
+		  		}
+          });
+          if(ids.length==0){
+            $.toast('购物车空空如也', 'forbidden');
+          	return;
+          }
+          $(this).data("ids",ids.join(","));
+          var url = $(this).attr('url');
+    	  url += ((url.indexOf('?') == -1) ? '?' : '&')+$.getParamData($(this));
+    	  location.href=url;
+	});
+	$(document).off('click.stepper-item','.stepper-item').on('click.stepper-item','.stepper-item',function(e){
+		var input = $(this).siblings("input:eq(0)");
+		var value = parseInt(input.val());
+		if($(this).is(".quantity-decrease")){
+			if(value==1){
+				$.toast('最小数量不能小于1', 'forbidden');
+				return;
+			}else{
+				value=value-1;
+			}
+		}else{
+			value=value+1;
+		}
+		$(this).data("value",value)
+		input.val(value);
+		var changeCount = $(this).siblings(".changeCount");
+		changeCount.data("linktotal",value);
+		$(this).closest(".cart-item").data("linktotal",value);
+		totalPrice();
+		changeCount.click();
+	});
+	
+	
+	$(document).off('click.weui-check_cart_all','.weui-check_cart_all').on('click.check-all','.weui-check_cart_all',function(e){
+		var input = $(this).find("input:eq(0)");
+		var checked = !input.is(":checked");
+		input.prop("checked",checked);
+		$(".check-item").prop("checked",checked);
+		totalPrice();
+	});
+	
+	$(document).off('click.weui-check_cart','.weui-check_cart').on('click.weui-check_cart','.weui-check_cart',function(e){
+		var input = $(this).find("input:eq(0)");
+		input.prop("checked",!input.is(":checked"));
+		totalPrice();
+	});
+	$(function(){
+		 $(".triggercartid").on('loadSuccess',function(){
+		 	   totalPrice();
+	     });
+	     $(".triggercartid").on('removeSuccess',function(){
+		 	   totalPrice();
+	     });
+	      $(".clear").on('saveSuccess',function(){
+	           $(".cart-item").remove();
+		 	   totalPrice();
+	     });
+	     
+	})
+	</script>
+{include file="public/footer" /}

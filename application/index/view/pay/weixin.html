@@ -1,0 +1,24 @@
+{include file="public/head" /}
+	<script charset="utf-8" type="text/javascript" src="__STATIC__/diygw/assests/qrcode/jquery.qrcode.min.js"></script>
+	<div class="container">
+		  <div class="page" id="page" style="top:0px;">
+			  	<div class="weui-msg">
+			        <div class="weui-msg__text-area">
+			            <h2 class="weui-msg__title">温馨提示</h2>
+			            <p class="weui-msg__desc">{$message}</p>
+			        </div>
+			        <div class="weui-msg__opr-area">
+			             <div id="qrcode"></div>
+			        </div>
+			    </div>
+          </div>
+	</div>
+	<script>
+	$(function() {
+		 $("#qrcode").qrcode({
+			text:location.href
+		 });	
+	});
+</script>
+{include file="public/footer" /}
+

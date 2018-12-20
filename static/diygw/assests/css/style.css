@@ -1,0 +1,72 @@
+.box{
+    position: relative;
+    border: 1px solid #e7e7eb;
+    padding:3px;
+    margin-bottom:5px;
+}
+.box .btn-toolbar {
+    position: absolute;
+    right: 5px;
+    top: 0px;
+    z-index: 1000;
+    filter: alpha(opacity=20); opacity: 0.2;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+.box .btn-config{
+    filter: alpha(opacity=0);
+    opacity: 0;
+    -webkit-transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+    transition: all 500ms ease;
+}
+.box:hover>.btn-toolbar{
+    z-index: 10000;
+}
+.box:hover .btn-toolbar,.box:hover>.btn-toolbar>.btn-config,.box:hover>.btn-toolbar>.btn-group{
+    filter: alpha(opacity=100); opacity: 1;
+}
+.toggle{
+    border:1px solid #f7c6c6;
+    height: 30px !important;
+}
+.toggle .view{
+    display:none;
+}
+.toggle:after{
+    position:absolute;
+    content: "隐藏了哟";
+    text-align:center;
+    left:0;
+    top:0;
+    bottom:auto;
+    width:100%;
+    heihgt:100%;
+    color: #ccc;
+    background:#fefefe;
+}
+
+.we7-form .box .control-label, form .control-label{
+    padding-top:0;
+}
+.mt10{
+    margin-top: 10px;
+}
+.skuTable table,.skuTable table th,.skuTable table td{
+    border:1px solid #e6e6e6;
+}
+.skuTable th,.skuTable td{
+    padding:5px;
+}
+.skuTable th{
+    background: #f2f2f2;
+}
+.skuTable img{
+    width:32px;
+    heihgt:32px;
+}

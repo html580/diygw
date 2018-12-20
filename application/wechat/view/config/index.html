@@ -1,0 +1,57 @@
+{extend name="admin@public/content"}
+
+{block name="content"}
+<form onsubmit="return false;" action="{:request()->url()}" data-auto="true" method="post" class='form-horizontal layui-form padding-top-20'>
+
+        <blockquote class="layui-elem-quote">
+            支付授权目录: {$payUrl}
+        </blockquote>
+        <div class="layui-form-item">
+            <label class="layui-form-label">AppId</label>
+            <div class="layui-input-block">
+                <input type="text"   name="appid" value="{$config.appid}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">AppSecret</label>
+            <div class="layui-input-block">
+                <input type="text"  name="appsecret" value="{$config.appsecret}" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商户ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="mchid" value="{$config.mchid}"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">支付密钥</label>
+            <div class="layui-input-block">
+                <input type="text" name="paysignkey" value="{$config.paysignkey}"  autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">支付证书cert</label>
+            <div class="layui-input-block">
+                <textarea name="apiclient_cert" class="layui-textarea">{$config.apiclient_cert}</textarea>
+                <p class="tip_for_p">请在微信商户后台下载支付证书，用记事本打开<span style="color: red">apiclient_cert.pem</span>，并复制里面的内容粘贴到这里。</p>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">支付证书key</label>
+            <div class="layui-input-block">
+                <textarea name="apiclient_key"   class="layui-textarea">{$config.apiclient_key}</textarea>
+                <p class="tip_for_p">请在微信商户后台下载支付证书，使用记事本打开<span style="color: red">apiclient_key.pem</span>，并复制里面的内容粘贴到这里。</p>
+            </div>
+
+        </div>
+        <div class="col-sm-6 col-sm-offset-2">
+            <div class="layui-form-item text-center">
+                <button class="layui-btn" type="submit">保存配置</button>
+            </div>
+        </div>
+
+
+</form>
+
+{/block}

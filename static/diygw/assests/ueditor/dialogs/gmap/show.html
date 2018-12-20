@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>添加标记</title>
+<script charset="utf-8" src="http://map.qq.com/api/js?v=2.exp"></script>
+<style type="text/css">
+*{
+    margin:0px;
+    padding:0px;
+}
+body, button, input, select, textarea {
+    font: 12px/16px Verdana, Helvetica, Arial, sans-serif;
+}
+#info{
+    width:603px;
+    padding-top:3px;
+    overflow:hidden;
+}
+.btn{
+    width:112px;
+}
+#container{
+	min-width:600px;
+	min-height:767px;
+}
+</style>
+<script>
+var init = function() {
+	function getParam(name) {
+        return location.href.match(new RegExp('[?#&]' + name + '=([^?#&]+)', 'i')) ? RegExp.$1 : '';
+    }
+    var map, marker;
+    var centerParam = getParam('center');
+    var center = new qq.maps.LatLng(39.916527,116.397128);
+    if(centerParam){
+    	var centerArr = centerParam.split(',');
+    	center = new qq.maps.LatLng(parseFloat(centerArr[0]), parseFloat(centerArr[1]));
+    }
+    var map = new qq.maps.Map(document.getElementById('container'),{
+    	zoomControl:false,
+    	panControl: false,
+        center: center,
+        zoom: 16
+    });
+    
+    var marker = new qq.maps.Marker({
+        position: center,
+        map: map
+    });
+}
+</script>
+</head>
+<body onload="init()">
+<div id="container"></div>
+</body>
+</html>

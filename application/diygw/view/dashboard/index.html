@@ -1,0 +1,78 @@
+{extend name='admin@public/content'}
+{block name='content'}
+<div id="news_box">
+    {if !empty($list)}
+    <table class="layui-table"  lay-skin="line">
+        <thead class="navbar-inner">
+        <tr>
+            <th class="text-center"  colspan="3">本地应用</th>
+        </tr>
+        <tr>
+            <th class="text-center" style="width:100px;">应用名称</th>
+            <th class="text-center" style="width:150px">更新时间</th>
+            <th class="text-center" style="width:100px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $list as  $item}
+        <tr>
+            <td class="text-center" valign="middle">{$item['title']}</td>
+            <td class="text-center" valign="middle">
+                {if $item['isupdate']==1}
+                本地：{$item.local_update_time|format_datetime}<br/>
+                服务器：{$item.update_time|format_datetime}
+                {else}
+                {$item.update_time|format_datetime}
+                {/if}
+            </td>
+            <td class="text-center" valign="middle">
+                {eq name="$item.isupdate" value="1"}<a data-update="{$item.id}"  data-action='{:url("$classuri/setup")}' data-message="确定更新此应用吗？">更新</a>{/eq}
+                {eq name="$item.isnew" value="1"}<a data-update="{$item.id}"  data-action='{:url("$classuri/setup")}' data-message="确定安装此应用吗？">安装</a>{/eq}
+                {eq name="$item.ismanage" value="1"}
+                <a  data-href='{:url("@diygw/admin/index",["id"=>$item.id,"template"=>"mobile"])}' >前台展示</a>
+                <a  data-href='{:url("@diygw/admin/index",["id"=>$item.id,"template"=>"web"])}' >后台管理</a>
+                <a  data-update="{$item.id}"  data-action='{:url("$classuri/delete")}' data-message="确定删除此应用吗？">删除应用</a>
+                {/eq}
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {/if}
+    {if !empty($remotedata)}
+    <table class="layui-table"  lay-skin="line">
+        <thead class="navbar-inner">
+        <tr>
+            <th class="text-center"  colspan="3">远程应用</th>
+        </tr>
+        <tr>
+            <th class="text-center" style="width:100px;">应用名称</th>
+            <th class="text-center" style="width:150px">更新时间</th>
+            <th class="text-center" style="width:100px;">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach $remotedata as  $item}
+        <tr>
+            <td class="text-center" valign="middle">{$item['title']}</td>
+            <td class="text-center" valign="middle">
+                {$item.update_time|format_datetime}
+            </td>
+            <td class="text-center" valign="middle">
+                <a data-update="{$item.id}"  data-action='{:url("$classuri/setup")}' data-message="确定安装此应用吗？">安装</a>
+            </td>
+        </tr>
+        {/foreach}
+        </tbody>
+    </table>
+    {/if}
+    <div>如果还没有应用，请点击<a href="http://www.diygw.com" target="_blank" style="color: #ff0000;">DIY官网http://www.diygw.com设计</a></div>
+</div>
+{/block}
+
+{block name='script'}
+<script>
+    layui.form.render();
+</script>
+{/block}
+

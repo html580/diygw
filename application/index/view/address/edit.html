@@ -1,0 +1,66 @@
+{include file="public/head" /}
+	<div class="container">
+
+		  <div class="top"><h1 class="page__title" style="background-color:{$extendValues['navigationBarBackgroundColor']}">新增地址<span id="PageBack" class="back" style="display:block">返回</span><a class="home fa fa-home ajax-page" href="{$extendValues['homePage']}"></a></h1></div>
+		  <div class="page" id="page"> 
+				<div class="pagemain">
+				     <form class="form-horizontal" data-listhref="{:url('index')}" data-ride="form" role="form" id="formaddress" name="table_694770" data-url="{:url('data')}" action="{:url('save')}" method="post" data-bv-group=".weui-form" data-bv-container="#errorsaddress" data-bv-feedbackicons-valid="weui-icon-success" data-bv-feedbackicons-invalid="weui-icon-warn" data-bv-feedbackicons-validating="weui-icon-warn">
+					        <div class="row-form clearfix">
+					            <div class="">
+					                <div class="weui-form">
+					                    <div class="weui-form-item"> <input placeholder="请输入姓名" value="" name="name" id="697918" class="weui-form-input" required="" data-bv-notempty-message="请输入姓名" type="text"> </div>
+					                </div>
+					                <div class="weui-form">
+					                    <div class="weui-form-item">
+					                    	<input placeholder="请输入电话" value="" name="tel" id="781415" class="weui-form-input"  required="" data-bv-notempty-message="请输入电话" data-bv-regexp="true" data-bv-regexp-regexp="/^1[34578]\d{9}$/" data-bv-regexp-message="请输入11位的手机号码" type="text"> </div>
+					                </div>
+
+									<div class="weui-form">
+										<div class="weui-form-item">
+											<input placeholder="请选择地址" value="" name="address" id="address" class="weui-form-input" required="" data-bv-notempty-message="请选择地址" type="text">
+										</div>
+									</div>
+					                <div class="weui-form">
+					                    <div class="weui-form-item"> <textarea rows="3" placeholder="请输入地址" name="address_xq" id="address_xq" class="weui-form-area" required="" data-bv-notempty-message="请输入地址"></textarea> </div>
+					                </div>
+									<div class="weui-form">
+										<div class="weui-form-item">
+											<div class="weui-cell weui-noborder weui-cell_switch">
+												<div class="weui-cell__bd">是否默认</div>
+												<div class="weui-cell__ft">
+													<label class="weui-switch-cp" for="is_def">
+														<input id="is_def" name="is_def" value="1" class="weui-switch-cp__input weui-checkbox" type="checkbox">
+														<div class="weui-switch-cp__box"></div>
+													</label>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="weui-form">
+										<div class="weui-form-item">
+											<div class="weui_btn_area weui_btn_area_inline">
+												<button type="reset" class="weui-btn weui-btn_warn  ">重置</button>
+												<button type="submit" class="weui-btn weui-btn_primary ">提交</button>
+											</div>
+										</div>
+									</div>
+
+					            </div>
+					        </div>
+					        <input class="hidden" name="dashboardid" value="" type="hidden">
+							<input class="hidden" name="id" value="" type="hidden">
+					        <div id="errorsaddress" class="hide"></div>
+					    </form>
+				</div>
+          </div>  
+	</div>
+
+	<script charset="utf-8" type="text/javascript" src="__STATIC__/diygw/assests/weui/js/city-picker.js"></script>
+	<script>
+        $("#address").cityPicker({
+            title: "选择地址"
+        }).on("change",function () {
+            $(this).trigger("input.update.bv");
+        });
+	</script>
+{include file="public/footer" /}

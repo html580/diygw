@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="title" content="{$pageTitle}">
+    <meta name="description" content="DIY官网 微信小程序可视化开发工具 Webapp可视化开发工具">
+    <meta name="keywords" content="DIY官网 http://www.diygw.com">
+    <title>{$page['title']}</title>
+    <meta name="author" content="DIY官网 http://www.diygw.com" />
+    <link rel="icon" href="__STATIC__/diygw/assests/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="__STATIC__/diygw/assests/images/favicon.ico" type="image/x-icon">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link href="__STATIC__/diygw/assests/bootstrap/css/bootstrap.css"  rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/diygw/assests/bootstrap/css/bootstrap-extend.css"  rel="stylesheet" type="text/css" />
+    <link href="__STATIC__/diygw/assests/font-awesome/css/font-awesome.min.css" rel="stylesheet"  type="text/css" />
+    <link rel="stylesheet" type="text/css" href="__STATIC__/diygw/assests/jquery-confirm/css/jquery-confirm.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/diygw/assests/bootstrapValidator/css/bootstrapValidator.css"/>
+    <link rel="stylesheet" type="text/css" href="__STATIC__/diygw/assests/bootstrap-table/bootstrap-table.css"/>
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="__STATIC__/diygw/assests/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script type="text/javascript" src="__STATIC__/diygw/assests/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery.js"></script>
+    <script charset="utf-8" type="text/javascript" src="__STATIC__/diygw/assests/underscore.js"></script>
+    <script charset="utf-8" type="text/javascript">
+        _.templateSettings = {
+            interpolate : /[\$\{]\{(.+?)\}\}?/g,
+            evaluate : /<%([\s\S]+?)%>/g
+        };
+        window.UEDITOR_URLPREFIX="/";
+        window.mpid='{$mpid}';
+        window.ASSESTS='__STATIC__/diygw/assests/'
+        window.STATIC_URL = "__STATIC__";
+        window.UEDITOR_HOME_URL = "__STATIC__/diygw/assests/ueditor/";
+
+    </script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/ueditor/ueditor.all.js"> </script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/ueditor/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery-confirm/js/jquery-confirm.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrap/js/bootstrap-extend.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jquery.form.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/jqueryui.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrapValidator/js/bootstrapValidator.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrap-table/bootstrap-table.js"></script>
+    <script type="text/javascript" charset="utf-8" src="__STATIC__/diygw/assests/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+</head>
+<body>
+<style>
+    body{
+        margin-bottom:50px;
+    }
+    .page-title{
+        background: #ffffff none repeat scroll 0 0;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.05), 0 1px 0 rgba(0, 0, 0, 0.05);
+        clear: both;
+        height: 43px;
+        line-height:43px;
+        padding: 0 20px;
+    }
+    td a{
+        padding:0 5px;
+    }
+</style>
+<div class="page-title">
+    我的订单
+</div>
+<div id="container" class="container">
+    <div class="pagemain">
+        <div id="toolbarOrder"   style="display: flex">
+            <textarea class="hide" id="columnsOrder"></textarea>
+            <textarea class="hide" id="linksOrder"></textarea>
+            <div class="form-inline" role="form" style="margin-left: 10px;">
+                <div class="form-group">
+                   <select name="status" class="form-control" id="status">
+                       <option value="">请选择</option>
+                       <option value="1">待支付</option>
+                       <option value="2">已付款待发货</option>
+                       <option value="3">待收货</option>
+                       <option value="4">交易完成</option>
+                       <option value="5">已退款</option>
+                   </select>
+                </div>
+                <button id="querybtn" type="button" class="btn btn-default">查询</button>
+            </div>
+        </div>
+        <table id="tableOrder" class="table" data-toggle="table" data-toolbar="#toolbarOrder" data-search="false" data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-pagination="true" data-id-field="id" data-page-list="[10, 25, 50, 100]" data-query-params="queryParamsOrder" data-content-type="application/x-www-form-urlencoded;charset=utf-8" data-method="post" data-side-pagination="server"
+               data-url="{:url('data')}">
+            <thead>
+            <tr>
+                <th data-field="state" data-checkbox="true"></th>
+                <th data-field="pay_title">订单标题</th>
+                <th data-field="trade_no">订单号</th>
+                <th data-field="create_time">订单时间</th>
+                <th data-field="pay_price">价格</th>
+                <th data-field="client_name">姓名</th>
+                <th data-field="client_tel">电话</th>
+                <th data-field="statustext" data-formatter="">状态</th>
+                <th data-field="status" data-formatter="actionFormater">操作</th>
+            </tr>
+            </thead>
+        </table>
+        <script type="text/html" id="action">
+            <a  href="{:url('xq')}?id={{id}}">详情</a>
+            <% if(status==2||status==3||status==4){%>
+            <a class="ajax-remove" data-trigger="#tableOrder"  data-removemsg="您确定要退款吗？" data-successmsg="订单退款成功" url="{:url('tk')}"  data-id='{{id}}'>退款</a>
+            <% }%>
+            <% if(status==2){%>
+            <a class="ajax-remove" data-trigger="#tableOrder"  data-removemsg="您确定要发货吗？" data-successmsg="订单发货成功" url="{:url('fh')}" data-id='{{id}}'>发货</a>
+            <a class="ajax-remove" data-trigger="#tableOrder"  data-removemsg="您确定要设为完成吗？" data-successmsg="订单设为完成成功" url="{:url('wc')}" data-id='{{id}}'>设为完成</a>
+            <% }%>
+        </script>
+        <script type="text/javascript">
+            var $tableOrder = $('#tableOrder');
+            var $removeOrder = $('#removeOrder');
+            var $editOrder = $('#editOrder');
+            var $addOrder = $('#addOrder');
+            $tableOrder.on('check.bs.table uncheck.bs.table ' + 'check-all.bs.table uncheck-all.bs.table', function() {
+                $removeOrder.prop('disabled', !$tableOrder.bootstrapTable('getSelections').length);
+                $editOrder.prop('disabled', $tableOrder.bootstrapTable('getSelections').length != 1);
+            });
+            $editOrder.click(function() {
+                var ids = getIdSelectionsOrder();
+                $.ajax({
+                        type: "post",
+                        dataType: 'json',
+                        url: '{:url('refunddata')}',
+                        data: {
+                            values: ids
+                        },
+                        beforeSend: function() {
+                            jc = $.dialog({
+                                title: '温馨提示',
+                                content: '正在退款，请等待...'
+                            })
+                        },
+                        success: function(result) {
+                            if (jc) {
+                                jc.close()
+                            }
+                            $.confirm({
+                                keyboardEnabled: true,
+                                title: '温馨提示',
+                                content: result.message,
+                                confirmButton: false,
+                                columnClass: 'col-xs-4 col-xs-offset-4',
+                                autoClose: 'cancel|2000',
+                                buttons: {
+                                    cancel: {
+                                        btnClass: 'btn-primary',
+                                        text: '确定',
+                                    }
+                                }
+                            });
+                            $tableOrder.bootstrapTable('refresh');
+                        }
+                    });
+            });
+            $addOrder.click(function() {
+                var url = $(this).attr('href');
+                location.href = url;
+            });
+            $removeOrder.click(function() {
+                var ids = getIdSelectionsOrder();
+                $.ajax({
+                    type: "post",
+                    dataType: 'json',
+                    url: '{:url('remove')}',
+                    data: {
+                        values: ids
+                    },
+                    beforeSend: function() {
+                        jc = $.dialog({
+                            title: '温馨提示',
+                            content: '正在删除数据，请等待...'
+                        })
+                    },
+                    success: function(result) {
+                        if (jc) {
+                            jc.close()
+                        }
+                        $.confirm({
+                            keyboardEnabled: true,
+                            title: '温馨提示',
+                            content: result.message,
+                            confirmButton: false,
+                            columnClass: 'col-xs-4 col-xs-offset-4',
+                            autoClose: 'cancel|2000',
+                            buttons: {
+                                cancel: {
+                                    btnClass: 'btn-primary',
+                                    text: '确定',
+                                }
+                            }
+                        });
+                        if (result.status == true || result.status == 'true' || result.status == 'success') {
+                            $tableOrder.bootstrapTable('remove', {
+                                field: 'id',
+                                values: ids
+                            });
+                            $removeOrder.prop('disabled', true);
+                        }
+                    }
+                });
+            });
+
+            function getIdSelectionsOrder() {
+                return $.map($tableOrder.bootstrapTable('getSelections'), function(row) {
+                    return row[$tableOrder.data("id-field")]
+                });
+            }
+
+            $("#querybtn").click(function () {
+                $tableOrder.bootstrapTable('refresh');
+            });
+
+            $tableOrder.on("removeSuccess",function () {
+                $tableOrder.bootstrapTable('refresh');
+            })
+
+            var actionTemplate = _.template($("#action").html())
+            function actionFormater(value, row, index) {
+                var html=actionTemplate(row);
+                return html;
+            }
+            function queryParamsOrder(params) {
+                params.columns = $("#columnsOrder").val();
+                params.links = $("#linksOrder").val();
+                params['status'] = $("#status").val();
+                return params;
+            }
+        </script>
+    </div>
+</div>
+<div class="hide"><script type="text/plain" id="upload_ue" name='upload_ue'></script></div>
+</body>
+</html>

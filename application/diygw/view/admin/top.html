@@ -1,0 +1,26 @@
+<div id="header-topbar-option-demo" class="page-header-topbar">
+    <nav id="topbar" role="navigation" style="margin-bottom: 0; z-index: 2;" class="navbar navbar-default navbar-static-top">
+        <div class="navbar-header">
+            <button type="button" data-toggle="collapse" data-target=".sidebar-collapse" class="navbar-toggle"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+            </button>
+            <a  href="{:url("@diygw/admin/index",["id"=>$id,"template"=>$template])}" id="logo"   class="navbar-brand"><span class="fa fa-rocket"></span><span class="logo-text">{$dashboardtitle}</span><span style="display: none" class="logo-text-icon"><i class="fa fa-home"></i></span></a>
+        </div>
+        <div class="topbar-main">
+            <a id="menu-toggle" href="#" class="hidden-xs"><i class="fa fa-bars"></i></a>
+            <ul class="nav navbar navbar-top-links navbar-right mbn">
+                <li><a href="{:url("@diygw/dashboard/index")}">应用中心</a></li>
+                <li role="presentation" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                        选择应用<span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        {foreach $dashboard as $item}
+                        <li><a href="{:url("@diygw/admin/index",["id"=>$item.id,"template"=>$template])}">{$item['title']}</a></li>
+                        {/foreach}
+                    </ul>
+                </li>
+                <li class="hide"><a href="#" data-toggle="control-sidebar"><i class="fa fa-street-view"></i>换肤</a></li>
+            </ul>
+        </div>
+    </nav>
+</div>

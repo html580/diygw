@@ -1,0 +1,24 @@
+html, body {min-height: 100%;position:relative; top: unset; bottom: unset; left: unset; right:unset;}
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+body, button, input, select, textarea { font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif }
+h1, h2, h3, h4, h5, h6{ font-size:100%; }
+address, cite, dfn, em, var { font-style:normal; }
+code, kbd, pre, samp { font-family:couriernew, courier, monospace; }
+small{ font-size:12px; }
+ul, ol { list-style:none; }
+a { text-decoration:none; }
+a:hover { text-decoration:underline; }
+sup { vertical-align:text-top; }
+sub{ vertical-align:text-bottom; }
+legend { color:#000; }
+fieldset, img { border:0; }
+button, input, select, textarea { font-size:100%;  max-width: 100%;}
+table { border-collapse:collapse; border-spacing:0; }
+.up,.down{padding:5px;font-size: 20px;}
+.layui-form-label{padding:9px 2px;}
+.layui-form-switch{
+    box-sizing:content-box;
+}
+.layui-form-item .form-control,.layui-form-item .input-group-btn .btn{
+    height:38px;
+}

@@ -57,7 +57,7 @@ Environment
 ```
 server {
 	listen 80;
-	server_name wealth.demo.cuci.cc;
+	server_name demo.diygw.com;
 	root /home/wwwroot/Diygw;
 	index index.php index.html index.htm;
 	

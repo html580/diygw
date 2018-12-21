@@ -111,8 +111,6 @@ Copyright
 #### 支付宝捐赠（收款人：luckyzf@126.com）
 [![微信小程序商城解决方案](http://static.html580.com/assets/images/alipay.gif "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
 
-#### 微信捐赠（收款人：html580网站-邓志锋付钱）
-[![微信小程序商城解决方案](http://static.html580.com/assets/images/weixin-pay.gif "微信小程序商城解决方案")](http://www.diygw.com "微信小程序商城解决方案")
 
 
 DiyGw官方技术交流群 [482112340](https://jq.qq.com/?_wv=1027&k=48Dm8gg)

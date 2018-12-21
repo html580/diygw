@@ -67,7 +67,7 @@ class Order extends BasicAdmin
 
     public function tk()
     {
-       // try {
+      try {
             $order = Db::name("AppOrder")->where([
                 'id'=>$this->request->request("id"),
                 'status'=>'2'
@@ -79,10 +79,10 @@ class Order extends BasicAdmin
                 $info = ['status'=>'success', 'message'=>'订单未支付不能发起退款'];
                 echo json_encode($info);
             }
-       /* } catch (\Exception $e) {
-            $info = ['status'=>'error', 'message'=>'退款失败'];
+       } catch (\Exception $e) {
+            $info = ['status'=>'error', 'message'=>$e->getMessage()];
             echo json_encode($info);
-        }*/
+        }
     }
 
 

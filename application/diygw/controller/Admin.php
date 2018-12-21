@@ -53,6 +53,7 @@ class Admin extends Base
             }
         }
 
+        $this->assign('domain',$this->request->domain());
         $dashboardExtends = $this->getDashboardExtends();
         $pageGroup = $dashboardExtends[$template.'group'];
         if(empty($pageGroup)){

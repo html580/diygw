@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2018 �?12 �?20 �?23:12
+-- 生成日期: 2018 巿12 暿20 敿23:12
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.6.27
 
@@ -556,7 +556,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_config` (
 --
 
 INSERT INTO `diygw_system_config` (`id`, `name`, `value`) VALUES
-(1, 'app_name', 'GIYGW.COM'),
+(1, 'app_name', 'DIYGW.COM'),
 (2, 'site_name', 'DIY官网'),
 (3, 'app_version', 'V1.0'),
 (4, 'site_copy', '©版权所有 2014-2018 DIY官网'),

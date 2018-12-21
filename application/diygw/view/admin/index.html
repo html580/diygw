@@ -17,7 +17,7 @@
             $('.qview').qrcode({
                 width: 150,
                 height:150,
-                text:$("#pathFrame").attr("src")
+                text:'{$domain}'+$("#pathFrame").attr("src")
             });
         }
         qrcode();

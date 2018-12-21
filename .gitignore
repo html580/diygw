@@ -9,6 +9,9 @@
 !composer.json
 /composer.lock
 /static/upload
+/static/diygw/template
+/static/diygw/data
+/static/diygw/update
 config/database.php
 application/tags.php
 application/middleware.php

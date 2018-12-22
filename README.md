@@ -13,7 +13,7 @@ Diygw for PHP
 
 系统安装
 --
-* 项目安装及二次开发请参考hinkPHP官方文档及下面的服务环境说明。
+* 项目安装及二次开发请参考ThinkPHP官方文档及下面的服务环境说明。
 >* 当前版本使用ThinkPHP5.1.x版本，对PHP版本要求不低于php5.6，具体请查阅ThinkPHP官方文档。
 >* 如果需要再次安装删除./config/install.lock，./config/database.php,./application/middleware.php,./application/tags.php
 

@@ -28,7 +28,7 @@ class Admin extends Base
     {
         $this->assign("id",$id);
         $dashboard = Db::name("AppDashboard")->where('mpid',$this->mpid)->select();
-        $src="#";
+        $src="";
         foreach ($dashboard as $key => $item ){
             if($item['id']==$id){
                 $dashboardtitle=$item['title'];
@@ -84,6 +84,9 @@ class Admin extends Base
 
         $this->assign("groups",$groups);
         $this->assign("dashboardpage",$dashboardpage);
+        if(empty($src)){
+            $src=url("@diygw/page/emptypage");
+        }
         $this->assign("src",$src);
         return $this->fetch();
     }

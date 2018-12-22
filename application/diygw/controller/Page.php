@@ -37,4 +37,11 @@ class Page extends BasicAdmin{
         $this->assign('page',$page);
         return $this->fetch();
     }
+
+    public function emptypage(){
+        $page['title']="温馨提示";
+        $page['content']="<h3>你还未设计任何后台页面，请前往<a  target='_blank' href='http://www.diygw.com/'>DIY官网</a>设计</h3>";
+        $this->assign('page',$page);
+        return $this->fetch("index");
+    }
 }

@@ -237,11 +237,11 @@ class Service{
             }
 
             // 移除插件基础资源目录
-            $delstaticDir = self::getToStaticDir($name);
+            /*$delstaticDir = self::getToStaticDir($name);
             if (is_dir($delstaticDir))
             {
                 File::del_dir($delstaticDir);
-            }
+            }*/
 
             // 移除插件全局资源文件
             if ($iscover)

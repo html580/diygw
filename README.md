@@ -116,3 +116,149 @@ Copyright
 DiyGw官方技术交流群 [482112340](https://jq.qq.com/?_wv=1027&k=48Dm8gg)
 
 如果您对DiyGw有任何建议、想法、评论或发现了bug，请联系我们280160522@qq.com。
+
+
+### [点击查看在线视频教程](https://v.qq.com/x/page/r0518gfnx33.html)  
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin1.png)
+
+系统安装
+----
+
+浏览器端输入你域名，如果系统没有安装，会自动转到安装地址。我已我自己的域名为例。
+
+输入域名https://xcx.diygw.com/。系统自动进入安装页面。
+
+### 第一步：点击同意安装协议
+
+ ![](http://lib.diygw.com/upload/1/image/20181222/9.png)
+
+### 第二步：环境检测
+
+大家检测下自己的环境，如果环境提供有误，请修复对应的错误
+
+ ![](http://lib.diygw.com/upload/1/image/20181222/10.png)
+
+### 第二步：创建数据库
+
+大家根据自己的数据库来配置，建议独立数据库。输入创始人的账号信息，记得要保存好自己的用户名密码信息哟。
+
+![](http://lib.diygw.com/upload/1/image/20181222/11.png)  
+
+![](http://lib.diygw.com/upload/1/image/20181222/12.png)  
+
+### 安装完后登录后台应用，可以对公众号进行管理
+
+![](http://lib.diygw.com/upload/1/image/20181222/3.png)  
+
+制作应用
+----
+
+第一步：点击新建微信小程序/WEBAPP
+--------------------
+
+点击后弹出窗口，输入你的应用名称。下面以首页我的例子我的电商首页展示为例。
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin7.png)  
+
+首页主要包括：图片切换，分类导航，内容展示，底部导航
+
+大家想到这里就会想到数据来源呢，对的。那我们就进入后台数据源管理
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin8.png)  
+
+进入后我们第一步想到的是有图片切换，分类，详情三个表单。
+
+数据源管理
+-----
+
+### 图片切换表单
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin9.png)  
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin10.png)
+
+### 详情表单
+
+其他表单可能都差不多，其中详情表单可能会稍有不同，他有可能会涉及到分类。
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin11.png)
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin12.png)  
+
+大家每做完一个表单都可以在线预览然后增加几条数据，用于前台展示。
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin14.png)
+
+新增表单有了大家肯定想到了我怎么数据管理呢？现在教大家怎么进行数据管理。
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin15.png)
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin16.png)
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin17.png)
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin18.png)
+
+大家可能在设计的过程如果没注意表单的设置，显示的是表单。
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin19.png)
+
+数据管理的时候，大家可能要编辑数据，对表格有个细节需要注意，在编辑页面选项值里选择对应的表单。
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin20.png)
+
+至此后台数据源完成，我们回到前台的设计。
+
+手机端设计
+-----
+
+### 图片切换设计
+
+拖拉滑块组件进入设计区，设置数据源，进行数据源管理
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin21.png)
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin22.png)  
+
+  
+
+### 分类展示
+
+拖拉九宫组件进入设计区，设置数据源及字段映射。字段映射用于分类详情展示，跳转到分类时对过滤出对应的数据。
+
+ ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin23.png)
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin24.png)  
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin25.png)  
+
+  
+
+### 内容展示
+
+内容展示跟图片切换一样，只需要拖拉对应的位置即可。
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin26.png)  
+
+一键同步应用,回到刚才安装的系统里
+
+  
+
+![](http://lib.diygw.com/upload/1/image/20181222/1.png)  
+
+  
+
+应用效果图如下
+
+![](http://lib.diygw.com/upload/1/image/20181222/7.jpg)  
+
+![](http://lib.diygw.com/upload/1/image/20181222/6.jpg)  
+
+![](http://lib.diygw.com/upload/1/image/20181222/5.jpg)  
+
+![](http://lib.diygw.com/upload/1/image/20181222/4.jpg)  
+
+![](http://lib.diygw.com/upload/1/image/20181222/8.jpg)  
+
+![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin31.png)

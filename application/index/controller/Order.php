@@ -53,6 +53,8 @@ class Order extends Interceptor
 
     public function pay()
     {
+        $__isxcx__ = $this->request->request("__isxcx__");
+        $__isajax__ = $this->request->request("__isajax__");
         $cart['user_id']=$this->uid;
         $cart['dashboard_id']=$this->dashboardid;
         $ids=$this->request->request("ids");
@@ -72,8 +74,7 @@ class Order extends Interceptor
         foreach ($list as $key=>$item){
             $totalPrice=$totalPrice+$item['link_price']*$item['link_total'];
         }
-        $__isxcx__ = $this->request->request("__isxcx__");
-        $__isajax__ = $this->request->request("__isajax__");
+
         try{
             $order["user_id"]=$this->uid;
             $order["dashboard_id"]=$this->dashboardid;
@@ -107,7 +108,7 @@ class Order extends Interceptor
             }
             Db::name("AppCart")->whereIn('id',$cartIds)->delete();
             if((!empty($__isajax__)&&$__isajax__=='true')||(!empty($__isxcx__)&&$__isxcx__=='1')){
-                echo json_encode(["id"=>$order["order_Id"],"status"=>'success']);
+                echo json_encode(["id"=>$orderid,"status"=>'success']);
             }else{
                 $this->redirect(url('@index/pay/index').'?id='.$orderid);
             }

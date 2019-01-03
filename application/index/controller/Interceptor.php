@@ -52,25 +52,35 @@ class Interceptor extends Base
         }
     }
 
+    private function getDashboard(){
+        $this->dashboardid =session("dashboardid");
+        $this->mpid =session("mpid");
+        if(empty($this->dashboardid)||empty($this->mpid)){
+            $this->dashboardid = $this->request->request("dashboardid");
+            $this->mpid = $this->request->request("mpid");
+        }
+    }
+
+    private function getMpid(){
+
+    }
+
     private function init()
     {
-        $dashboardid =session("dashboardid");
-        $mpid =session("mpid");
+        $this->getDashboard();
 
-        if(empty($dashboardid)||empty($mpid)){
+        if(empty($this->dashboardid)||empty($this->mpid)){
             $isajax = $this->request->request('__isajax__');
             $isxcx = $this->request->request('__isxcx__');
-            if($isajax=='true'||$isxcx=='true'){
-                echo json_encode(['status'=>'401','message'=>'访问应用超时']);
+            if($isajax=='true'||$isxcx=='true'||$isxcx=='1'){
+                return json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
             }else{
                 $this->assign('title','温馨提示');
-                $this->assign('message',"访问应用超时");
+                $this->assign('message',"登录超时，请重新登录");
                 return  $this->fetch("login/perror");
             }
             return false;
         }
-        $this->mpid=$mpid;
-        $this->dashboardid = $dashboardid;
 
         $this->assign('mpid',$this->mpid);
         $this->assign('dashboardid',$this->dashboardid);
@@ -90,13 +100,25 @@ class Interceptor extends Base
             $this->assign('wechatInfo',$this->wechatInfo);
             $this->assign('mpid',$this->mpid);
         }
-
+        $login = $this->request->request('login');
+        if(!empty($login)&&$login=="1"){
+            $this->isLogin =true;
+        }
         if($this->isLogin){//是否登录
-            $this->uid=session("uid".$this->mpid);
-            if(empty($this->uid)){
-                $url = loginCheck("",true);
-                if(!empty($url)){
-                    $this->redirect($url);
+            $isxcx = $this->request->request('__isxcx__');
+            $token =  $this->request->header('Authorization');
+            if(($isxcx=='true'||$isxcx=='1')&&!empty($token)){
+                $this->uid = cache($token)['uid'];
+                if(empty($this->uid)){
+                    return json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
+                }
+            }else{
+                $this->uid=session("uid".$this->mpid);
+                if(empty($this->uid)){
+                    $url = loginCheck("",true);
+                    if(!empty($url)){
+                        $this->redirect($url);
+                    }
                 }
             }
         }
@@ -128,15 +150,26 @@ class Interceptor extends Base
     }
 
     public function getOpenId(){
-       // return 1;
-        $fans = $this->getFans();
-        return $fans['fansinfo']['openid'];
+        $isxcx = $this->request->request('__isxcx__');
+        $token =  $this->request->header('Authorization');
+        if(($isxcx=='true'||$isxcx=='1')&&!empty($token)) {
+            return cache($token)['openid'];
+        }else{
+            $fans = $this->getFans();
+            return $fans['fansinfo']['openid'];
+        }
     }
-
-
-
-
+    
     public function getUid(){
+        if(empty($this->uid)){
+            $isxcx = $this->request->request('__isxcx__');
+            $token =  $this->request->header('Authorization');
+            if(($isxcx=='true'||$isxcx=='1')&&!empty($token)){
+                $this->uid = cache($token)['uid'];
+            }else{
+                $this->uid=  session("uid".$this->mpid);
+            }
+        }
         return $this->uid;
     }
 }

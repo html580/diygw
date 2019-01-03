@@ -100,7 +100,7 @@ class Cart extends Interceptor
         if($ids){
             $list =  Db::name('AppCart')->whereIn('id',explode(",",$ids))->select();
         }else{
-            $list =  Db::name('AppCart')->where(array('dashboard_id'=>$this->dashboardid,'user_id'=>$this->uid,'mpid'=>$this->mpid))->select();
+            $list =  Db::name('AppCart')->where(array('dashboard_id'=>$this->dashboardid,'user_id'=>$this->getUid(),'mpid'=>$this->mpid))->select();
         }
         return $this->getPageMessage("加载数据成功",$list,count($list));
     }

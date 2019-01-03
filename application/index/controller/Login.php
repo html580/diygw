@@ -30,17 +30,21 @@ class Login extends Controller
             $member = Db::name('Member')->where('username',$data['username'])->find();
             if(empty($member)){
                 echo json_encode(['status'=>'error','message'=>'账号不存在!']);
+                return;
             }
             $password = md5($data['password'] . $member['rand']);
             if($member['password']!=$password){
                 echo json_encode(['status'=>'success','message'=>'用户名或密码错误，请重新登录!']);
+                return;
             }
             session('uid'.session('mpid'),$member['uid']);
             cookie('uid'.session('mpid'),$member['uid']);
             if(session('login_pre_url')){
                 echo json_encode(['status'=>'success','message'=>'登录成功!','redirecturl'=>$_SESSION['login_pre_url']]);
+                return;
             }else{
                 echo json_encode(['status'=>'success','message'=>'登录成功!']);
+                return;
             }
         }else{
 
@@ -91,7 +95,7 @@ class Login extends Controller
             $data['status']=1;
             $id = Db::name('Member')->insertGetId($data);
             session('uid'.$data['mpid'],$id);
-            cookie('uid'.$data('mpid'),$member['uid']);
+            cookie('uid'.$data('mpid'),$id);
             echo json_encode(['status'=>'success','message'=>'注册成功!']);
         }
 

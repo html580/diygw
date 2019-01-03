@@ -47,6 +47,11 @@ class Base extends BasicData
 
 
     public function  getErrorPage($message){
+        $__isxcx__ = $this->request->request("__isxcx__");
+        $__isajax__ = $this->request->request("__isajax__");
+        if((!empty($__isajax__)&&$__isajax__=='true')||(!empty($__isxcx__)&&$__isxcx__=='1')){
+            return $this->getErrorMessage($message);
+        }
         $homePage = Db::name("AppPage")->where(array('dashboard_id'=>session('dashboardid'),'template'=>'mobile','mpid'=>session('mpid')))->order('is_home desc,orderlist asc')->find();
         $this->assign('title','温馨提示');
         $this->assign('message',$message);

@@ -85,7 +85,6 @@ function loginCheck($preurl="",$redirect=false){
             }else{
                 $url = $preurl;
             }
-
             session('login_pre_url',$url);
             $resultUrl = '@index/login/index';
             return $resultUrl;

@@ -282,6 +282,15 @@ function getWechatInfo($mpid){
     return $wechatInfo;
 }
 
+function getWechatXcxInfo($mpid){
+    $result = Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' => $mpid])->find();
+    if(empty($result)){
+        throw new Exception("请配置微信小程序相关配置", '0');
+    }
+    $array = json_decode($result['value'], true);
+    return $array;
+}
+
 function getWechatPayInfo($mpid){
     $result = Db::name('WechatConfig')->where(['name' => 'wxpay', 'mpid' => $mpid])->find();
     if(empty($result)){
@@ -292,8 +301,14 @@ function getWechatPayInfo($mpid){
 }
 
 
-function getPayConfig($mpid){
+function getPayConfig($mpid,$isxcx){
+
     $wechatInfo = getWechatInfo($mpid);
+    if((!empty($isxcx)&&$isxcx=='1')){
+        $wechatXcxInfo  = getWechatPayInfo($mpid);
+        $wechatInfo['appid'] = $wechatXcxInfo['appid'];
+        $wechatInfo['appsecret'] = $wechatXcxInfo['appsecret'];
+    }
     $wechatPayInfo  = getWechatPayInfo($mpid);
     if(empty($wechatInfo) || empty($wechatPayInfo)){
         return null;
@@ -334,7 +349,7 @@ function logger($content){
 
  * @return bool|json数据，可直接填入js函数作为参数
  */
-function payByWexinJsApi($parment_id = '')
+function payByWexinJsApi($parment_id = '',$isxcx)
 {
     $payment = \think\Db::name('Payment')->where('payment_id',$parment_id)->find();
     if (empty($payment)) {
@@ -343,7 +358,7 @@ function payByWexinJsApi($parment_id = '')
     // 生成预支付码
 
         $mpid = $payment['mpid'];
-        $config = getPayConfig($mpid);
+        $config = getPayConfig($mpid,$isxcx);
         $wechat = new WeChat\Pay($config);
 
         $options = [

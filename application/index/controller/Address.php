@@ -78,8 +78,8 @@ class Address extends Interceptor
 
     public function save()
     {
-        $dashboardid = session("dashboardid");
-        $mpid =session("mpid");
+        $dashboardid = $this->dashboardid;
+        $mpid =$this->mpid;
         $uid =$this->getUid();
 
         $is_def = $this->request->request("is_def");
@@ -94,7 +94,9 @@ class Address extends Interceptor
         if($is_def=="1"){
             Db::name('AppAddress')->where(array("user_id"=>$uid,"mpid"=>$mpid,"dashboard_id"=>$dashboardid))->update(array("is_def"=>0));
         }
-        
+        if(empty($is_def)){
+            $is_def = 0;
+        }
         $address['dashboard_id']=$dashboardid;
         $address['mpid']=$this->mpid;
         $address['user_id']=$uid;

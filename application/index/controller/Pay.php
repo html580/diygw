@@ -97,7 +97,8 @@ class Pay extends Interceptor
             $this->assign("pay",$orderpay);
             $data = addPaymentData($this->getOpenId(),$this->getUid(), $this->mpid,$this->dashboardid,$order['pay_price'],$order['pay_title'] ,'','1',$order['pay_title'],$orderpay["trade_no"],'AppOrderPay,AppOrder');
             try{
-            $result = payByWexinJsApi($data['id']);
+            $__isxcx__ = $this->request->request("__isxcx__");
+            $result = payByWexinJsApi($data['id'],$__isxcx__);
             /*$option = [];
             $option["appId"] = 1;
             $option["timeStamp"] = (string)time();
@@ -129,8 +130,13 @@ class Pay extends Interceptor
             $result =['status' => 'success', 'config'=>json_encode($config,JSON_UNESCAPED_UNICODE),'option'=>json_encode($option,JSON_UNESCAPED_UNICODE)];
             */
             if ($result['status'] == 'success') {
-                $this->assign("weixin",$result);
-                return $this->fetch('pay/paycenter');
+                if((!empty($isxcx)&&$isxcx=='1')){
+                    echo json_encode(['weixin'=>$result,'pay'=>$orderpay,'status'=>'success']);
+                }else{
+                    $this->assign("weixin",$result);
+                    return $this->fetch('pay/paycenter');
+                }
+
             } else {
                 $this->getErrorPage($result['message']);
 

@@ -35,15 +35,15 @@ class Crypt extends BasicWeChat
      * @param string $encryptedData
      * @return bool
      */
-    public function decode($iv, $sessionKey, $encryptedData)
+    public function decode($iv, $sessionKey,$encryptedData,$rawData,$signature)
     {
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'crypt' . DIRECTORY_SEPARATOR . 'wxBizDataCrypt.php';
         $pc = new \WXBizDataCrypt($this->config->get('appid'), $sessionKey);
-        $errCode = $pc->decryptData($encryptedData, $iv, $data);
-        if ($errCode == 0) {
+        $errCode = $pc->decryptData($encryptedData, $iv,$rawData,$signature,$data);
+        if ($errCode['code'] == 0) {
             return json_decode($data, true);
         }
-        return false;
+        return $errCode;
     }
 
     /**
@@ -68,15 +68,15 @@ class Crypt extends BasicWeChat
      * @throws InvalidDecryptException
      * @throws InvalidResponseException
      */
-    public function userInfo($code, $iv, $encryptedData)
+    public function userInfo($code,$iv,$encryptedData,$rawData,$signature)
     {
         $result = $this->session($code);
         if (empty($result['session_key'])) {
-            throw new InvalidResponseException('Code 换取 SessionKey 失败', 403);
+            return ['code'=>'-1', 'message'=>"Code换取SessionKey失败"];
         }
-        $userinfo = $this->decode($iv, $result['session_key'], $encryptedData);
-        if (empty($userinfo)) {
-            throw  new InvalidDecryptException('用户信息解析失败', 403);
+        $userinfo = $this->decode($iv, $result['session_key'], $encryptedData,$rawData,$signature);
+        if ($userinfo['code'] != 0) {
+            return ['code'=>'-1', 'message'=>$userinfo['message']];
         }
         return array_merge($result, $userinfo);
     }

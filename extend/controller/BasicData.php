@@ -77,7 +77,16 @@ class BasicData extends Controller
         }elseif($order){
             $orderArray[]=$order;
         }
-
+        if(empty($where['mpid'])){
+            if(!empty(session("mpid"))){
+                $where['mpid']=session("mpid");
+            }
+        }
+        if(empty($where['mpid'])){
+            if(!empty($this->request->request("mpid"))){
+                $where['mpid']=$this->request->request("mpid");
+            }
+        }
         $db = $this->getUserDb()->table($tablename)->where($where)->order($orderArray);
         $page = $db->paginate($this->getPageRow(), false, ['query' => $where,'page'=>$this->getPageNum()]);
 

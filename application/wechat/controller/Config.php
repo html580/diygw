@@ -121,4 +121,39 @@ class Config extends BasicAdmin
         $this->success('微信授权数据修改成功！', url('@admin') . "#" . url('@wechat/config/index'));*/
     }
 
+    /**
+     * 微信小程序基础参数配置
+     * @return string
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function xcx()
+    {
+        $payUrl = url('/', '', true, true);
+        if ($this->request->isPost()) {
+            $input = input('post.');
+            Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' => $this->mpid])->delete();
+            $data['name'] = 'wxmin';
+            $data['mpid'] = $this->mpid;
+            $data['value'] = json_encode($input);
+            if (Db::name('WechatConfig')->insert($data)) {
+                $this->success('配置成功', '');
+            } else {
+                $this->error('配置失败', '');
+            }
+        } else {
+            $result = Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' => $this->mpid])->find();
+            $arr1 = [
+                'appid' =>'',
+                'appsecret' => ''
+            ];
+            $array = json_decode($result['value'], true);
+            $arr2 = $array ? $array : [];
+            $config = array_merge($arr1, $arr2);
+            $this->assign('config', $config);
+            return $this->fetch();
+        }
+
+
+    }
 }

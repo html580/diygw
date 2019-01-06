@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- 主机: localhost
--- 生成日期: 2018 巿12 暿20 敿23:12
+-- 生成日期: 2019 巿01 暿06 敿18:54
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.6.27
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- 数据库: `diygw_wechat`
+-- 数据库: `diygw`
 --
 
 -- --------------------------------------------------------
@@ -26,6 +26,7 @@ SET time_zone = "+00:00";
 -- 表的结构 `diygw_addons`
 --
 
+DROP TABLE IF EXISTS `diygw_addons`;
 CREATE TABLE IF NOT EXISTS `diygw_addons` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(40) NOT NULL COMMENT '插件名或标识',
@@ -55,6 +56,7 @@ INSERT INTO `diygw_addons` (`id`, `name`, `title`, `description`, `status`, `con
 -- 表的结构 `diygw_app_address`
 --
 
+DROP TABLE IF EXISTS `diygw_app_address`;
 CREATE TABLE IF NOT EXISTS `diygw_app_address` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `dashboard_id` int(10) NOT NULL COMMENT '应用ID',
@@ -73,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_address` (
   `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建人',
   `update_time` datetime NOT NULL COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=53 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=56 ;
 
 -- --------------------------------------------------------
 
@@ -81,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_address` (
 -- 表的结构 `diygw_app_attribute`
 --
 
+DROP TABLE IF EXISTS `diygw_app_attribute`;
 CREATE TABLE IF NOT EXISTS `diygw_app_attribute` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) DEFAULT NULL,
@@ -104,6 +107,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_attribute` (
 -- 表的结构 `diygw_app_cart`
 --
 
+DROP TABLE IF EXISTS `diygw_app_cart`;
 CREATE TABLE IF NOT EXISTS `diygw_app_cart` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `dbid` int(10) NOT NULL,
@@ -124,7 +128,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_cart` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态：1为有效，0为无效',
   `mpid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='购物车' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='购物车' AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -132,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_cart` (
 -- 表的结构 `diygw_app_config`
 --
 
+DROP TABLE IF EXISTS `diygw_app_config`;
 CREATE TABLE IF NOT EXISTS `diygw_app_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `mpid` int(11) DEFAULT NULL,
@@ -140,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_config` (
   `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=2804 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
 
@@ -148,6 +153,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_config` (
 -- 表的结构 `diygw_app_dashboard`
 --
 
+DROP TABLE IF EXISTS `diygw_app_dashboard`;
 CREATE TABLE IF NOT EXISTS `diygw_app_dashboard` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `create_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
@@ -156,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_dashboard` (
   `mpid` int(11) DEFAULT NULL,
   `title` varchar(100) DEFAULT NULL COMMENT '应用名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='应用' AUTO_INCREMENT=14089 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='应用' AUTO_INCREMENT=17107 ;
 
 -- --------------------------------------------------------
 
@@ -164,6 +170,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_dashboard` (
 -- 表的结构 `diygw_app_dashboard_extend`
 --
 
+DROP TABLE IF EXISTS `diygw_app_dashboard_extend`;
 CREATE TABLE IF NOT EXISTS `diygw_app_dashboard_extend` (
   `id` varchar(30) NOT NULL,
   `label` varchar(100) DEFAULT NULL COMMENT '配置文本',
@@ -183,6 +190,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_dashboard_extend` (
 -- 表的结构 `diygw_app_dashboard_scene`
 --
 
+DROP TABLE IF EXISTS `diygw_app_dashboard_scene`;
 CREATE TABLE IF NOT EXISTS `diygw_app_dashboard_scene` (
   `id` varchar(30) NOT NULL,
   `title` varchar(500) DEFAULT NULL COMMENT '应用名称',
@@ -200,6 +208,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_dashboard_scene` (
 -- 表的结构 `diygw_app_menu`
 --
 
+DROP TABLE IF EXISTS `diygw_app_menu`;
 CREATE TABLE IF NOT EXISTS `diygw_app_menu` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文档ID',
   `title` varchar(50) NOT NULL DEFAULT '' COMMENT '标题',
@@ -224,6 +233,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_menu` (
 -- 表的结构 `diygw_app_model`
 --
 
+DROP TABLE IF EXISTS `diygw_app_model`;
 CREATE TABLE IF NOT EXISTS `diygw_app_model` (
   `id` varchar(30) NOT NULL COMMENT '模型ID',
   `name` char(30) NOT NULL DEFAULT '' COMMENT '模型标识',
@@ -233,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_model` (
   `dashboard_id` int(10) DEFAULT NULL,
   `mpid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='文档模型表';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文档模型表';
 
 -- --------------------------------------------------------
 
@@ -241,6 +251,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_model` (
 -- 表的结构 `diygw_app_order`
 --
 
+DROP TABLE IF EXISTS `diygw_app_order`;
 CREATE TABLE IF NOT EXISTS `diygw_app_order` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `order_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -275,7 +286,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order` (
   `finish_time` datetime DEFAULT NULL COMMENT '订单完成时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `orderid` (`order_id`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='订单信息' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='订单信息' AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -283,6 +294,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order` (
 -- 表的结构 `diygw_app_order_info`
 --
 
+DROP TABLE IF EXISTS `diygw_app_order_info`;
 CREATE TABLE IF NOT EXISTS `diygw_app_order_info` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `order_id` int(10) NOT NULL,
@@ -304,7 +316,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order_info` (
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态：1为有效，0为无效',
   `mpid` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='购物车' AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COMMENT='购物车' AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -312,6 +324,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order_info` (
 -- 表的结构 `diygw_app_order_pay`
 --
 
+DROP TABLE IF EXISTS `diygw_app_order_pay`;
 CREATE TABLE IF NOT EXISTS `diygw_app_order_pay` (
   `id` int(10) NOT NULL AUTO_INCREMENT COMMENT '主键',
   `order_id` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -331,7 +344,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order_pay` (
   `mpid` int(11) DEFAULT NULL,
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '订单状态：0:已取消;1(默认):未付款;2:已付款;',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='订单信息' AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT COMMENT='订单信息' AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -339,6 +352,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order_pay` (
 -- 表的结构 `diygw_app_order_refund`
 --
 
+DROP TABLE IF EXISTS `diygw_app_order_refund`;
 CREATE TABLE IF NOT EXISTS `diygw_app_order_refund` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `order_id` varchar(32) NOT NULL COMMENT '订单项id',
@@ -358,6 +372,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_order_refund` (
 -- 表的结构 `diygw_app_page`
 --
 
+DROP TABLE IF EXISTS `diygw_app_page`;
 CREATE TABLE IF NOT EXISTS `diygw_app_page` (
   `id` varchar(30) NOT NULL,
   `dashboard_id` int(10) DEFAULT NULL,
@@ -382,6 +397,7 @@ CREATE TABLE IF NOT EXISTS `diygw_app_page` (
 -- 表的结构 `diygw_db`
 --
 
+DROP TABLE IF EXISTS `diygw_db`;
 CREATE TABLE IF NOT EXISTS `diygw_db` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `title` varchar(200) DEFAULT '',
@@ -395,20 +411,13 @@ CREATE TABLE IF NOT EXISTS `diygw_db` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='插件表' AUTO_INCREMENT=72 ;
 
---
--- 转存表中的数据 `diygw_db`
---
-
-INSERT INTO `diygw_db` (`id`, `title`, `remark`, `type`, `database`, `hostname`, `username`, `password`, `create_time`) VALUES
-(10, '远程数据库', ' ', 'MySQL', 'diygw_wechat', 'localhost', 'root', 'eT5ZT2K+IxSWy52tgCfs7g==', '2018-12-16 20:53:03'),
-(71, 'www_2hfp_com', ' ', 'MySQL', '', '', 'www_2hfp_com', '3xvaJpeGV/el5XkCI3zr0w==', '2018-04-20 22:19:39');
-
 -- --------------------------------------------------------
 
 --
 -- 表的结构 `diygw_hooks`
 --
 
+DROP TABLE IF EXISTS `diygw_hooks`;
 CREATE TABLE IF NOT EXISTS `diygw_hooks` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
   `name` varchar(40) NOT NULL DEFAULT '' COMMENT '钩子名称',
@@ -436,6 +445,7 @@ INSERT INTO `diygw_hooks` (`id`, `name`, `description`, `type`, `update_time`, `
 -- 表的结构 `diygw_member`
 --
 
+DROP TABLE IF EXISTS `diygw_member`;
 CREATE TABLE IF NOT EXISTS `diygw_member` (
   `uid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `mpid` int(10) DEFAULT '1' COMMENT '公众号ID',
@@ -457,7 +467,20 @@ CREATE TABLE IF NOT EXISTS `diygw_member` (
   `last_login_time` int(11) DEFAULT '0' COMMENT '最后登录时间',
   PRIMARY KEY (`uid`),
   KEY `sex` (`sex`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT AUTO_INCREMENT=8 ;
+
+--
+-- 转存表中的数据 `diygw_member`
+--
+
+INSERT INTO `diygw_member` (`uid`, `mpid`, `dashboardid`, `username`, `password`, `rand`, `email`, `nickname`, `sex`, `headimgurl`, `mobile`, `address`, `birth`, `status`, `register_ip`, `refresh_time`, `last_login_ip`, `last_login_time`) VALUES
+(1, 1, NULL, 'lk', '3a0d69db2ce09917e31ef93d08682646', 'EYz1', NULL, 'lk', 0, 'https://wx.qlogo.cn/mmopen/vi_32/UPGlgUiaSPVG3PSicYIdcNHg62RECnz9mLLrLepfVhsBFfMYQD4dD4ZEDgWib7Eib2CT0icfkbsPN802vgrQpNic5NPQ/132', NULL, NULL, NULL, 1, '127.0.0.1', 1546411166, '127.0.0.1', 1546411167),
+(2, 1, NULL, 'lk', '285befb13e05819b49bf7f40bbe48321', 'Cq6J', NULL, 'lk', 0, 'https://wx.qlogo.cn/mmopen/vi_32/UPGlgUiaSPVG3PSicYIdcNHg62RECnz9mLLrLepfVhsBFfMYQD4dD4ZEDgWib7Eib2CT0icfkbsPN802vgrQpNic5NPQ/132', NULL, NULL, NULL, 1, '127.0.0.1', 1546414339, '127.0.0.1', 1546414339),
+(3, 1, 13067, 'test', '41aa5f8fcd4c28115865c901be6ea820', 'xh1C', NULL, 't', 0, NULL, NULL, NULL, NULL, 1, '127.0.0.1', 1546418238, '127.0.0.1', 1546418238),
+(4, 1, 13067, 'test1', '96023cab3d44f28f2db88954356f418e', 'AkSm', NULL, 't', 0, NULL, NULL, NULL, NULL, 1, '127.0.0.1', 1546418300, '127.0.0.1', 1546418301),
+(5, 1, NULL, 'lk', 'f9902e9eedb6fd480e69ec2ed9fece0f', 'qrFJ', NULL, 'lk', 0, 'https://wx.qlogo.cn/mmopen/vi_32/UPGlgUiaSPVG3PSicYIdcNHg62RECnz9mLLrLepfVhsBFfMYQD4dD4ZEDgWib7Eib2CT0icfkbsPN802vgrQpNic5NPQ/132', NULL, NULL, NULL, 1, '127.0.0.1', 1546442030, '127.0.0.1', 1546442030),
+(6, 1, NULL, 'lk', '89021a03265a5862e00df632b9848c11', 'YLZp', NULL, 'lk', 0, 'https://wx.qlogo.cn/mmopen/vi_32/UPGlgUiaSPVG3PSicYIdcNHg62RECnz9mLLrLepfVhsBFfMYQD4dD4ZEDgWib7Eib2CT0icfkbsPN802vgrQpNic5NPQ/132', NULL, NULL, NULL, 1, '127.0.0.1', 1546442419, '127.0.0.1', 1546442419),
+(7, 1, NULL, 'lk', 'c7b44f0e26b0d9d99c71f546c412afc1', 'IN7n', NULL, 'lk', 0, 'https://wx.qlogo.cn/mmopen/vi_32/UPGlgUiaSPVG3PSicYIdcNHg62RECnz9mLLrLepfVhsBFfMYQD4dD4ZEDgWib7Eib2CT0icfkbsPN802vgrQpNic5NPQ/132', NULL, NULL, NULL, 1, '127.0.0.1', 1546442540, '127.0.0.1', 1546442540);
 
 -- --------------------------------------------------------
 
@@ -465,6 +488,7 @@ CREATE TABLE IF NOT EXISTS `diygw_member` (
 -- 表的结构 `diygw_member_auth`
 --
 
+DROP TABLE IF EXISTS `diygw_member_auth`;
 CREATE TABLE IF NOT EXISTS `diygw_member_auth` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户ID',
   `openid` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '1' COMMENT '公众号用户ID',
@@ -472,7 +496,18 @@ CREATE TABLE IF NOT EXISTS `diygw_member_auth` (
   `uid` int(10) NOT NULL COMMENT '用户ID',
   `type` tinyint(1) NOT NULL COMMENT '1:微信',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT AUTO_INCREMENT=6 ;
+
+--
+-- 转存表中的数据 `diygw_member_auth`
+--
+
+INSERT INTO `diygw_member_auth` (`id`, `openid`, `mpid`, `uid`, `type`) VALUES
+(1, '', 1, 1, 2),
+(2, '', 1, 2, 2),
+(3, '', 1, 5, 2),
+(4, '', 1, 6, 2),
+(5, 'olpjs0KkW2vbesPywdiVK9A94j7Q', 1, 7, 2);
 
 -- --------------------------------------------------------
 
@@ -480,6 +515,7 @@ CREATE TABLE IF NOT EXISTS `diygw_member_auth` (
 -- 表的结构 `diygw_payment`
 --
 
+DROP TABLE IF EXISTS `diygw_payment`;
 CREATE TABLE IF NOT EXISTS `diygw_payment` (
   `payment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增 ID',
   `dashboard_id` int(11) DEFAULT NULL,
@@ -501,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `diygw_payment` (
   KEY `member_id` (`member_id`),
   KEY `mpid` (`mpid`),
   KEY `order_number` (`trade_no`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=57 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -509,6 +545,7 @@ CREATE TABLE IF NOT EXISTS `diygw_payment` (
 -- 表的结构 `diygw_system_auth`
 --
 
+DROP TABLE IF EXISTS `diygw_system_auth`;
 CREATE TABLE IF NOT EXISTS `diygw_system_auth` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(20) NOT NULL COMMENT '权限名称',
@@ -528,6 +565,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_auth` (
 -- 表的结构 `diygw_system_auth_node`
 --
 
+DROP TABLE IF EXISTS `diygw_system_auth_node`;
 CREATE TABLE IF NOT EXISTS `diygw_system_auth_node` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `auth` bigint(20) unsigned DEFAULT NULL COMMENT '角色ID',
@@ -543,6 +581,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_auth_node` (
 -- 表的结构 `diygw_system_config`
 --
 
+DROP TABLE IF EXISTS `diygw_system_config`;
 CREATE TABLE IF NOT EXISTS `diygw_system_config` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) DEFAULT NULL COMMENT '配置编码',
@@ -591,6 +630,7 @@ INSERT INTO `diygw_system_config` (`id`, `name`, `value`) VALUES
 -- 表的结构 `diygw_system_log`
 --
 
+DROP TABLE IF EXISTS `diygw_system_log`;
 CREATE TABLE IF NOT EXISTS `diygw_system_log` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `ip` char(15) NOT NULL DEFAULT '' COMMENT '操作者IP地址',
@@ -600,7 +640,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_log` (
   `content` text NOT NULL COMMENT '操作内容描述',
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统操作日志表' AUTO_INCREMENT=80 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统操作日志表' AUTO_INCREMENT=87 ;
 
 --
 -- 转存表中的数据 `diygw_system_log`
@@ -685,7 +725,14 @@ INSERT INTO `diygw_system_log` (`id`, `ip`, `node`, `username`, `action`, `conte
 (76, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-12-19 14:48:15'),
 (77, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-12-20 06:34:53'),
 (78, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-12-20 07:31:22'),
-(79, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-12-20 12:22:34');
+(79, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-12-20 12:22:34'),
+(80, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2018-12-31 13:38:58'),
+(81, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-01-02 04:05:22'),
+(82, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-01-02 06:48:43'),
+(83, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-01-02 08:34:21'),
+(84, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-01-03 03:23:54'),
+(85, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-01-03 07:00:55'),
+(86, '127.0.0.1', 'admin/login/index', 'admin', '系统管理', '用户登录系统成功', '2019-01-04 02:12:49');
 
 -- --------------------------------------------------------
 
@@ -693,6 +740,7 @@ INSERT INTO `diygw_system_log` (`id`, `ip`, `node`, `username`, `action`, `conte
 -- 表的结构 `diygw_system_menu`
 --
 
+DROP TABLE IF EXISTS `diygw_system_menu`;
 CREATE TABLE IF NOT EXISTS `diygw_system_menu` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `pid` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '父id',
@@ -708,7 +756,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_menu` (
   `create_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`),
   KEY `index_system_menu_node` (`node`) USING BTREE
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统菜单表' AUTO_INCREMENT=55 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='系统菜单表' AUTO_INCREMENT=56 ;
 
 --
 -- 转存表中的数据 `diygw_system_menu`
@@ -729,7 +777,7 @@ INSERT INTO `diygw_system_menu` (`id`, `pid`, `title`, `node`, `icon`, `url`, `p
 (16, 1, '日志管理', '', '', '#', '', '_self', 400, 1, 0, '2018-02-10 08:31:15'),
 (17, 0, '微信管理', '', '', '#', '', '_self', 8000, 1, 0, '2018-03-06 06:42:49'),
 (18, 17, '公众号配置', '', '', '#', '', '_self', 0, 1, 0, '2018-03-06 06:43:05'),
-(19, 18, '功能配置', '', 'fa fa-cog', 'wechat/config/index', '', '_self', 4, 1, 0, '2018-03-06 06:43:26'),
+(19, 18, '支付配置', '', 'fa fa-cog', 'wechat/config/index', '', '_self', 4, 1, 0, '2018-03-06 06:43:26'),
 (20, 18, '关注默认回复', '', 'fa fa-comment-o', 'wechat/keys/subscribe', '', '_self', 0, 1, 0, '2018-03-06 06:44:45'),
 (21, 18, '无反馈默认回复', '', 'fa fa-commenting', 'wechat/keys/defaults', '', '_self', 0, 1, 0, '2018-03-06 06:45:55'),
 (22, 18, '微信关键字管理', '', 'fa fa-hashtag', 'wechat/keys/index', '', '_self', 0, 1, 0, '2018-03-06 06:46:23'),
@@ -750,7 +798,8 @@ INSERT INTO `diygw_system_menu` (`id`, `pid`, `title`, `node`, `icon`, `url`, `p
 (51, 0, '应用管理', '', '', '#', '', '_self', 1001, 1, 0, '2018-12-04 14:38:32'),
 (52, 51, '应用管理', '', '', '#', '', '_self', 0, 1, 0, '2018-12-04 14:38:57'),
 (53, 52, '应用管理', '', 'layui-icon layui-icon-app', 'diygw/dashboard/index', '', '_self', 0, 1, 0, '2018-12-04 14:40:15'),
-(54, 52, '云服务授权', '', 'fa fa-key', 'diygw/dashboard/auth', '', '_self', 0, 1, 0, '2018-12-04 14:42:15');
+(54, 52, '云服务授权', '', 'fa fa-key', 'diygw/dashboard/auth', '', '_self', 0, 1, 0, '2018-12-04 14:42:15'),
+(55, 18, '小程序配置', '', 'fa fa-wechat', 'wechat/config/xcx', '', '_self', 0, 1, 0, '2019-01-02 07:08:56');
 
 -- --------------------------------------------------------
 
@@ -758,6 +807,7 @@ INSERT INTO `diygw_system_menu` (`id`, `pid`, `title`, `node`, `icon`, `url`, `p
 -- 表的结构 `diygw_system_node`
 --
 
+DROP TABLE IF EXISTS `diygw_system_node`;
 CREATE TABLE IF NOT EXISTS `diygw_system_node` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `node` varchar(100) DEFAULT NULL COMMENT '节点代码',
@@ -897,6 +947,7 @@ INSERT INTO `diygw_system_node` (`id`, `node`, `title`, `is_menu`, `is_auth`, `i
 -- 表的结构 `diygw_system_sequence`
 --
 
+DROP TABLE IF EXISTS `diygw_system_sequence`;
 CREATE TABLE IF NOT EXISTS `diygw_system_sequence` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `type` varchar(20) DEFAULT NULL COMMENT '序号类型',
@@ -914,6 +965,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_sequence` (
 -- 表的结构 `diygw_system_user`
 --
 
+DROP TABLE IF EXISTS `diygw_system_user`;
 CREATE TABLE IF NOT EXISTS `diygw_system_user` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL DEFAULT '' COMMENT '用户登录名',
@@ -938,7 +990,7 @@ CREATE TABLE IF NOT EXISTS `diygw_system_user` (
 --
 
 INSERT INTO `diygw_system_user` (`id`, `username`, `password`, `qq`, `mail`, `phone`, `desc`, `login_num`, `login_at`, `status`, `authorize`, `is_deleted`, `create_by`, `create_at`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', '280160522', 'diygwcom@foxmail.com', '', '', 23036, '2018-12-20 20:22:33', 1, '2,4', 0, NULL, '2015-11-13 07:14:22');
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', '280160522', 'diygwcom@foxmail.com', '', '', 23043, '2019-01-04 10:12:49', 1, '2,4', 0, NULL, '2015-11-13 07:14:22');
 
 -- --------------------------------------------------------
 
@@ -946,6 +998,7 @@ INSERT INTO `diygw_system_user` (`id`, `username`, `password`, `qq`, `mail`, `ph
 -- 表的结构 `diygw_wechat`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `user_id` int(10) NOT NULL COMMENT '用户ID',
@@ -975,7 +1028,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat` (
 --
 
 INSERT INTO `diygw_wechat` (`id`, `user_id`, `name`, `appid`, `appsecret`, `origin_id`, `type`, `status`, `autologin`, `valid_token`, `valid_status`, `token`, `encodingaeskey`, `mp_number`, `desc`, `logo`, `qrcode`, `create_time`, `login_name`, `is_use`) VALUES
-(1, 1, '测试公众号', '1', '1', '1', 1, 1, 1, 'hv5Ri9lkNrUXdNRZEHuFU1ejDpQUlrFG', 0, 'coZZbWvWyMbdiv4rqLGwQVkkvo8eUJ5L', 'lEGVThSs1vxwlVmftbinFhvLevTzaGgh4o5gZKUI2uB', '1', '1', '', '', 1543221891, NULL, 0);
+(1, 1, '测试公众号', '1', '1', '1', 1, 1, 0, 'hv5Ri9lkNrUXdNRZEHuFU1ejDpQUlrFG', 0, 'coZZbWvWyMbdiv4rqLGwQVkkvo8eUJ5L', 'lEGVThSs1vxwlVmftbinFhvLevTzaGgh4o5gZKUI2uB', '1', '1', '', '', 1543221891, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -983,6 +1036,7 @@ INSERT INTO `diygw_wechat` (`id`, `user_id`, `name`, `appid`, `appsecret`, `orig
 -- 表的结构 `diygw_wechat_config`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_config`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_config` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',
   `mpid` int(11) NOT NULL COMMENT '公众号标识',
@@ -990,7 +1044,14 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_config` (
   `value` text NOT NULL COMMENT '配置值',
   `cate` varchar(30) DEFAULT NULL COMMENT '分类',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- 转存表中的数据 `diygw_wechat_config`
+--
+
+INSERT INTO `diygw_wechat_config` (`id`, `mpid`, `name`, `value`, `cate`) VALUES
+(1, 1, 'wxmin', '{"appid":"wxda438798441f31f1","appsecret":"85e34a8aff2df889809168999888280b"}', NULL);
 
 -- --------------------------------------------------------
 
@@ -998,6 +1059,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_config` (
 -- 表的结构 `diygw_wechat_fans`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_fans`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_fans` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',
@@ -1040,6 +1102,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_fans` (
 -- 表的结构 `diygw_wechat_fans_tags`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_fans_tags`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_fans_tags` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '标签ID',
   `mpid` int(11) DEFAULT '1' COMMENT '公众号ID',
@@ -1057,6 +1120,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_fans_tags` (
 -- 表的结构 `diygw_wechat_keys`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_keys`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_keys` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',
@@ -1088,6 +1152,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_keys` (
 -- 表的结构 `diygw_wechat_menu`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_menu`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_menu` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',
@@ -1110,6 +1175,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_menu` (
 -- 表的结构 `diygw_wechat_news`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_news`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_news` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',
@@ -1129,6 +1195,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_news` (
 -- 表的结构 `diygw_wechat_news_article`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_news_article`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_news_article` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',
@@ -1150,6 +1217,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_news_article` (
 -- 表的结构 `diygw_wechat_news_image`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_news_image`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_news_image` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',
@@ -1167,6 +1235,7 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_news_image` (
 -- 表的结构 `diygw_wechat_news_media`
 --
 
+DROP TABLE IF EXISTS `diygw_wechat_news_media`;
 CREATE TABLE IF NOT EXISTS `diygw_wechat_news_media` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `mpid` int(10) NOT NULL DEFAULT '1' COMMENT '公众号ID',

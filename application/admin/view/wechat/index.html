@@ -36,6 +36,7 @@
             <th class='list-table-check-td think-checkbox'>
                 <input data-auto-none="" data-check-target='.list-check-box' type='checkbox'>
             </th>
+            <th class="text-center">一键应用ID</th>
             <th class='text-left nowrap'>公众信息</th>
             <th class='text-left nowrap'>状态</th>
             <th class='text-left nowrap'>操作</th>
@@ -46,6 +47,9 @@
         <tr>
             <td class='list-table-check-td think-checkbox'>
                 <input class="list-check-box" value='{$vo.id}' type='checkbox'>
+            </td>
+            <td class='text-left nowrap'>
+                {$vo.id}
             </td>
             <td class='text-left nowrap'>
                 {$vo.name}

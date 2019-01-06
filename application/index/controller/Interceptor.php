@@ -104,9 +104,9 @@ class Interceptor extends Base
         if(!empty($login)&&$login=="1"){
             $this->isLogin =true;
         }
+        $isxcx = $this->request->request('__isxcx__');
+        $token =  $this->request->header('Authorization');
         if($this->isLogin){//是否登录
-            $isxcx = $this->request->request('__isxcx__');
-            $token =  $this->request->header('Authorization');
             if(($isxcx=='true'||$isxcx=='1')&&!empty($token)){
                 $this->uid = cache($token)['uid'];
                 if(empty($this->uid)){
@@ -131,10 +131,14 @@ class Interceptor extends Base
         $this->assign("appStyle",$appStyle);
         $this->assign("extendValues",$extendValues);
         if($this->isWechaLogin){//是否微信登录
+            if(($isxcx=='true'||$isxcx=='1')&&!empty($token)) {//微信小程序
 
-            $fans = WechatService::webOauth($this->request->url(true), 1);
+            }else{
+                $this->getFans();
+            }
+            /*$fans = WechatService::webOauth($this->request->url(true), 1);
             session('fans',$fans);
-            $this->assign('fans',$fans);
+            $this->assign('fans',$fans);*/
         }
 
         return true;

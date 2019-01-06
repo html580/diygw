@@ -85,16 +85,20 @@ class Index extends Controller
             install_show_msg('数据库连接失败，请检查连接信息是否正确！', false);
         }
 
-        /*如果没权限创建数据库的权限,请注释掉application/install/controller/Index.php下面89行至98行代码 每行前面加 //即可 */
         $result = $db_instance->execute('SELECT * FROM information_schema.schemata WHERE schema_name="'.$db_name.'"');
-        if ($result) {
-            install_show_msg('该数据库已存在，请更换名称！');
-            install_show_msg('如果没权限创建数据库的权限,请注释掉application/install/controller/Index.php下面89行至98行代码', false);
+        if ($result && isset($data['db']['create'])) {
+            install_show_msg('该数据库'.$db_name.'已存在，请更换名称！');
+            return;
+        }else if(!$result && !isset($data['db']['create'])){
+            install_show_msg('该数据库'.$db_name.'不存在，请更换名称！');
+            return;
         }
 
-        // 创建数据库
-        $sql2 = "CREATE DATABASE IF NOT EXISTS `{$db_name}` DEFAULT CHARACTER SET utf8";
-        $db_instance->execute($sql2) || install_show_msg($db_instance->getError(), false);
+        if(isset($data['db']['create'])){
+            // 创建数据库
+            $sql2 = "CREATE DATABASE IF NOT EXISTS `{$db_name}` DEFAULT CHARACTER SET utf8";
+            $db_instance->execute($sql2) || install_show_msg($db_instance->getError(), false);
+        }
 
         //修改数据库配置文件
         write_config(session('db_config'));
@@ -115,6 +119,7 @@ class Index extends Controller
 
         //安装完毕
         install_show_msg('安装程序执行完毕！重新安装需要删除./config/install.lock');
+        install_show_msg('安装程序执行完毕！重新安装需要删除./config/database.php');
         install_show_msg('安装程序执行完毕！重新安装需要删除./application/middleware.php');
         install_show_msg('安装程序执行完毕！重新安装需要删除./application/tags.php');
         $adminUrl = url('/admin/index/index');

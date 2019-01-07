@@ -77,17 +77,30 @@ class BasicData extends Controller
         }elseif($order){
             $orderArray[]=$order;
         }
-        if(empty($where['mpid'])){
-            if(!empty(session("mpid"))){
-                $where['mpid']=session("mpid");
+        $dbid = $this->request->request("dbid");
+        if(empty($dbid)){
+            if(empty($where['mpid'])){
+                if(!empty(session("mpid"))){
+                    $where['mpid']=session("mpid");
+                }
+            }
+            if(empty($where['mpid'])){
+                if(!empty($this->request->request("mpid"))){
+                    $where['mpid']=$this->request->request("mpid");
+                }
             }
         }
-        if(empty($where['mpid'])){
-            if(!empty($this->request->request("mpid"))){
-                $where['mpid']=$this->request->request("mpid");
+        $model = $this->getUserDb()->table($tablename)->where($where);
+        $serachfield = $this->request->request("serachfield");
+        $seachvalue = $this->request->request("seachvalue");
+        if(!empty($serachfield)){
+            $serachfields = explode(",",$serachfield);
+            foreach ($serachfields as $field){
+                $model->whereLike($field,$seachvalue);
             }
         }
-        $db = $this->getUserDb()->table($tablename)->where($where)->order($orderArray);
+
+        $db = $model->order($orderArray);
         $page = $db->paginate($this->getPageRow(), false, ['query' => $where,'page'=>$this->getPageNum()]);
 
         /*

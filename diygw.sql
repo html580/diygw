@@ -1,9 +1,8 @@
 -- phpMyAdmin SQL Dump
--- version phpStudy 2014
--- http://www.phpmyadmin.net
+-- http://www.diygw.com
 --
 -- 主机: localhost
--- 生成日期: 2019 巿01 暿06 敿18:54
+-- 生成日期: 2019-01-06
 -- 服务器版本: 5.5.53
 -- PHP 版本: 5.6.27
 

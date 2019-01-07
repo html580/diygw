@@ -1,7 +1,7 @@
 {extend name='admin@public/content'}
 {block name="button"}
 {if auth("$classuri/add")}
-<button data-modal='{:url("$classuri/add")}' data-title="添加公众号" class='layui-btn layui-btn-sm layui-btn-primary'>添加公众号</button>
+<button data-open='{:url("$classuri/add")}' data-title="添加公众号" class='layui-btn layui-btn-sm layui-btn-primary'>添加公众号</button>
 {/if}
 
 {if auth("$classuri/del")}
@@ -73,8 +73,10 @@
                 {/if}
 
                 {if auth("$classuri/del")}
+                {if condition="$vo.id!=1"}
                 <span class="text-explode">|</span>
                 <a data-update="{$vo.id}"  data-field='delete' data-action='{:url("$classuri/del")}'>删除</a>
+                {/if}
                 {/if}
 
             </td>

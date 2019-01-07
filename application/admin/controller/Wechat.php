@@ -29,7 +29,7 @@ use think\Db;
  */
 class Wechat extends BasicAdmin
 {
-
+    public $formSuccessUrl ="wechat/index";
     /**
      * 绑定操作模型
      * @var string
@@ -103,7 +103,7 @@ class Wechat extends BasicAdmin
     public function del()
     {
         if (DataService::update($this->table)) {
-            $this->success("公众号删除成功!", '');
+            $this->success("公众号删除成功!", $this->formSuccessUrl);
         }
         $this->error("公众号删除失败, 请稍候再试!");
     }

@@ -22,6 +22,7 @@ use think\Db;
 use think\db\Query;
 use think\Exception;
 use think\helper\Str;
+use service\FileService;
 
 /**
  * 后台权限基础控制器
@@ -483,4 +484,52 @@ class BasicData extends Controller
             return db();
         }
     }
+
+
+    /**
+     * 文件上传
+     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     */
+    public function upfile()
+    {
+        $uptype = $this->request->get('uptype');
+        if (!in_array($uptype, ['local', 'qiniu', 'oss'])) {
+            $uptype = sysconf('storage_type');
+        }
+        $mode = $this->request->get('mode', 'one');
+        $types = $this->request->get('type', 'jpg,png');
+        $this->assign('mimes', FileService::getFileMine($types));
+        $this->assign('field', $this->request->get('field', 'file'));
+        return $this->fetch('', ['mode' => $mode, 'types' => $types, 'uptype' => $uptype]);
+    }
+
+    /**
+     * 通用文件上传
+     * @return \think\response\Json
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * @throws \OSS\Core\OssException
+     */
+    public function file()
+    {
+        $files = $this->request->file();
+        foreach ($files as $file){
+            $names = str_split($file->hash('md5'), 16);
+            $ext = strtolower(pathinfo($file->getInfo('name'), 4));
+            $ext = $ext ? $ext : 'tmp';
+            $filename = "{$names[0]}/{$names[1]}.{$ext}";
+            // 文件上传处理
+            if (($info = $file->move("static/upload/{$names[0]}", "{$names[1]}.{$ext}", true))) {
+                if (($site_url = FileService::getFileUrl($filename, 'local'))) {
+                    return json(['url' => $site_url, 'code' => 'SUCCESS', 'msg' => '文件上传成功']);
+                }
+            }
+            return json(['code' => 'ERROR', 'msg' => '文件上传失败']);
+        }
+
+    }
+
+
 }

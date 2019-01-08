@@ -427,6 +427,12 @@ class BasicData extends Controller
             $dashboardid = $this->request->request("dashboardId");
         }
 
+        $tableName = $this->request->request("tableName");
+        $result = $this->getTbName($dashboardid."_".$tableName);
+        if($result){
+            return $result;
+        }
+
         if(empty($formid)){
             $formid = $this->request->request("formId");
         }
@@ -441,12 +447,7 @@ class BasicData extends Controller
         if($result){
             return $result;
         }
-        $tableName = $this->request->request("tableName");
-        $result = $this->getTbName($dashboardid."_".$tableName);
-        if($result){
-            return $result;
-        }
-  
+
         return null;
 
     }

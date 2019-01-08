@@ -49,7 +49,7 @@ function check_dirfile()
     foreach ($items as &$val) {
         if ('dir' == $val[0]) {
             if (!is_writable($val[3])) {
-                if (is_dir($items[3])) {
+                if (is_dir($val[3])) {
                     $val[1] = '可读';
                     $val[2] = 'error';
                     session('error', true);

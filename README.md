@@ -10,6 +10,9 @@ Diygw for PHP
 * 设计完成同步至本地后，可以脱离DIY官网独立运行
 * 基于ThinkAdmin改造支持多公众号管理
 
+组件演示大全
+----
+![](http://lib.diygw.com/upload/1/image/20190109/15.jpg)  
 
 系统安装
 --
@@ -122,9 +125,7 @@ DiyGw官方技术交流群 [482112340](https://jq.qq.com/?_wv=1027&k=48Dm8gg)
 
  ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin1.png)
  
-组件演示大全
-----
-![](http://lib.diygw.com/upload/1/image/20190109/15.jpg)  
+
 
 系统安装
 ----

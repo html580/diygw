@@ -121,6 +121,10 @@ DiyGw官方技术交流群 [482112340](https://jq.qq.com/?_wv=1027&k=48Dm8gg)
 ### [点击查看在线视频教程](https://v.qq.com/x/page/r0518gfnx33.html)  
 
  ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin1.png)
+ 
+组件演示大全
+----
+![](http://lib.diygw.com/upload/1/image/20190109/15.jpg)  
 
 系统安装
 ----
@@ -262,3 +266,31 @@ DiyGw官方技术交流群 [482112340](https://jq.qq.com/?_wv=1027&k=48Dm8gg)
 ![](http://lib.diygw.com/upload/1/image/20181222/8.jpg)  
 
 ![](http://lib.diygw.com/upload/1/image/20170804/diygw-admin31.png)
+
+![](http://lib.diygw.com/upload/1/image/20190109/1.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/2.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/3.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/4.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/5.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/6.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/7.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/8.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/9.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/10.png) 
+
+![](http://lib.diygw.com/upload/1/image/20190109/11.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/12.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/13.png)  
+
+![](http://lib.diygw.com/upload/1/image/20190109/14.png)  

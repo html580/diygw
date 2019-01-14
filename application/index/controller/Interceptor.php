@@ -39,7 +39,6 @@ class Interceptor extends Base
     public  $title="";
     //是否登录
     public $isLogin = false;
-
     //是否微信登录
     public $isWechaLogin = false;
 

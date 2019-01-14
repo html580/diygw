@@ -59,8 +59,8 @@ class Page extends Base
             $this->assign('navigationBarBackgroundColor',$navigationBarBackgroundColor);
         }
         if($fields['styles']){
-            $backgroundColor= $fields['styles']['value'];
-            $this->assign('styles',styles);
+            $styles= $fields['styles']['value'];
+            $this->assign('styles',$styles);
         }
         $this->assign('page',$page);
         return $this->fetch();

@@ -425,8 +425,12 @@ class Dashboard extends BasicAdmin{
                         {
                             foreach ($items as $item){
                                 $item['mpid']=$this->mpid;
-                                Db::name($tablekey)->where(['id'=>$item['id'],'mpid'=>$this->mpid])->delete();
-                                Db::name($tablekey)->insert($item);
+                                if(Db::name($tablekey)->where(['id'=>$item['id'],'mpid'=>$this->mpid])->find()){
+                                    continue;
+                                }else{
+                                    Db::name($tablekey)->insert($item);
+                                }
+
                             }
                         }
 

@@ -32,20 +32,12 @@ class Login extends Controller
 
 
     public function decryptData(){
-        $debug = input("debug", '', 'htmlspecialchars_decode');
-        if($debug=="1"){
-            $data['code']=0;
-            $data['openId']='diygw_com';
-            $data['message']='登录成功';
-            return json_encode($data);
-        }else{
 
             $code = input("code", '', 'htmlspecialchars_decode');
             $rawData = input("rawData", '', 'htmlspecialchars_decode');
             $signature = input("signature", '', 'htmlspecialchars_decode');
             $encryptedData = input("encryptedData", '', 'htmlspecialchars_decode');
             $iv = input("iv", '', 'htmlspecialchars_decode');
-
             //dashboardId:13067
 //            $encryptedData='/IbXIWgfk2AYfj7x4XGnBDv0MrPL/E6j5OT65WK1Xy1Brj9DPqIkCozFCtwbdXVFBDvj90fA2Gj9WmTWUd9uNG6R2itRUbkh9e9zbakX0Pur9BV80VKWg7qw3f1OS/o//elrvFiM1CAqOwaSf1iNri75HwzHRs14f5yoOlC/NpOVMnpGfAJECl23VMtkXfqtHPJX45n1eMuERhFSnZH+VgqIT7cEo5sUB5IzIV0in+9i7wEvxFSoWo+/++1U7Do3HnepzX4F3quJKTMgQntX6ag2/A1V4RtGy8LMOypYaNG/xdpLKaRJqzTcknl6y2vxts5Aff5UtnYRjdLAg+cEXn5m30XA+Cl2AhhGWqC5QbhmWQ1FXCP6fyHRGbXn4mlYDW83KGKZdfA7NEH+2QCdEqR12d/5DIFnT5XxKEdbpF8IlU0AYq8QIOGWg0qNJMBiVk9oIDCj0wj9wnl7ccgfWewkpWlyWgk+fEyW+RZaqM0=';
 //            $iv='NSUL5PWCIznNYBLVGlx0Xg==';
@@ -112,7 +104,6 @@ class Login extends Controller
                 }
             }
 
-        }
     }
 
 

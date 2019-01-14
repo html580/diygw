@@ -31,6 +31,61 @@ use service\FileService;
  */
 class BasicData extends Controller
 {
+    //是否登录
+    public $isLogin = false;
+    //是否微信登录
+    public $isWechaLogin = false;
+
+    protected function initialize()
+    {
+        $this->assign("title",$this->title);
+        $flag = $this->init();
+        if(!$flag){
+            exit();
+        }
+    }
+
+    private function init()
+    {
+
+        $login = $this->request->request('login');
+        if(!empty($login)&&$login=="1"){
+            $this->isLogin =true;
+        }
+        $isxcx = $this->request->request('__isxcx__');
+        $token =  $this->request->header('Authorization');
+        if($this->isLogin){//是否登录
+            if(($isxcx=='true'||$isxcx=='1')&&!empty($token)){
+                $this->uid = cache($token)['uid'];
+                if(empty($this->uid)){
+                    return json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
+                }
+            }else{
+                $this->uid=session("uid".$this->mpid);
+                if(empty($this->uid)){
+                    $url = loginCheck("",true);
+                    if(!empty($url)){
+                        $this->redirect($url);
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function getUid(){
+        if(empty($this->uid)){
+            $isxcx = $this->request->request('__isxcx__');
+            $token =  $this->request->header('Authorization');
+            if(($isxcx=='true'||$isxcx=='1')&&!empty($token)){
+                $this->uid = cache($token)['uid'];
+            }else{
+                $this->uid=  session("uid".session("mpid"));
+            }
+        }
+        return $this->uid;
+    }
 
     public function getPageRow(){
         $psize 	= 10;
@@ -101,6 +156,7 @@ class BasicData extends Controller
             }
         }
 
+
         $db = $model->order($orderArray);
         $page = $db->paginate($this->getPageRow(), false, ['query' => $where,'page'=>$this->getPageNum()]);
 
@@ -112,7 +168,7 @@ class BasicData extends Controller
             }
             $rows[]=$item;
         }*/
-
+        $list['sql']=$db->getLastSql();
         $list['rows']=$page->all();
         $list['total']=$page->total();
         $list['totalPage']=$page->lastPage();
@@ -308,8 +364,6 @@ class BasicData extends Controller
         }
     }
 
-
-
     public function save()
     {
         try {
@@ -323,11 +377,6 @@ class BasicData extends Controller
 
             if(empty($map["id"])){
                 $map["id"]=create_guid();
-                $user_id = session('uid');
-                if(!empty($user_id)){
-                    $map["user_id"] =$user_id;
-                }
-                $map["mpid"] = session('mpid');
                 $map["create_time"] =  date("Y-m-d H:i:s", time());
                 $map["update_time"] =  date("Y-m-d H:i:s", time());
                 $map["status"] = "1";
@@ -362,7 +411,7 @@ class BasicData extends Controller
      * @param $table
      * @param $map
      */
-    public function removeMap($tableFullName,$map)
+    public function removeMap($tableFullName,&$map)
     {
         //获取表所有字段
         $columns = $this->getUserDb()->query('SHOW FULL COLUMNS FROM ' . $tableFullName);
@@ -370,8 +419,14 @@ class BasicData extends Controller
         foreach ($columns as $key => $value) {
             $fields[] = $value["Field"];
         }
+
+        $isUser=false;
         //去掉不必要的属性值，否则查询数据库会出错
         foreach ($map as $key => $value) {
+            if($key=='user'){
+                $key='user_id';
+                $isUser=true;
+            }
             if(strpos($key,'zdcs')!==false){
                 $field = substr($key,4,strrpos($key,'_')-4);
                 $condition = substr($key,strrpos($key,'_')+1);
@@ -384,8 +439,27 @@ class BasicData extends Controller
                 }
             }
             if (!in_array($key, $fields)) {
+                if($key=='user_id'){
+                    $isUser = false;
+                }
                 unset($map[$key]);
             }
+
+        }
+
+        if(empty($map['mpid'])){
+            if(!empty(session("mpid"))){
+                $map['mpid']=session("mpid");
+            }
+        }
+        if(empty($map['mpid'])){
+            if(!empty($this->request->request("mpid"))){
+                $map['mpid']=$this->request->request("mpid");
+            }
+        }
+        if($isUser){
+            unset($map['user']);
+            $map['user_id'] = $this->getUid();
         }
         return $map;
     }

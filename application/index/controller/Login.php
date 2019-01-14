@@ -72,6 +72,7 @@ class Login extends Controller
         cookie('uid'.session('mpid'),$member['uid']);
         echo json_encode(['status'=>'success','message'=>'登录册成功!']);
     }
+
     public function register()
     {
         $data= $this->request->request();

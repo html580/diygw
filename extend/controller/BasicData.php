@@ -83,6 +83,11 @@ class BasicData extends Controller
             }else{
                 $this->uid=  session("uid".session("mpid"));
             }
+            $module =$this->request->module();
+            $action = $this->request->action();
+            if($module=='diygw'&&$action=='save'){
+                $this->uid= session('user.id');
+            }
         }
         return $this->uid;
     }
@@ -273,19 +278,16 @@ class BasicData extends Controller
                     $idExist=false;//判断ID值是否存在，如果存在则不加ID值
                     $fields = array();
 
-                    /*$columns = $this->getUserDb()->query('SHOW FULL COLUMNS FROM ' . $tableName);
+                    $existcolumns = $this->getUserDb()->query('SHOW FULL COLUMNS FROM ' . $tableName);
                     $existfields = array();
-                    foreach ($columns as $key => $value) {
+                    foreach ($existcolumns as $key => $value) {
                         $existfields[] = $value["Field"];
-                    }*/
+                    }
 
                     foreach ($columns as $column) {//遍历配置字段拼接SQL
                         $field = $column['field'];
-                        /*if(!in_array($field,$existfields)){
+                        if(!in_array($field,$existfields)){
                             continue;
-                        }*/
-                        if($field=='create_user_id'){
-                            $field='user_id';
                         }
                         if(in_array($field, $fields)){//判断查询字段是否已经存在，如果存在，跳过
                             continue;
@@ -388,6 +390,8 @@ class BasicData extends Controller
             $map = $this->removeMap($table,$map);
 
             if(empty($map["id"])){
+                $map['user_id'] = $this->getUid();
+
                 $map["id"]=create_guid();
                 $map["create_time"] =  date("Y-m-d H:i:s", time());
                 $map["update_time"] =  date("Y-m-d H:i:s", time());
@@ -470,7 +474,13 @@ class BasicData extends Controller
 
         }
 
-
+        $module =$this->request->module();
+        $action = $this->request->action();
+        if($module=='diygw'&&$action=='save'){
+            if(in_array('user_id', $fields)){
+                $map['user_id'] = $this->getUid();
+            }
+        }
         if($isUser){
             unset($map['user']);
             $map['user_id'] = $this->getUid();

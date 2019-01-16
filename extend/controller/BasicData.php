@@ -272,8 +272,21 @@ class BasicData extends Controller
 
                     $idExist=false;//判断ID值是否存在，如果存在则不加ID值
                     $fields = array();
+
+                    /*$columns = $this->getUserDb()->query('SHOW FULL COLUMNS FROM ' . $tableName);
+                    $existfields = array();
+                    foreach ($columns as $key => $value) {
+                        $existfields[] = $value["Field"];
+                    }*/
+
                     foreach ($columns as $column) {//遍历配置字段拼接SQL
                         $field = $column['field'];
+                        /*if(!in_array($field,$existfields)){
+                            continue;
+                        }*/
+                        if($field=='create_user_id'){
+                            $field='user_id';
+                        }
                         if(in_array($field, $fields)){//判断查询字段是否已经存在，如果存在，跳过
                             continue;
                         }

@@ -32,9 +32,7 @@ class Cart extends Interceptor
     public function save()
     {
 
-
         $uid =$this->getUid();
-
         $tablename=$this->getTable();
         $linkjson['tablename']=$tablename;
         $sqlfields = $this->request->request("sqlfields");

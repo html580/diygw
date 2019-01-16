@@ -27,6 +27,14 @@
                     <li><a target="pathFrame" href="{:url('@diygw/order/index')}">订单管理</a></li>
                 </ul>
             </li>
+            <li>
+                <a href="#">
+                    <span class="menu-title">页面管理</span><span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a target="pathFrame" href="{:url("@diygw/admin/pages",["id"=>$id])}">页面管理</a></li>
+                </ul>
+            </li>
             {/if}
         </ul>
     </div>

@@ -1,0 +1,28 @@
+{extend name='diygw@public/content'}
+{block name="content"}
+<form autocomplete="off" class="layui-form layui-form-pane layui-box modal-form-box" action="{:request()->url()}" data-auto="true" method="post">
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">页面名称</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" value="{$page.title|default=""}" required lay-verify="required" placeholder="请输入页面名称" autocomplete="off"  class="layui-input">
+        </div>
+    </div>
+    
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">页面代码</label>
+        <div class="layui-input-block">
+            <textarea name="content"  rows="15" placeholder="请输入内容" class="layui-textarea">{$page.content|default=""}</textarea>
+        </div>
+    </div>
+
+    <div class="hr-line-dashed"></div>
+
+    <div class="layui-form-item text-center">
+        {if isset($page['id'])}<input type='hidden' value='{$page.id}' name='id'>{/if}
+        <button class="layui-btn" type='submit'>保存数据</button>
+        <button class="layui-btn layui-btn-danger" type='button' data-confirm="确定要取消编辑吗？" data-back>取消编辑</button>
+    </div>
+    <script>layui.form.render();</script>
+</form>
+{/block}

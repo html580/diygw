@@ -91,4 +91,34 @@ class Admin extends Base
         return $this->fetch();
     }
 
+    public function pages($id)
+    {
+        $this->assign("id",$id);
+        $pages = Db::name("AppPage")->where(array('dashboard_id'=>$id))->order('template asc,is_home desc,orderlist asc')->select();
+        $this->assign("pages",$pages);
+        return $this->fetch();
+    }
+
+
+    public function edit($id)
+    {
+        $this->assign("id",$id);
+        if ($this->request->isPost()) {
+            $data =$this->request->post();
+            Db::name("AppPage")->where(array('id'=>$id))->update($data);
+            $this->success('页面保存成功!');
+        }
+        $page = Db::name("AppPage")->where(array('id'=>$id))->find();
+        $this->assign("page",$page);
+
+        return $this->fetch();
+    }
+
+
+    public function delete($id)
+    {
+        $this->assign("id",$id);
+        $pages = Db::name("AppPage")->where(array('id'=>$id))->delete();
+        return $this->success("删除成功",url('pages'));
+    }
 }

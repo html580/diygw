@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <title>{$title|default=''}</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link href="{:sysconf('browser_icon')}" rel="shortcut icon">
+    <link href="__STATIC__/plugs/awesome/css/font-awesome.min.css?v={:date('ymd')}" rel="stylesheet">
+    <link href="__STATIC__/plugs/bootstrap/css/bootstrap.min.css?v={:date('ymd')}" rel="stylesheet">
+    <link href="__STATIC__/plugs/layui/css/layui.css?v={:date('ymd')}" rel="stylesheet">
+    <link href="__STATIC__/theme/css/console.css?v={:date('ymd')}" rel="stylesheet">
+    <link href="__STATIC__/theme/css/animate.css?v={:date('ymd')}" rel="stylesheet">
+    {block name="style"}{/block}
+    <script>window.ROOT_URL = '__ROOT__';</script>
+    <script src="__STATIC__/plugs/jquery/pace.min.js"></script>
+    <script src="__STATIC__/plugs/layui/layui.all.js"></script>
+    <script>
+        var $= layui.$;
+    </script>
+</head>
+<body class="framework">
+<script src="__STATIC__/plugs/require/require.js"></script>
+<script src="__STATIC__/app.js"></script>
+<div class="framework-body" id="pjax-container" style="left:0;top:0;overflow-y:hidden;">
+    <div class="layui-card">
+        {notempty name='title'}
+        <div class="layui-header notselect">
+            <div class="pull-left"><span>{$title}</span></div>
+            <div class="pull-right margin-right-15 nowrap">{block name="button"}{/block}</div>
+        </div>
+        {/notempty}
+        <div class="layui-card-body">{block name='content'}{/block}</div>
+    </div>
+</div>
+{block name="script"}{/block}
+</body>
+</html>
+

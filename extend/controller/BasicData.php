@@ -146,7 +146,7 @@ class BasicData extends Controller
                 }
             }
         }
-        $model = $this->getUserDb()->table($tablename)->where($where);
+        $model = $this->getUserDb($dbid,true)->table($tablename)->where($where);
         $serachfield = $this->request->request("serachfield");
         $seachvalue = $this->request->request("seachvalue");
         if(!empty($serachfield)){
@@ -168,7 +168,6 @@ class BasicData extends Controller
             }
             $rows[]=$item;
         }*/
-        $list['sql']=$db->getLastSql();
         $list['rows']=$page->all();
         $list['total']=$page->total();
         $list['totalPage']=$page->lastPage();
@@ -421,6 +420,16 @@ class BasicData extends Controller
         }
 
         $isUser=false;
+        if(empty($map['mpid'])){
+            if(!empty(session("mpid"))){
+                $map['mpid']=session("mpid");
+            }
+        }
+        if(empty($map['mpid'])){
+            if(!empty($this->request->request("mpid"))){
+                $map['mpid']=$this->request->request("mpid");
+            }
+        }
         //去掉不必要的属性值，否则查询数据库会出错
         foreach ($map as $key => $value) {
             if($key=='user'){
@@ -440,6 +449,7 @@ class BasicData extends Controller
             }
             if (!in_array($key, $fields)) {
                 if($key=='user_id'){
+                    unset($map['user']);
                     $isUser = false;
                 }
                 unset($map[$key]);
@@ -447,16 +457,7 @@ class BasicData extends Controller
 
         }
 
-        if(empty($map['mpid'])){
-            if(!empty(session("mpid"))){
-                $map['mpid']=session("mpid");
-            }
-        }
-        if(empty($map['mpid'])){
-            if(!empty($this->request->request("mpid"))){
-                $map['mpid']=$this->request->request("mpid");
-            }
-        }
+
         if($isUser){
             unset($map['user']);
             $map['user_id'] = $this->getUid();
@@ -547,13 +548,19 @@ class BasicData extends Controller
         }
     }
 
-    protected function getUserDb($dbid=""){
+    protected function getUserDb($dbid="",$flag=false){
         if(empty($dbid)){
             $dbid = $this->request->request("dbid");
         }
         if(!empty($dbid)){
             $db = Db::name("db")->where('id',$dbid)->find();
-            $db['password']=aesDecrypt($db['password']);
+            $db['password']=trim(aesDecrypt($db['password']));
+            if($flag){
+                $db['params']=[
+                    \PDO::ATTR_CASE         => \PDO::CASE_LOWER,
+                ];
+            }
+
             return Db::connect($db);
         }else{
             return db();

@@ -350,7 +350,7 @@ class Dashboard extends BasicAdmin{
 
                         foreach ($dashboardmodel as $key => &$item )
                         {
-                            $item['id']=$this->mpid.'_'.$item['id'];
+                            //$item['id']=$this->mpid.'_'.$item['id'];
                             Db::name('AppModel')->where('id',$item['id'])->where('mpid',$this->mpid)->delete();
                             $item['mpid']=$this->mpid;
                             Db::name('AppModel')->insert($item);
@@ -359,10 +359,9 @@ class Dashboard extends BasicAdmin{
 
                         foreach ($dashboardattribute as $key => &$item )
                         {
-                            $item['id']=$this->mpid.'_'.$item['id'];
+                            //$item['id']=$this->mpid.'_'.$item['id'];
                             Db::name('AppAttribute')->where('id',$item['id'])->where('mpid',$this->mpid)->delete();
                             $item['mpid']=$this->mpid;
-
                             Db::name('AppAttribute')->insert($item);
                         }
 

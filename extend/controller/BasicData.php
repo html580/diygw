@@ -260,6 +260,9 @@ class BasicData extends Controller
                     $map["name"]=$dashboardid."_".$formid;
                     $tableName = $this->getTbName($map["name"]);
                     if(!$tableName){
+                        $tableName = $this->getTbName($formid);
+                    }
+                    if(!$tableName){
                         $message=[
                             'status'       => "error",
                             'message'       => "获取数据失败",
@@ -449,7 +452,7 @@ class BasicData extends Controller
         }
         //去掉不必要的属性值，否则查询数据库会出错
         foreach ($map as $key => $value) {
-            if($key=='user'){
+            if($key=='user' && $value!="0"){
                 $key='user_id';
                 $isUser=true;
             }
@@ -526,10 +529,17 @@ class BasicData extends Controller
         }
 
         $tableName = $this->request->request("tableName");
+        $result = $this->getTbName($tableName);
+        if($result){
+            return $result;
+        }
+
+        $tableName = $this->request->request("tableName");
         $result = $this->getTbName($dashboardid."_".$tableName);
         if($result){
             return $result;
         }
+
 
         if(empty($formid)){
             $formid = $this->request->request("formId");

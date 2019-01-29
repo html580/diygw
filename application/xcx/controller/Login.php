@@ -121,6 +121,8 @@ class Login extends Controller
             }
             session('uid'.session('mpid'),$member['uid']);
             cookie('uid'.session('mpid'),$member['uid']);
+            unset($member['password']);
+            cookie("user".session('mpid'),json_encode($member));
             if(session('login_pre_url')){
                 echo json_encode(['status'=>'success','message'=>'登录成功!','redirecturl'=>$_SESSION['login_pre_url']]);
             }else{
@@ -149,6 +151,8 @@ class Login extends Controller
         }
         session('uid'.session('mpid'),$member['id']);
         cookie('uid'.session('mpid'),$member['uid']);
+        unset($member['password']);
+        cookie("user".session('mpid'),json_encode($member));
         echo json_encode(['status'=>'success','message'=>'登录册成功!']);
     }
     public function register()
@@ -175,6 +179,8 @@ class Login extends Controller
             $id = Db::name('Member')->insertGetId($data);
             session('uid'.$data['mpid'],$id);
             cookie('uid'.$data('mpid'),$member['uid']);
+            unset($member['password']);
+            cookie("user".$data('mpid'),json_encode($member));
             echo json_encode(['status'=>'success','message'=>'注册成功!']);
         }
 

@@ -9,16 +9,17 @@
 
 namespace think\addons;
 
-use think\Request;
-use think\Config;
+use think\facade\Env;
+use think\facade\Request;
+use think\facade\Config;
 use think\Loader;
-
+use think\Container;
 /**
  * 插件基类控制器
  * Class Controller
  * @Author: DIY官网  diygwcom@foxmail.com <www.diygw.com>
  */
-class Controller extends \think\Controller
+class Controller extends \controller\BasicData
 {
     // 当前插件操作
     protected $addon = null;
@@ -44,12 +45,13 @@ class Controller extends \think\Controller
      * @param Request $request Request对象
      * @access public
      */
-    public function __construct(Request $request = null)
+    public function __construct($app = null)
     {
         // 生成request对象
-        $this->request = is_null($request) ? Request::instance() : $request;
+        $this->request = Container::get('request');
+        $this->app     = Container::get('app');
         // 初始化配置信息
-        $this->config = Config::get('template') ?: $this->config;
+        $this->config = $this->app['config']->get('template.') ?: $this->config;
         // 是否自动转换控制器和操作名
         $convert = Config::get('url_convert');
         $filter = $convert ? 'strtolower' : '';
@@ -59,12 +61,12 @@ class Controller extends \think\Controller
         $this->action = $this->request->param('action', 'index', $filter);
 
         // 生成view_path
-        $view_path = $this->config['view_path'] ?: 'view';
+        //$view_path = Env::get('addons_path') . $this->addon . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR;
 
+        $view_path = DIYGW_ADDON_PATH . $this->addon . DS . 'view' . DS;
         // 重置配置
-        Config::set('template.view_path', DIYGW_ADDON_PATH . $this->addon . DS . $view_path . DS);
-
-        parent::__construct($request);
+        Config::set('template.view_path', $view_path);
+        parent::__construct($this->app);
     }
 
     /**

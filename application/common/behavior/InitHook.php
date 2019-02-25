@@ -16,7 +16,7 @@ class InitHook{
 
     // 行为扩展的执行入口必须是run
     public static function run(){
-	    // 获取系统配置
+	    /*// 获取系统配置
 	    $data = \think\facade\Config::get('app_debug') ? [] : cache('hooks');
 	    if (empty($data)) {
 	    	$hooks = \think\Db::name('Hooks')->column('name,addons');
@@ -35,6 +35,6 @@ class InitHook{
 	    	cache('hooks',$addons);
 	    } else {
 	        \think\Hook::import($data, false);
-	    }
+	    }*/
     }
 }

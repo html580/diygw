@@ -48,7 +48,9 @@ class Auth
                 return json(['code' => 0, 'msg' => '抱歉，您没有访问该模块的权限！']);
             }
             // 模板常量声明
-            app('view')->init(config('template.'))->assign(['classuri' => NodeService::parseNodeStr("{$module}/{$controller}")]);
+            if (!empty($module) && !empty($controller)) {
+                app('view')->init(config('template.'))->assign(['classuri' => NodeService::parseNodeStr("{$module}/{$controller}")]);
+            }
             return $next($request);
         }
     }

@@ -38,23 +38,13 @@ class Addons extends BasicAdmin {
         $menu[] = ['title'=>'已装插件后台','operater'=>model('Addons')->getAdminList ()];
         return $menu;
     }
-    // 创建向导首页
-    public function create() {
-        if (! is_writable ( DIYGW_ADDON_PATH ))
-            $this->error ( '您没有创建目录写入权限，无法使用此功能' );
-
-        $hooks = model ( 'Hooks' )->field ( 'name,description' )->select ();
-        $this->assign( 'Hooks', $hooks );
-        $this->assign( 'title', '创建向导' );
-        return $this->fetch ( 'create' );
-    }
 
     // 预览
     public function preview($output = true) {
         $data = $this->request->post();
-        if(!isset($data['hook'])){
+        /*if(!isset($data['hook'])){
             $this->error('请选择实现的钩子方法');
-        }
+        }*/
         $data ['info'] ['status'] = ( int ) $data ['info'] ['status'];
         $extend = array ();
         $custom_config = trim ( $data ['custom_config'] );
@@ -91,19 +81,21 @@ str;
 
         $extend = implode ( '', $extend );
         $hook = '';
-        foreach ( $data ['hook'] as $value ) {
-            $hook .= <<<str
-        //实现的{$value}钩子方法
-        public function {$value}(\$param){
+        if(!empty($data ['hook'])) {
+            foreach ($data ['hook'] as $value) {
+$hook .= <<<str
+    //实现的{$value}钩子方法
+    public function {$value}(\$param){
 
-        }
+    }
 
 str;
+            }
         }
-        $classname=ucfirst($data['info']['name']);
-        $tpl = <<<str
+            $classname=ucfirst($data['info']['name']);
+            $tpl = <<<str
 <?php
-
+    
 namespace addons\\{$data['info']['name']};
 use think\Addons;
 
@@ -112,50 +104,60 @@ use think\Addons;
  * @author {$data['info']['author']}
  */
 
-    class {$classname} extends Addons{
+class {$classname} extends Addons{
 
-        public \$info = array(
-            'name'=>'{$data['info']['name']}',
-            'title'=>'{$data['info']['title']}',
-            'description'=>'{$data['info']['description']}',
-            'status'=>{$data['info']['status']},
-            'author'=>'{$data['info']['author']}',
-            'version'=>'{$data['info']['version']}'
-        );{$extend}
+    public \$info = array(
+        'name'=>'{$data['info']['name']}',
+        'title'=>'{$data['info']['title']}',
+        'description'=>'{$data['info']['description']}',
+        'status'=>{$data['info']['status']},
+        'author'=>'{$data['info']['author']}',
+        'version'=>'{$data['info']['version']}'
+    );{$extend}
 
-        public function install(){
-            return true;
-        }
-
-        public function uninstall(){
-            return true;
-        }
-
-{$hook}
+    public function install(){
+        return true;
     }
+
+    public function uninstall(){
+        return true;
+    }
+
+    {$hook}
+}
 str;
-        if ($output)
-            exit ( $tpl );
-        else
-            return $tpl;
-    }
-    public function checkForm() {
-        $data = $this->request->post();
-        $data ['info'] ['name'] = trim ( $data ['info'] ['name'] );
-        if (! $data ['info'] ['name'])
-            $this->error ( '插件标识必须' );
-        // 检测插件名是否合法
-        $addons_dir = DIYGW_ADDON_PATH;
-        if (file_exists ( "{$addons_dir}{$data['info']['name']}" )) {
-            $this->error ( '插件已经存在了' );
+            if ($output)
+                exit ( $tpl );
+            else
+                return $tpl;
         }
-        $this->success ( '可以创建' );
+
+    // 创建向导首页
+    public function create() {
+        if (! is_writable ( DIYGW_ADDON_PATH ))
+            $this->error ( '您没有创建目录写入权限，无法使用此功能' );
+
+        $hooks = model ( 'Hooks' )->field ( 'name,description' )->select ();
+        $this->assign( 'Hooks', $hooks );
+        $this->assign( 'title', '创建向导' );
+        return $this->fetch ( 'create' );
     }
+
+
     public function build() {
         $data = $this->request->post();
         $data ['info'] ['name'] = trim ( $data ['info'] ['name'] );
-        $addonFile = $this->preview ( false );
+        if (! $data ['info'] ['name']){
+            return $this->error ( '插件标识必须' );
+        }
+
+        // 检测插件名是否合法
         $addons_dir = DIYGW_ADDON_PATH;
+        if (file_exists ( "{$addons_dir}{$data['info']['name']}" )) {
+            return $this->error ( '插件已经存在了' );
+        }
+        $data ['info'] ['name'] = trim ( $data ['info'] ['name'] );
+        $addonFile = $this->preview ( false );
         // 创建目录结构
         $files = array ();
         $addon_dir = "$addons_dir{$data['info']['name']}/";
@@ -169,8 +171,6 @@ str;
         if (isset ( $data ['has_outurl'] )) {
             $files [] = "{$addon_dir}controller/";
             $files [] = "{$addon_dir}controller/".ucfirst($data['info']['name']).".php";
-            $files [] = "{$addon_dir}model/";
-            $files [] = "{$addon_dir}model/".ucfirst($data['info']['name']).".php";
         }
 
         $custom_config = trim ( $data ['custom_config'] );
@@ -186,6 +186,7 @@ str;
 
         // 写文件
         file_put_contents ( "{$addon_dir}{$addon_name}", $addonFile );
+        $classname=ucfirst($data['info']['name']);
         if (isset ( $data ['has_outurl'] ) && $data ['has_outurl']) {
             $addonController = <<<str
 <?php
@@ -193,66 +194,13 @@ str;
 namespace addons\\{$data['info']['name']}\controller; 
 use think\addons\Controller;
 
-class {$data['info']['name']} extends Controller{
+class {$classname} extends Controller{
 
 }
 
 str;
-            file_put_contents ( "{$addon_dir}controller/".ucfirst($data['info']['name']).".php", $addonController );
-            $addonModel = <<<str
-<?php
+            file_put_contents ( "{$addon_dir}controller/{$classname}.php", $addonController );
 
-namespace addons\\{$data['info']['name']}\model;
-use app\common\model\AddonsBase;
-
-/**
- * {$data['info']['name']}模型
- */
-class {$data['info']['name']} extends AddonsBase{
-    public \$model_info = [
-        'name' => '{$data['info']['name']}',
-        'button' => [
-            ['title'=>'新增','url'=>'edit?name={$data['info']['name']}','icon'=>'','class'=>'list_add btn-success','ExtraHTML'=>''],
-            ['title'=>'删除','url'=>'del?name={$data['info']['name']}','icon'=>'','class'=>'btn-danger ajax-post confirm','ExtraHTML'=>'']
-        ],
-        //特殊字符串替换用于列表定义解析
-        'replace_string' => [['[DELETE]','[EDIT]','[ADDON]'],['del?ids=[id]&name=[ADDON]','edit?id=[id]&name=[ADDON]','{$data['info']['name']}']],
-        'field_group'=>'1:基础,2:扩展',//表单显示分组
-        "fields"=>[
-            '1'=>[
-                [
-                    'name'=>'id',//字段名
-                    'title'=>'ID',//显示标题
-                    'type'=>'num',//字段类型
-                    'remark'=>'',// 备注，相当于配置里的tip
-                    'is_show'=>3,// 1-始终显示 2-新增显示 3-编辑显示 0-不显示
-                    'value'=>0,//默认值
-                ], 
-            ],
-            '2'=>[
-                [
-                    'name'=>'id',//字段名
-                    'title'=>'ID',//显示标题
-                    'type'=>'num',//字段类型
-                    'remark'=>'',// 备注，相当于配置里的tip
-                    'is_show'=>3,// 1-始终显示 2-新增显示 3-编辑显示 0-不显示
-                    'value'=>0,//默认值
-                ], 
-            ]
-        ],
-        'list_grid' => [        //这里定义的是除了id序号外的表格里字段显示的表头名和模型一样支持函数和链接
-            'title:广告位名称',
-            'type:广告位类型',
-            'width:广告位宽度',
-            'height:广告位高度',
-            'status:位置状态',
-            'id:操作:[EDIT]|编辑,[DELETE]|删除'
-        ]
-    ]; 
-}
-
-str;
-            file_put_contents ( "{$addon_dir}model/".ucfirst($data['info']['name']).".php", $addonModel );
         }
 
         if (isset ( $data ['has_config'] ) && $data ['has_config'] == 1)
@@ -286,79 +234,6 @@ str;
         $this->request->isPjax();
         return $this->fetch ();
 
-    }
-
-    /**
-     * 插件后台显示页面
-     *
-     * @param string $name
-     *        	插件名
-     */
-    public function adminList($name) {
-        // 记录当前列表页的cookie
-        Cookie ( '__forward__', $_SERVER ['REQUEST_URI'] );
-        $this->assign( 'name', $name );
-        $class = get_addon_class ( $name );
-        if (! class_exists ( $class ))
-            $this->error ( '插件不存在' );
-        $addon = new $class ();
-        $this->assign( 'addon', $addon );
-        $param = $addon->admin_list;
-        if (! $param)
-            $this->error ( '插件列表信息不正确' );
-        $this->assign( 'title', $addon->info ['title'] );
-        extract ( $param );
-        $this->assign( 'title', $addon->info ['title'] );
-        $this->assign( $param );
-        if (! isset ( $fields ))
-            $fields = '*';
-        if (! isset ( $search_key ))
-            $key = 'title';
-        else
-            $key = $search_key;
-
-        $uri_param= $this->request->param();
-        $uri_get=$this->request->get();
-
-        $map = array();
-        if (isset ( $uri_param [$key] )) {
-            $map [$key] = ['like',	'%' . $uri_get [$key] . '%'];
-            unset ( $uri_param [$key] );
-        }
-        if (isset ( $model )) {
-            $model_name = $model;
-            $class = get_addon_model ( $name, $model );
-            $model = new $class();
-            //模型定义
-            if(isset($model->model_info) && !empty($model->model_info)){
-                if(is_numeric($model->model_info)){
-                    $model_obj = new ModelSystem();
-                    $model_obj = $model_obj->info($model->model_info);
-                }else{
-                    $model_obj = Modelinfo()->info($model->model_info);
-                }
-                $model_info = $model_obj->getListField()->getSearchList()->setInit()->getParam('info');
-
-                $model_info['url'] = $this->request->url();
-                if(!isset($model_info['button'])){
-                    $model_info['button'] = [
-                        ['title'=>'新增','url'=>'edit?name='.$name,'icon'=>'','class'=>'list_add btn-success','ExtraHTML'=>''],
-                        ['title'=>'删除','url'=>'del?name='.$name,'icon'=>'','class'=>'btn-danger ajax-post confirm','ExtraHTML'=>''],
-                    ];
-                }
-                $this->assign( 'model_info', $model_info );
-            }
-            if($this->request->isPost()){
-                $list = $model_obj->getWhere()->getViewList()->parseList()->parseListIntent()->getParam('info.data');
-                $list['code'] = 1;
-                return json($list);
-            }
-        }
-        if ($addon->custom_adminlist){
-            //获取记录
-            $this->assign( 'custom_adminlist', $this->fetch ( $addon->addon_path . $addon->custom_adminlist ) );
-        }
-        return $this->fetch ('adminlist' ); //$addon->addon_path  相对路径
     }
 
     /**

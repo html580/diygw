@@ -23,6 +23,11 @@ use think\db\Query;
 use think\Exception;
 use think\helper\Str;
 use service\FileService;
+use Alchemy\BinaryDriver\Listeners\DebugListener;
+use FFMpeg\Exception\ExecutableNotFoundException;
+use FFMpeg\FFMpeg;
+use FFMpeg\Coordinate;
+use FFMpeg\FFProbe;
 
 /**
  * 后台权限基础控制器
@@ -122,8 +127,6 @@ class BasicData extends Controller
     }
 
     protected  function lists ($tablename,$where=array(),$order='',$field=true){
-
-
         $result = $this->getUserDb()->query("SHOW INDEX FROM " . $tablename);
         $pk="id";
         foreach($result as $value) {
@@ -632,6 +635,7 @@ class BasicData extends Controller
         $files = $this->request->file();
         foreach ($files as $file){
             $names = str_split($file->hash('md5'), 16);
+
             $ext = strtolower(pathinfo($file->getInfo('name'), 4));
             $ext = $ext ? $ext : 'tmp';
             $filename = "{$names[0]}/{$names[1]}.{$ext}";
@@ -647,4 +651,40 @@ class BasicData extends Controller
     }
 
 
+    public function uploadvideo()
+    {
+        $files = $this->request->file();
+        foreach ($files as $file){
+            $names = str_split($file->hash('md5'), 16);
+            $ext = strtolower(pathinfo($file->getInfo('name'), 4));
+            $ext = $ext ? $ext : 'tmp';
+            $filename = "{$names[0]}/{$names[1]}.{$ext}";
+            // 文件上传处理
+            if (($info = $file->move("static/upload/{$names[0]}", "{$names[1]}.{$ext}", true))) {
+                $ffmpeg = FFMpeg::create([
+                    'ffmpeg.binaries' => 'd:\ffmpeg\bin\ffmpeg.EXE',
+                    'ffprobe.binaries' => 'd:\ffmpeg\bin\ffprobe.exe',
+                    'timeout' => 3600,
+                    'ffmpeg.threads' => 12,
+                ]);
+                //打开资源
+                $video = $ffmpeg->open(APP_PATH.'static/upload/'.$names[0].'/'.$names[1].'.'.$ext);
+                //设置视频大小
+                $video->filters()
+                    ->resize(new Coordinate\Dimension(320,240))
+                    ->synchronize();
+                //截取视频图片 2s 时候截取
+                $pic_url='static/upload/'.$names[0].'/'.$names[1].'.jpg';
+                $video->frame(Coordinate\TimeCode::fromSeconds(2))->save(APP_PATH.$pic_url);
+
+                if (($site_url = FileService::getFileUrl($filename, 'local'))) {
+                    $pic_url = "{$names[0]}/{$names[1]}.jpg";
+                    $pic_url = FileService::getFileUrl($pic_url, 'local');
+                    return json(['video' => $site_url,'url'=>$pic_url, 'code' => 'SUCCESS', 'msg' => '文件上传成功']);
+                }
+            }
+            return json(['code' => 'ERROR', 'msg' => '文件上传失败']);
+        }
+
+    }
 }

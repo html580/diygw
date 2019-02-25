@@ -121,7 +121,6 @@ class Index extends Controller
         install_show_msg('安装程序执行完毕！重新安装需要删除./config/install.lock');
         install_show_msg('安装程序执行完毕！重新安装需要删除./config/database.php');
         install_show_msg('安装程序执行完毕！重新安装需要删除./application/middleware.php');
-        install_show_msg('安装程序执行完毕！重新安装需要删除./application/tags.php');
         $adminUrl = url('/admin/index/index');
         echo "<script type=\"text/javascript\">insok(\"{$adminUrl}\")</script>";
     }

@@ -51,7 +51,7 @@ class Addons extends Model {
 				$class = get_addon_class ( $value );
 				if (! class_exists ( $class )) { // 实例化插件失败忽略执行
 					trace($class);
-					\think\Log::record ( '插件' . $value . '的入口文件不存在！' );
+					\think\facade\Log::record ( '插件' . $value . '的入口文件不存在！' );
 					continue;
 				}
 				$obj = new $class ();

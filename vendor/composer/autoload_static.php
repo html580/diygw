@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f
 {
     public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '9b552a3cc426e3287cc811caefa3cf53' => __DIR__ . '/..' . '/topthink/think-helper/src/helper.php',
         '6352a0c1f9c182b5321ecb2b5268d863' => __DIR__ . '/..' . '/diygw/diygw-addons/src/common.php',
         'd61eef331536d2fde60560f1be146990' => __DIR__ . '/..' . '/diygw/diygw-helper/src/common.php',
@@ -40,19 +41,34 @@ class ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Symfony\\Component\\Process\\' => 26,
             'Symfony\\Component\\OptionsResolver\\' => 34,
+            'Symfony\\Component\\Filesystem\\' => 29,
         ),
         'Q' => 
         array (
             'Qiniu\\' => 6,
         ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+        ),
         'O' => 
         array (
             'OSS\\' => 4,
         ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
+        ),
         'E' => 
         array (
             'Endroid\\QrCode\\' => 15,
+        ),
+        'D' => 
+        array (
+            'Doctrine\\Common\\Cache\\' => 22,
         ),
         'A' => 
         array (
@@ -104,25 +120,80 @@ class ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/WeChat',
             1 => __DIR__ . '/..' . '/zoujingli/weopen-developer/WeChat',
         ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
+        'Symfony\\Component\\Process\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/process',
+        ),
         'Symfony\\Component\\OptionsResolver\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/options-resolver',
+        ),
+        'Symfony\\Component\\Filesystem\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/filesystem',
         ),
         'Qiniu\\' => 
         array (
             0 => __DIR__ . '/..' . '/qiniu/php-sdk/src/Qiniu',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
         'OSS\\' => 
         array (
             0 => __DIR__ . '/..' . '/aliyuncs/oss-sdk-php/src/OSS',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'Endroid\\QrCode\\' => 
         array (
             0 => __DIR__ . '/..' . '/endroid/qr-code/src',
         ),
+        'Doctrine\\Common\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/cache/lib/Doctrine/Common/Cache',
+        ),
         'AliPay\\' => 
         array (
             0 => __DIR__ . '/..' . '/zoujingli/wechat-developer/AliPay',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'N' => 
+        array (
+            'Neutron' => 
+            array (
+                0 => __DIR__ . '/..' . '/neutron/temporary-filesystem/src',
+            ),
+        ),
+        'F' => 
+        array (
+            'FFMpeg' => 
+            array (
+                0 => __DIR__ . '/..' . '/php-ffmpeg/php-ffmpeg/src',
+            ),
+        ),
+        'E' => 
+        array (
+            'Evenement' => 
+            array (
+                0 => __DIR__ . '/..' . '/evenement/evenement/src',
+            ),
+        ),
+        'A' => 
+        array (
+            'Alchemy' => 
+            array (
+                0 => __DIR__ . '/..' . '/alchemy/binary-driver/src',
+            ),
         ),
     );
 
@@ -136,6 +207,7 @@ class ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit58a41c7e987cfb68eb98c0d5d6f8df7f::$classMap;
 
         }, null, ClassLoader::class);

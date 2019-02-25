@@ -8,9 +8,10 @@
 // +----------------------------------------------------------------------
 namespace think\addons;
 
-use think\Hook;
-use think\Request;
-use think\Config;
+use think\facade\Hook;
+use think\facade\Request;
+use think\facade\Config;
+use think\Container;
 /**
  * 插件执行默认控制器
  * Class AddonsController
@@ -23,7 +24,7 @@ class Route extends Controller
      */
     public function execute()
     {
-        $request = Request::instance();
+        $request = Container::get('request');
         // 是否自动转换控制器和操作名
         $convert = Config::get('url_convert');
         $filter = $convert ? 'strtolower' : '';
@@ -33,8 +34,6 @@ class Route extends Controller
         $action = $request->param('action', 'index', $filter);
 
         if (!empty($addon) && !empty($controller) && !empty($action)) {
-            // 设置当前请求的控制器、操作
-            $request->controller($controller)->action($action);
             // 获取类的命名空间
             $class = get_addon_class($addon, 'controller', $controller);
             if (class_exists($class)) {

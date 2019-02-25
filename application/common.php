@@ -214,6 +214,20 @@ function arr2str($arr, $glue = ','){
     return implode($glue, $arr);
 }
 
+//基于数组创建目录和文件
+function create_dir_or_files($files){
+    if(is_dir($files[0]))
+        return false;
+    foreach ($files as $key => $value) {
+        if(substr($value, -1) == '/'){
+            mkdir($value);
+        }else{
+            @file_put_contents($value, '');
+        }
+    }
+    return true;
+}
+
 function aesEncrypt($data){
     $privateKey = "diygwcomdiygwcom";
     $iv    = "diygwcomdiygwcom";

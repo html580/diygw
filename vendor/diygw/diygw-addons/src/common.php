@@ -40,10 +40,8 @@ Hook::add('app_init', function () {
                 $hooks = Db::name('Hooks')->column('name,addons');
                 foreach ($hooks as $key => $value) {
                     if ($value) {
-                        $map['status'] = 1;
                         $names = explode(',', $value);
-                        $map['name'] = array('IN', $names);
-                        $data = Db::name('Addons')->where($map)->column('id,name');
+                        $data = Db::name('Addons')->whereIn('name',$names)->where('status',1)->column('id,name');
                         if ($data) {
                             $addons_arr = array_intersect($names, $data);
                             $addons[$key] = array_map('get_addon_class', $addons_arr);

@@ -228,9 +228,6 @@ function write_config($config){
             install_show_msg('配置文件写入失败！', 'error');
         }
 
-        $tags = file_get_contents(ROOT_PATH . 'application/install/data/tags.tpl');
-        file_put_contents(ROOT_PATH . 'application/tags.php', $tags);
-
         $middleware = file_get_contents(ROOT_PATH . 'application/install/data/middleware.tpl');
         file_put_contents(ROOT_PATH . 'application/middleware.php', $middleware);
 

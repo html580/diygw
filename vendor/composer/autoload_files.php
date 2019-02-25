@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    '320cde22f66dd4f5d3fd621d3e88b98f' => $vendorDir . '/symfony/polyfill-ctype/bootstrap.php',
     '9b552a3cc426e3287cc811caefa3cf53' => $vendorDir . '/topthink/think-helper/src/helper.php',
     '6352a0c1f9c182b5321ecb2b5268d863' => $vendorDir . '/diygw/diygw-addons/src/common.php',
     'd61eef331536d2fde60560f1be146990' => $vendorDir . '/diygw/diygw-helper/src/common.php',

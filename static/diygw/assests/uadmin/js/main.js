@@ -16,14 +16,14 @@ $(function () {
         //$("#sidebar").css({height:$(window).height()-50});
         $("#page-wrapper").css({height:$(window).height()-50});
         if($('#pathFrame').parent().is(".design")){
-            $('#pathFrame').css({height:$('.design').height()});
+            $('#pathFrame').css({height:$('.design').height()+100});
         }
     });
     if(!$('#pathFrame').parent().is(".design")){
         $('#pathFrame').iframeAutoHeight({
-            debug: true,
+            debug: false,
             resetToMinHeight:true,
-            minHeight: $(window).height()-50,
+            minHeight: $(window).height()+50,
             diagnostics: true
         });
     }

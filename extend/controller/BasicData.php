@@ -1,15 +1,15 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Diygw
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 DIY官网 [ http://www.diygw.com ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://www.diygw.com
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/html580/diygw
 // +----------------------------------------------------------------------
 
 namespace controller;
@@ -59,11 +59,18 @@ class BasicData extends Controller
         }
         $isxcx = $this->request->request('__isxcx__');
         $token =  $this->request->header('Authorization');
+
         if($this->isLogin){//是否登录
-            if(($isxcx=='true'||$isxcx=='1')&&!empty($token)){
-                $this->uid = cache($token)['uid'];
-                if(empty($this->uid)){
-                    return json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
+            if( $isxcx=='true'||$isxcx=='1'){
+                if(!empty($token)){
+                    $this->uid = cache($token)['uid'];
+                    if(empty($this->uid)){
+                        echo json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
+                        return false;
+                    }
+                }else{
+                    echo json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
+                    return false;
                 }
             }else{
                 $this->uid=session("uid".$this->mpid);
@@ -75,7 +82,6 @@ class BasicData extends Controller
                 }
             }
         }
-
         return true;
     }
 
@@ -154,6 +160,7 @@ class BasicData extends Controller
                 }
             }
         }
+
         $model = $this->getUserDb($dbid,true)->table($tablename)->where($where);
         $serachfield = $this->request->request("serachfield");
         $seachvalue = $this->request->request("seachvalue");
@@ -166,6 +173,7 @@ class BasicData extends Controller
 
 
         $db = $model->order($orderArray);
+
         $page = $db->paginate($this->getPageRow(), false, ['query' => $where,'page'=>$this->getPageNum()]);
 
         /*
@@ -396,8 +404,7 @@ class BasicData extends Controller
             $map = $this->removeMap($table,$map);
 
             if(empty($map["id"])){
-                $map['user_id'] = $this->getUid();
-
+                //$map['user_id'] = $this->getUid();
                 $map["id"]=create_guid();
                 $map["create_time"] =  date("Y-m-d H:i:s", time());
                 $map["update_time"] =  date("Y-m-d H:i:s", time());
@@ -407,14 +414,15 @@ class BasicData extends Controller
                     $info = ['id'=>$map["id"],'status'=>'success', 'message'=>'保存数据成功'];
                     echo json_encode($info);
                 } catch (Exception $e){
-                    $info = ['status'=>'error', 'message'=>'保存数据失败'];
+                    $info = ['status'=>'error', 'message'=>'保存数据失败'.$e];
                     echo json_encode($info);
                 }
             }else{
                 $map["update_time"] = time();
                 try{
+
                     $this->getUserDb()->table($table)->where('id',$map["id"])->update($map);
-                    $info = ['status'=>'success', 'message'=>'更新数据成功'];
+                    $info = ['id'=>$map["id"],'status'=>'success', 'message'=>'更新数据成功'];
                     echo json_encode($info);
                 } catch (Exception $e){
                     $info = ['status'=>'error', 'message'=>'更新数据失败'];
@@ -490,6 +498,17 @@ class BasicData extends Controller
         if($isUser){
             unset($map['user']);
             $map['user_id'] = $this->getUid();
+            if(empty($map['user_id'])){
+                $isajax = $this->request->request('__isajax__');
+                $isxcx = $this->request->request('__isxcx__');
+                if($isajax=='true'||$isxcx=='true'||$isxcx=='1'){
+                    return json_encode(['status'=>401,'message'=>'登录超时，请重新登录']);
+                }else{
+                    $this->assign('title','温馨提示');
+                    $this->assign('message',"登录超时，请重新登录");
+                    return  $this->fetch("login/perror");
+                }
+            }
         }
         return $map;
     }

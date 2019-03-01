@@ -121,4 +121,8 @@ class Admin extends Base
         $pages = Db::name("AppPage")->where(array('id'=>$id))->delete();
         return $this->success("删除成功",url('pages'));
     }
+
+    public function menu(){
+
+    }
 }

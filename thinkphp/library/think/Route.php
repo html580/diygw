@@ -408,7 +408,7 @@ class Route
             $result = $this->bind[$domain];
         } elseif (isset($name) && isset($this->bind[$name])) {
             $result = $this->bind[$name];
-        } elseif (isset($this->bind['*'])) {
+        } elseif (!empty($subDomain) && isset($this->bind['*'])) {
             $result = $this->bind['*'];
         } else {
             $result = null;
@@ -424,9 +424,9 @@ class Route
      * @param  string    $domain 域名
      * @return mixed
      */
-    public function getName($name = null, $domain = null)
+    public function getName($name = null, $domain = null, $method = '*')
     {
-        return $this->app['rule_name']->get($name, $domain);
+        return $this->app['rule_name']->get($name, $domain, $method);
     }
 
     /**

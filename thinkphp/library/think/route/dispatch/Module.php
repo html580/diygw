@@ -67,7 +67,8 @@ class Module extends Dispatch
         // 是否自动转换控制器和操作名
         $convert = is_bool($this->convert) ? $this->convert : $this->rule->getConfig('url_convert');
         // 获取控制器名
-        $controller       = strip_tags($result[1] ?: $this->rule->getConfig('default_controller'));
+        $controller = strip_tags($result[1] ?: $this->rule->getConfig('default_controller'));
+
         $this->controller = $convert ? strtolower($controller) : $controller;
 
         // 获取操作名
@@ -92,10 +93,6 @@ class Module extends Dispatch
                 $this->rule->getConfig('url_controller_layer'),
                 $this->rule->getConfig('controller_suffix'),
                 $this->rule->getConfig('empty_controller'));
-
-            if ($instance instanceof Controller) {
-                $instance->registerMiddleware();
-            }
         } catch (ClassNotFoundException $e) {
             throw new HttpException(404, 'controller not exists:' . $e->getClass());
         }

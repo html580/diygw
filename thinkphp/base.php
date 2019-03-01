@@ -10,7 +10,6 @@
 // +----------------------------------------------------------------------
 namespace think;
 
-
 // 载入Loader类
 require __DIR__ . '/library/think/Loader.php';
 
@@ -28,7 +27,6 @@ if (interface_exists('Psr\Log\LoggerInterface')) {
     interface LoggerInterface
     {}
 }
-
 
 // 注册类库别名
 Loader::addClassAlias([

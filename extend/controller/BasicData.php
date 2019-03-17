@@ -211,6 +211,11 @@ class BasicData extends Controller
             if(empty($columns)){
                 //去掉不必要的属性值，否则查询数据库会出错
                 $table = $this->getTable();//获取不带前缀的表名
+                if(empty($table)){
+                    $info = ['status'=>'error', 'message'=>'无权限获取表格数据或表不存在'];
+                    echo json_encode($info);
+                    return;
+                }
                 $map = $this->request->except(['formid','dashboardid','isinfinite','order']);
                 $map = $this->removeMap($table,$map);
                 $order = $this->request->request("order");
@@ -408,7 +413,9 @@ class BasicData extends Controller
                 $map["id"]=create_guid();
                 $map["create_time"] =  date("Y-m-d H:i:s", time());
                 $map["update_time"] =  date("Y-m-d H:i:s", time());
-                $map["status"] = "1";
+                if(empty($map["status"])){
+                    $map["status"] = "1";
+                }
                 try{
                     $this->getUserDb()->table($table)->insert($map);
                     $info = ['id'=>$map["id"],'status'=>'success', 'message'=>'保存数据成功'];
@@ -545,6 +552,22 @@ class BasicData extends Controller
                 return null;
             }
         }
+
+        $tablename = $this->getLocalTableName();
+        if(!empty($tablename)){
+            $forbidTable=['wechat','member','system','payment','db','addons','hooks'];
+            foreach ($forbidTable as $value) {
+               if(strpos(strtolower($tablename),strtolower(config('database.prefix').$value))!==false) {
+                   return null;
+               }
+            }
+        }
+        return $tablename;
+
+    }
+
+    public function getLocalTableName(){
+        $formid = $this->request->request("formid");
         $dashboardid = $this->request->request("dashboardid");
         if(empty($dashboardid)){
             $dashboardid = $this->request->request("dashboardId");
@@ -577,19 +600,20 @@ class BasicData extends Controller
         if($result){
             return $result;
         }
-
         return null;
-
     }
-
     public function remove()
     {
         try {
             $table = $this->getTable();//获取不带前缀的表名
-            $ids    =   input('values/a');
             $ids    =   $this->request->request('values/a');
             $field    =   $this->request->request('field');
-            if(Db::table($this->getTable())->find(substr($field,0,strpos($field,"_")),$ids)->delete()){
+            if(empty($field)){
+                $db= Db::table($table)->find(substr($field,0,strpos($field,"_")),$ids);
+            }else{
+                $db= Db::table($table)->whereIn('id',$ids);
+            }
+            if($db->delete()){
                 $info = ['status'=>'success', 'message'=>'删除数据成功'];
                 echo json_encode($info);
             }else{

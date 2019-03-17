@@ -39,7 +39,7 @@ class Crypt extends BasicWeChat
     {
         require_once __DIR__ . DIRECTORY_SEPARATOR . 'crypt' . DIRECTORY_SEPARATOR . 'wxBizDataCrypt.php';
         $pc = new \WXBizDataCrypt($this->config->get('appid'), $sessionKey);
-        $errCode = $pc->decryptData($encryptedData, $iv,$rawData,$signature,$data);
+        $errCode = $pc->decryptData($encryptedData,$iv,$rawData,$signature,$data);
         if ($errCode['code'] == 0) {
             return json_decode($data, true);
         }

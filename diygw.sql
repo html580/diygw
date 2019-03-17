@@ -1042,15 +1042,10 @@ CREATE TABLE IF NOT EXISTS `diygw_wechat_config` (
   `name` varchar(180) NOT NULL COMMENT '配置项名称',
   `value` text NOT NULL COMMENT '配置值',
   `cate` varchar(30) DEFAULT NULL COMMENT '分类',
+  `dashboard_id`  int(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
---
--- 转存表中的数据 `diygw_wechat_config`
---
-
-INSERT INTO `diygw_wechat_config` (`id`, `mpid`, `name`, `value`, `cate`) VALUES
-(1, 1, 'wxmin', '{"appid":"wxda438798441f31f1","appsecret":"85e34a8aff2df889809168999888280b"}', NULL);
 
 -- --------------------------------------------------------
 

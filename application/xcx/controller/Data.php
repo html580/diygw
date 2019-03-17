@@ -22,4 +22,5 @@ use controller\BasicData;
 class Data extends BasicData
 {
 
+
 }

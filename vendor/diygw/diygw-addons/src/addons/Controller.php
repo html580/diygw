@@ -64,6 +64,9 @@ class Controller extends \controller\BasicData
         //$view_path = Env::get('addons_path') . $this->addon . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR;
 
         $view_path = DIYGW_ADDON_PATH . $this->addon . DS . 'view' . DS;
+        if (file_exists(DIYGW_ADDON_PATH . $this->addon . DS.'common.php')) {
+            include_once DIYGW_ADDON_PATH . $this->addon . DS.'common.php';
+        }
         // 重置配置
         Config::set('template.view_path', $view_path);
         parent::__construct($this->app);

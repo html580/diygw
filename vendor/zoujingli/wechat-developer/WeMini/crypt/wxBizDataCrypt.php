@@ -24,6 +24,7 @@ class WXBizDataCrypt
         include_once __DIR__ . DIRECTORY_SEPARATOR . "errorCode.php";
     }
 
+
     /**
      * 检验数据的真实性，并且获取解密后的明文.
      * @param $encryptedData string 加密的用户数据
@@ -42,7 +43,7 @@ class WXBizDataCrypt
          * ，使用相同的算法计算出签名 signature2 ，比对 signature 与 signature2 即可校验数据的可信度。
          */
         $signature2 = sha1($rawData . $this->sessionKey);
-        if ($signature2 !== $signature){
+        if (!empty($signature) && $signature2 !== $signature){
             return \ErrorCode::getErrInfo(\ErrorCode::$SignNotMatch);
         }
         if (strlen($this->sessionKey) != 24) {

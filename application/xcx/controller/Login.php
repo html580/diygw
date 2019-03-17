@@ -46,10 +46,12 @@ class Login extends Controller
 //            $code='033fLrUZ0M2J6X1nUpVZ0AstUZ0fLrUV';
 
             $mpid=input("mpid", '', 'htmlspecialchars_decode');
+            $dashboarid =input("dashboardid", '', 'htmlspecialchars_decode');
+
             if(empty($mpid)){
                 $mpid=1;//取得默认公众号ID
             }
-            $result = Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' =>$mpid])->find();
+            $result = Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' =>$mpid, 'dashboard_id' =>$dashboarid])->find();
             if(empty($result)){
                 $result = ['code'=>-1,'message'=>'未配置小程序密钥，请前往后台设置'];
                 return json_encode($result);
@@ -91,12 +93,13 @@ class Login extends Controller
                         $authdata['type']="2";//微信小程序
                         Db::name('MemberAuth')->insertGetId($authdata);
                         $token = create_guid();
-                        $result = ['token'=>$token,'code'=>0,'openid'=>$userInfo['openid'],'uid'=>$id,'message'=>'登录成功 '];
+                        $result = ['token'=>$token,'code'=>0,'sessionkey'=>$userInfo['session_key'],'openid'=>$userInfo['openid'],'uid'=>$id,'message'=>'登录成功 '];
                         cache($token,$result);
                         return json_encode($result);
                     }else{
+                        $member= Db::name('MemberAuth')->where('uid',$auth['uid']);
                         $token = create_guid();
-                        $result = ['token'=>$token,'code'=>0,'uid'=>$auth['uid'],'openid'=>$auth['openid'],'message'=>'登录成功 '];
+                        $result = ['token'=>$token,'code'=>0,'nickName'=>$member['nickname'],'sessionkey'=>$userInfo['session_key'],'uid'=>$auth['uid'],'openid'=>$auth['openid'],'message'=>'登录成功 '];
                         cache($token,$result);
                         return json_encode($result);
                     }

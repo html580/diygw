@@ -296,8 +296,8 @@ function getWechatInfo($mpid){
     return $wechatInfo;
 }
 
-function getWechatXcxInfo($mpid){
-    $result = Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' => $mpid])->find();
+function getWechatXcxInfo($mpid,$dashboardid){
+    $result = Db::name('WechatConfig')->where(['name' => 'wxmin', 'mpid' => $mpid, 'dashboard_id' => $dashboardid])->find();
     if(empty($result)){
         throw new Exception("请配置微信小程序相关配置", '0');
     }

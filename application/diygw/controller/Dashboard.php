@@ -271,7 +271,7 @@ class Dashboard extends BasicAdmin{
                 $archive->PclZip($destination);
                 $this->createDir(ROOT_PATH.'/static/diygw/template');
                 $this->createDir(ROOT_PATH.'/static/diygw/template/attachment');
-                $this->createDir(ROOT_PATH.'/static/diygw/template/data');
+                $this->createDir(ROOT_PATH.'/static/diygw/template/data/'.$package['id']);
 
                 if(!$archive->extract(PCLZIP_OPT_PATH, ROOT_PATH.'/static/diygw/', PCLZIP_OPT_REPLACE_NEWER)) {
                     return $this->error('升级失败，请开启template文件夹权限');

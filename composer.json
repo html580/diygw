@@ -21,7 +21,8 @@
     "diygw/diygw-helper": "^1.0",
     "diygw/diygw-addons": "^1.1",
     "diygw/diygw-modelinfo": "^1.0",
-    "php-ffmpeg/php-ffmpeg": "^0.13.0"
+    "php-ffmpeg/php-ffmpeg": "^0.13.0",
+    "phpoffice/phpexcel": "^1.8"
   },
   "repositories": {
     "packagist": {

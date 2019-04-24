@@ -50,7 +50,8 @@ function create_guid($namespace = '') {
     $data .= $_SERVER['REMOTE_ADDR'];
     $data .= $_SERVER['REMOTE_PORT'];
     $hash = strtoupper(hash('ripemd128', $uid . $guid . md5($data)));
-    $guid = date('Ymdhis',time()).substr($hash, 0, 8);
+    $timestr= date('Ymdhis',time());
+    $guid = substr($timestr,2).substr($hash, 0, 8);
     return $guid;
 }
 
@@ -266,7 +267,7 @@ function getTableName($tablename){
 }
 
 
-function addPaymentData($openid='',$member_id = '', $mid = '',$dashboard_id='', $money = '', $title = '', $attach = '', $pay_type = '1', $remark = '',$trade_no='',$from_addon=''){
+function addPaymentData($openid='',$member_id = '', $mid = '',$dashboard_id='', $money = '', $title = '', $attach = '', $pay_type = '1', $remark = '',$trade_no='',$from_addon='',$isxcx=''){
     $data['member_id'] = $member_id;
     $data['dashboard_id'] = $dashboard_id;
     $data['openid'] = $openid;
@@ -280,6 +281,8 @@ function addPaymentData($openid='',$member_id = '', $mid = '',$dashboard_id='', 
     $data['create_time'] = time();
     $data['trade_no'] = $trade_no;
     $data['status'] = 1;
+    $data['isxcx'] = $isxcx;
+
     $id = \think\Db::name('Payment')->insertGetId($data);
     $data['id']=$id;
     if ($id)
@@ -315,11 +318,11 @@ function getWechatPayInfo($mpid){
 }
 
 
-function getPayConfig($mpid,$isxcx){
+function getPayConfig($mpid,$isxcx,$dashboarid){
 
     $wechatInfo = getWechatInfo($mpid);
     if((!empty($isxcx)&&$isxcx=='1')){
-        $wechatXcxInfo  = getWechatPayInfo($mpid);
+        $wechatXcxInfo  = getWechatXcxInfo($mpid,$dashboarid);
         $wechatInfo['appid'] = $wechatXcxInfo['appid'];
         $wechatInfo['appsecret'] = $wechatXcxInfo['appsecret'];
     }
@@ -363,7 +366,7 @@ function logger($content){
 
  * @return bool|json数据，可直接填入js函数作为参数
  */
-function payByWexinJsApi($parment_id = '',$isxcx)
+function payByWexinJsApi($parment_id = '')
 {
     $payment = \think\Db::name('Payment')->where('payment_id',$parment_id)->find();
     if (empty($payment)) {
@@ -371,29 +374,34 @@ function payByWexinJsApi($parment_id = '',$isxcx)
     }
     // 生成预支付码
 
-        $mpid = $payment['mpid'];
-        $config = getPayConfig($mpid,$isxcx);
-        $wechat = new WeChat\Pay($config);
+    $mpid = $payment['mpid'];
+    $isxcx = $payment['isxcx'];
+    $config = getPayConfig($mpid,$isxcx,$payment['dashboard_id']);
+    $wechat = new WeChat\Pay($config);
 
-        $options = [
-            'body'             => $payment['title'],
-            'out_trade_no'     => $payment['trade_no'],
-            'total_fee'        => $payment['money'] * 100,
-            'openid'           => $payment['openid'],
-            'trade_type'       => 'JSAPI',
-            'notify_url'       => url('@wechat/pay/notify', '', true, true),
-            'spbill_create_ip' => app('request')->ip(),
-        ];
-        $result = $wechat->createOrder($options);
+    $options = [
+        'body'             => $payment['title'],
+        'out_trade_no'     => $payment['trade_no'],
+        'total_fee'        => $payment['money'] * 100,
+        'openid'           => $payment['openid'],
+        'trade_type'       => 'JSAPI',
+        'notify_url'       => url('@wechat/pay/notify', '', true, true),
+        'spbill_create_ip' => app('request')->ip(),
+    ];
+    $result = $wechat->createOrder($options);
 
-        // 创建JSAPI参数签名
-        $options = $wechat->createParamsForJsApi($result['prepay_id']);
+    // 创建JSAPI参数签名
+    $options = $wechat->createParamsForJsApi($result['prepay_id']);
+
+
+    // JSSDK 签名配置
+    if((!empty($isxcx)&&$isxcx=='1')){
+        return ['status' =>'success','option'=>$options];
+    }else{
         $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
-
-        // JSSDK 签名配置
         $configJSON = json_encode(service\WechatService::webJsSDK(), JSON_UNESCAPED_UNICODE);
         return ['status' =>'success', 'config'=>$configJSON,'option'=>$optionJSON];
-
+    }
 }
 
 
@@ -408,9 +416,8 @@ function queryOrder($trade_no = '')
     if (!$payment) {
         return ['status' =>'error', 'message' => '订单不存在'];
     }
-    $config = getPayConfig($payment['mpid']);
+    $config = getPayConfig($payment['mpid'],$payment['isxcx'],$payment['dashboard_id']);
     if ($config) {
-
         $wechat = new WeChat\Pay($config);
         $result = $wechat->queryOrder(['out_trade_no'=>$trade_no]);
         try{
@@ -418,11 +425,21 @@ function queryOrder($trade_no = '')
                 if (isset($result['trade_state']) && $result['trade_state'] == 'SUCCESS') {//已经支付
                     if ($payment['status'] == '1') {//订单状态未处理为成功
                         Db::name("payment")->where('trade_no',$trade_no)->update(['status' =>2]);
+                        $data['trade_no'] = $trade_no;
+
                         if(!empty($payment['from_addon'])){
                             $addons = explode(",",$payment['from_addon']);
                             foreach ($addons as $addon){
-                                \think\Db::name($addon)->where(['trade_no' => $trade_no])->update(['status' =>2]);
+                                $status='status';
+                                $tablename=$addon;
+                                if(strpos($addon,':')>0){
+                                    $tablenamestatus = explode(":",$addon);
+                                    $tablename=$tablenamestatus[0];
+                                    $status=$tablenamestatus[1];
+                                }
+                                \think\Db::name($tablename)->where(['trade_no' => $trade_no])->update([$status =>2]);
                             }
+                            hook("paysuccess", $data);
                         }
                         return ['status' =>'success', 'message' => '交易完成','payment'=>$payment];
                     } else {
@@ -440,7 +457,12 @@ function queryOrder($trade_no = '')
     }
     return ['status' =>'error', 'message' => '没有公众号配置信息'];
 }
+function testhook(){
+    logger("paysuctesthookcess");
+    $data['trade_no'] = '190423104334D9062942';
 
+    hook("refundsuccess", $data);
+}
 function refundOrder($trade_no = '')
 {
 
@@ -448,28 +470,37 @@ function refundOrder($trade_no = '')
     if (!$payment) {
         return ['status' =>'error', 'message' => '订单不存在'];
     }
-    $config = getPayConfig($payment['mpid']);
+    $config = getPayConfig($payment['mpid'],$payment['isxcx'],$payment['dashboard_id']);
     if ($config) {
-
         $wechat = new WeChat\Pay($config);
         $out_refund_no=create_guid();
-        $result = $wechat->createRefund(['out_trade_no'=>$trade_no,'out_refund_no'  =>create_guid(),'total_fee' => $payment['money'] * 100,'refund_fee'=>$payment['money'] * 100]);
+        $result = $wechat->createRefund(['out_trade_no'=>$trade_no,'out_refund_no'  =>$out_refund_no,'total_fee' => $payment['money'] * 100,'refund_fee'=>$payment['money'] * 100]);
         try{
             if (isset($result['return_code'])) {
                 if ($result['return_code'] == 'SUCCESS') {
                     if($result['result_code']=="FAIL"){
                         return ['status' =>'error', 'message' => $result['err_code_des']];
                     }else{
-                        Db::name("payment")->where('trade_no',$trade_no)->update(['status' =>5,'refund'=>$out_refund_no]);
+                        $data['trade_no'] = $trade_no;
+                        Db::name("payment")->where('trade_no',$trade_no)->update(['status' =>5,'refund'=>2,'refund_no'=>$out_refund_no]);
+
                         if(!empty($payment['from_addon'])){
                             $addons = explode(",",$payment['from_addon']);
                             foreach ($addons as $addon){
-                                \think\Db::name($addon)->where(['trade_no' => $trade_no])->update(['status' =>5]);
+                                $status='status';
+                                $tablename=$addon;
+                                if(strpos($addon,':')>0){
+                                    $tablenamestatus = explode(":",$addon);
+                                    $tablename=$tablenamestatus[0];
+                                    $status=$tablenamestatus[1];
+                                }
+                                \think\Db::name($tablename)->where(['trade_no' => $trade_no])->update([$status =>5]);
                             }
+                            hook("refundsuccess", $data);
+
                         }
                         return ['status' =>'success', 'message' => '退款成功'];
                     }
-
                 } else {
                     return ['status' =>'error', 'message' => $result['return_code'] . $result['return_msg']];
                 }

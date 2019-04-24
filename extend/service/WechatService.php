@@ -84,6 +84,7 @@ class WechatService
      */
     private static $type = 'WeChat';
 
+    private static $wechatInfo;
     /**
      * 获取微信实例ID
      * @param string $name 实例对象名称
@@ -98,6 +99,7 @@ class WechatService
             $type = self::$type;
         }
         $wechatInfo = self::getWechatInfo();
+
         $wechatPayInfo  = self::getWechatPayInfo();
 
         $config = [
@@ -111,6 +113,7 @@ class WechatService
             'ssl_key'        => $wechatPayInfo['apiclient_key'],
             'cachepath'      => env('cache_path') . 'wechat' . DIRECTORY_SEPARATOR,
         ];
+
         $class = "\\{$type}\\" . ucfirst(strtolower($name));
         if (class_exists($class)) {
             return new $class($config);
@@ -230,7 +233,14 @@ class WechatService
     }
 
     public static  function getMpid(){
-        $mpid = session('mpid');
+
+        $wechatInfo = self::$wechatInfo;
+        if(!empty($wechatInfo)){
+            $mpid = $wechatInfo['id'];
+        }else{
+            $mpid = session('mpid');
+        }
+
         if(empty($mpid)){
             throw new Exception('请在后台配置微信对接授权模式！');
         }
@@ -238,7 +248,10 @@ class WechatService
     }
 
     public static function getWechatInfo(){
-        $wechatInfo = session('wechatInfo');
+        $wechatInfo = self::$wechatInfo;
+        if(empty($wechatInfo)){
+            $wechatInfo = session('wechatInfo');
+        }
         if(empty($wechatInfo)){
             throw new Exception('请在后台配置微信对接授权模式！');
         }
@@ -268,7 +281,10 @@ class WechatService
      */
     public static function getAppid()
     {
-        $wechatInfo = session('wechatInfo');
+        $wechatInfo = self::$wechatInfo;
+        if(empty($wechatInfo)){
+            $wechatInfo = session('wechatInfo');
+        }
         if(empty($wechatInfo)){
             throw new Exception('请在后台配置微信对接授权模式！');
         }
@@ -294,6 +310,11 @@ class WechatService
      */
     public static function __callStatic($name, $arguments)
     {
+        $config = [];
+        if (is_array($arguments) && count($arguments) > 0) {
+            $config = array_shift($arguments);
+        }
+        self::$wechatInfo = $config;
         if (substr($name, 0, 6) === 'WeMini') {
             self::$type = 'WeMini';
             $name = substr($name, 6);

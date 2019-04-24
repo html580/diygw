@@ -14,12 +14,13 @@ use think\facade\Request;
 use think\facade\Config;
 use think\Loader;
 use think\Container;
+use think\Db;
 /**
  * 插件基类控制器
  * Class Controller
  * @Author: DIY官网  diygwcom@foxmail.com <www.diygw.com>
  */
-class Controller extends \controller\BasicData
+class Controller extends \think\Controller
 {
     // 当前插件操作
     protected $addon = null;
@@ -96,4 +97,44 @@ class Controller extends \controller\BasicData
         }
         return parent::fetch($template, $vars, $replace, $config);
     }
+
+    /**
+     * @title 获取插件的配置数组
+     * @param string $name 可选模块名
+     * @return array|mixed|null
+     */
+    final public function getConfig($name=''){
+        static $_config = [];
+        if (empty($name)) {
+            $name = $this->getName();
+        }
+        if (isset($_config[$name])) {
+            return $_config[$name];
+        }
+        $map['name'] = $name;
+        $map['status'] = 1;
+        $config  =   Db::name('Addons')->where($map)->value('config');
+        if($config){
+            $config   =   json_decode($config, true);
+        }else{
+            if (is_file($this->config_file)) {
+                $temp_arr = include $this->config_file;
+                foreach ($temp_arr as $key => $value) {
+                    if ($value['type'] == 'group') {
+                        foreach ($value['options'] as $gkey => $gvalue) {
+                            foreach ($gvalue['options'] as $ikey => $ivalue) {
+                                $config[$ikey] = $ivalue['value'];
+                            }
+                        }
+                    } else {
+                        $config[$key] = $temp_arr[$key]['value'];
+                    }
+                }
+                unset($temp_arr);
+            }
+        }
+        $_config[$name] = $config;
+        return $config;
+    }
+
 }

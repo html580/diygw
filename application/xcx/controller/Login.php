@@ -93,13 +93,15 @@ class Login extends Controller
                         $authdata['type']="2";//微信小程序
                         Db::name('MemberAuth')->insertGetId($authdata);
                         $token = create_guid();
-                        $result = ['token'=>$token,'code'=>0,'sessionkey'=>$userInfo['session_key'],'openid'=>$userInfo['openid'],'uid'=>$id,'message'=>'登录成功 '];
+
+                        $result = ['token'=>$token,'code'=>0,'username'=>$userInfo['username'],'nickName'=>$userInfo['nickname'],'avatarUrl'=>$userInfo['avatarUrl'],'sessionkey'=>$userInfo['session_key'],'openid'=>$userInfo['openid'],'uid'=>$id,'message'=>'登录成功 '];
                         cache($token,$result);
                         return json_encode($result);
                     }else{
-                        $member= Db::name('MemberAuth')->where('uid',$auth['uid']);
+                        $member= Db::name('Member')->where('uid',$auth['uid'])->field('username,nickname,headimgurl')->find();
+
                         $token = create_guid();
-                        $result = ['token'=>$token,'code'=>0,'nickName'=>$member['nickname'],'sessionkey'=>$userInfo['session_key'],'uid'=>$auth['uid'],'openid'=>$auth['openid'],'message'=>'登录成功 '];
+                        $result = ['token'=>$token,'code'=>0,'username'=>$member['username'],'nickName'=>$member['nickname'],'headimgurl'=>$member['headimgurl'],'sessionkey'=>$userInfo['session_key'],'uid'=>$auth['uid'],'openid'=>$auth['openid'],'message'=>'登录成功 '];
                         cache($token,$result);
                         return json_encode($result);
                     }

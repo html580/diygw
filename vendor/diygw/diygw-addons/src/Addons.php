@@ -213,7 +213,7 @@ abstract class Addons{
      * @param string $addons 插件名称
      * @param string $msg 插件描述
      * @param int 类型
-     * @Author: 小矮人  82550565@qq.com <www.twothink.cn>
+     * @Author: DIYGW.COM  280160522@qq.com <www.twothink.cn>
      */
     public function existHook($str, $addons, $msg = '',$type = 1) {
         $hook_mod = Db::name( 'Hooks' );
@@ -244,7 +244,7 @@ abstract class Addons{
     /*
      * @title 查询单条钩子信息
      * @param array $name 钩子名称
-     * @Author: 小矮人  82550565@qq.com <www.twothink.cn>
+     * @Author: DIYGW.COM  280160522@qq.com <www.twothink.cn>
      */
     public function findHooks($name) {
         return $data = Db::name('Hooks')->getByName($name);
@@ -252,7 +252,7 @@ abstract class Addons{
     /*
      * @title 删除钩子
      * @param array $name 钩子名称
-     * @Author: 小矮人  82550565@qq.com <www.twothink.cn>
+     * @Author: DIYGW.COM  280160522@qq.com <www.twothink.cn>
      */
     public function delHooks($name) {
         $gd_name = ['pageHeader','pageFooter','documentEditForm','documentDetailAfter','documentDetailBefore','documentSaveComplete','documentEditFormContent','adminArticleEdit','topicComment','app_begin'];

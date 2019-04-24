@@ -56,11 +56,16 @@
 					</select>
 				</div>
 			</div>
-			{present name="vo"}
+			<div class="form-group">
+				<label class="item-label">插件列表<span class="check-tips">（影响同一个钩子挂载的插件执行先后顺序，多个有逗号隔开）</span></label>
+				<div class="controls">
+					<input type="text" value="{$vo.addons}" name="addons" class="layui-input">
+				</div>
+			</div>
+			<!--{present name="vo"}
 				<div class="form-group">
 					<label class="item-label">钩子挂载的插件排序<span class="check-tips">（拖动后保存顺序，影响同一个钩子挂载的插件执行先后顺序）</span></label>
 					<div class="controls">
-						<input type="hidden" name="addons" value="{$vo.addons}" readonly>
 						{empty name="vo.addons"}
 							暂无插件，无法排序
 						{else/}
@@ -97,7 +102,7 @@
 						{/empty}
 					</div>
 				</div>
-			{/present}
+			{/present}-->
 			<input type="hidden" name="id" value="{$vo.id}">
 			<div class="btn-submit-group  text-center">
 				<button class="layui-btn" type='submit'>保存数据</button>

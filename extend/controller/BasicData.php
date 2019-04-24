@@ -608,7 +608,7 @@ class BasicData extends Controller
             $table = $this->getTable();//获取不带前缀的表名
             $ids    =   $this->request->request('values/a');
             $field    =   $this->request->request('field');
-            if(empty($field)){
+            if(!empty($field)&&strpos($field,"_")){
                 $db= Db::table($table)->find(substr($field,0,strpos($field,"_")),$ids);
             }else{
                 $db= Db::table($table)->whereIn('id',$ids);
@@ -676,14 +676,18 @@ class BasicData extends Controller
     public function file()
     {
         $files = $this->request->file();
+        $uid= $this->request->request("uid");
+        if(empty($uid)){
+            $uid='default';
+        }
         foreach ($files as $file){
             $names = str_split($file->hash('md5'), 16);
 
             $ext = strtolower(pathinfo($file->getInfo('name'), 4));
             $ext = $ext ? $ext : 'tmp';
-            $filename = "{$names[0]}/{$names[1]}.{$ext}";
+            $filename = "{$uid}/{$names[0]}/{$names[1]}.{$ext}";
             // 文件上传处理
-            if (($info = $file->move("static/upload/{$names[0]}", "{$names[1]}.{$ext}", true))) {
+            if (($info = $file->move("static/upload/{$uid}/{$names[0]}", "{$names[1]}.{$ext}", true))) {
                 if (($site_url = FileService::getFileUrl($filename, 'local'))) {
                     return json(['url' => $site_url, 'code' => 'SUCCESS', 'msg' => '文件上传成功']);
                 }
@@ -697,13 +701,17 @@ class BasicData extends Controller
     public function uploadvideo()
     {
         $files = $this->request->file();
+        $uid= $this->request->request("uid");
+        if(empty($uid)){
+            $uid='default';
+        }
         foreach ($files as $file){
             $names = str_split($file->hash('md5'), 16);
             $ext = strtolower(pathinfo($file->getInfo('name'), 4));
             $ext = $ext ? $ext : 'tmp';
-            $filename = "{$names[0]}/{$names[1]}.{$ext}";
+            $filename = "{$uid}/{$names[0]}/{$names[1]}.{$ext}";
             // 文件上传处理
-            if (($info = $file->move("static/upload/{$names[0]}", "{$names[1]}.{$ext}", true))) {
+            if (($info = $file->move("static/upload/{$uid}/{$names[0]}", "{$names[1]}.{$ext}", true))) {
                 $ffmpeg = FFMpeg::create([
                     'ffmpeg.binaries' => 'd:\ffmpeg\bin\ffmpeg.EXE',
                     'ffprobe.binaries' => 'd:\ffmpeg\bin\ffprobe.exe',
@@ -729,5 +737,30 @@ class BasicData extends Controller
             return json(['code' => 'ERROR', 'msg' => '文件上传失败']);
         }
 
+    }
+
+
+    public function saveformid(){
+        try {
+            $formid = $this->request->request("formid");
+            $openid  = $this->request->request("openid");
+            $dashboarid =$this->request->request("dashboardid");
+            $mpid =$this->request->request("mpid");
+            $data['dashboard_id']=$dashboarid;
+            $data['mpid']=$mpid;
+            $data['formid']=$formid;
+            $data['openid']=$openid;
+            $data['status']=1;
+            $data['user_id'] = $this->getUid();
+            $data["create_time"] =  date("Y-m-d H:i:s", time());
+            $data["update_time"] =  date("Y-m-d H:i:s", time());
+            Db::name('AppForm')->insert($data);
+            $info = ['status'=>'success', 'message'=>'保存成功'];
+            echo json_encode($info);
+
+        } catch (\Exception $e) {
+            $info = ['status'=>'error', 'message'=>'保存失败'.$e];
+            echo json_encode($info);
+        }
     }
 }

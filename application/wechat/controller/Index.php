@@ -50,6 +50,7 @@ class Index extends Controller
      */
     protected $receive;
 
+    protected $wechat;
 
     /**
      * 微信消息接口（来自在公众号官方的消息推送）
@@ -68,18 +69,25 @@ class Index extends Controller
         if (empty($mpid) || !is_numeric($mpid)) {
             exit('Access denied');
         }
+
         $this->mpid = $mpid;
         $wechatInfo = Db::name('wechat')->where(['id' => $mpid])->find();
         if(empty($wechatInfo)){
             exit('Access denied');
         }
-        session('wechatInfo',$wechatInfo);
-        session('mpid',$wechatInfo['id']);
-        $wechat = WechatService::WeChatReceive();
+        //session('wechatInfo',$wechatInfo);
+        //session('mpid',$wechatInfo['id']);
+        try{
+            $wechat = WechatService::WeChatReceive($wechatInfo);
+        }catch (Exception $e){
+        }
+        $this->wechat = $wechat;
         $this->openid = $wechat->getOpenid();
         $this->receive = $wechat->getReceive();
         $this->appid = WechatService::getAppid();
-        return $this->init();
+        $result = $this->init();
+        logger($result);
+        return $result;
     }
 
     /**
@@ -90,6 +98,7 @@ class Index extends Controller
      */
     private function init()
     {
+
         if ($this->appid !== WechatService::getAppid()) {
             throw new Exception('微信API实例APPID验证失败.');
         }
@@ -181,11 +190,14 @@ class Index extends Controller
     protected function keys($rule, $isLastReply = false)
     {
         list($table, $field, $value) = explode('#', $rule . '##');
-        $info = Db::name($table)->where($field, $value)->find();
+        $db = Db::name($table);
+        $info = $db->where($field, $value)->where('mpid',$this->mpid)->find();
+
         if (empty($info['type']) || (array_key_exists('status', $info) && empty($info['status']))) {
             // 切换默认回复
             return $isLastReply ? false : $this->keys('wechat_keys#keys#default', true);
         }
+
         switch ($info['type']) {
             case 'customservice':
                 return $this->sendMessage('customservice', ['content' => $info['content']]);
@@ -249,8 +261,9 @@ class Index extends Controller
      */
     protected function sendMessage($type, $data)
     {
-        $msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
-        $wechat = WechatService::WeChatReceive();
+        //$msgData = ['touser' => $this->openid, 'msgtype' => $type, "{$type}" => $data];
+        $wechat = $this->wechat;
+
         switch (strtolower($type)) {
             case 'text':
                 return $wechat->text($data['content'])->reply([], true);

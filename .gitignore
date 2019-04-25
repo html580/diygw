@@ -17,8 +17,4 @@ application/tags.php
 application/middleware.php
 config/install.lock
 application/index/controller/Video.php
-addons/bmy/controller/Data.php
-addons/bmy/Bmy.php
-addons/bmy/controller/Index.php
-addons/bmy/Common.php
-addons/bmy/controller/Index.php
+addons

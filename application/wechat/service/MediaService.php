@@ -61,13 +61,13 @@ class MediaService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function uploadImage($local_url)
+    public static function uploadImage($wechatInfo,$local_url)
     {
         $map = ['md5' => md5($local_url)];
         if (($media_url = Db::name('WechatNewsImage')->where($map)->value('media_url'))) {
             return $media_url;
         }
-        $info = WechatService::WeChatMedia()->uploadImg(self::getServerPath($local_url));
+        $info = WechatService::WeChatMedia($wechatInfo)->uploadImg(self::getServerPath($local_url));
         /*if (strtolower(sysconf('wechat_type')) === 'thr') {
             WechatService::wechat()->rmFile($local_url);
         }*/
@@ -87,13 +87,13 @@ class MediaService
      * @throws \think\Exception
      * @throws \think\exception\PDOException
      */
-    public static function uploadForeverMedia($local_url, $type = 'image', $video_info = [])
+    public static function uploadForeverMedia($wechatInfo,$local_url, $type = 'image', $video_info = [])
     {
-        $map = ['md5' => md5($local_url), 'appid' => WechatService::getAppid(), 'mpid' => WechatService::getMpid()];
+        $map = ['md5' => md5($local_url), 'appid' =>$wechatInfo['appid'], 'mpid' => $wechatInfo['appsecret']];
         if (($media_id = Db::name('WechatNewsMedia')->where($map)->value('media_id'))) {
             return $media_id;
         }
-        $result = WechatService::WeChatMedia()->addMaterial(self::getServerPath($local_url), $type, $video_info);
+        $result = WechatService::WeChatMedia($wechatInfo)->add(self::getServerPath($local_url), $type, $video_info);
         /*if (strtolower(sysconf('wechat_type')) === 'thr') {
             WechatService::wechat()->rmFile($local_url);
         }*/

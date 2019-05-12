@@ -52,6 +52,7 @@ class Index extends Controller
 
     protected $wechat;
 
+    protected $wechatInfo;
     /**
      * 微信消息接口（来自在公众号官方的消息推送）
      * @return string
@@ -75,6 +76,7 @@ class Index extends Controller
         if(empty($wechatInfo)){
             exit('Access denied');
         }
+        $this->wechatInfo = $wechatInfo;
         //session('wechatInfo',$wechatInfo);
         //session('mpid',$wechatInfo['id']);
         try{
@@ -86,7 +88,6 @@ class Index extends Controller
         $this->receive = $wechat->getReceive();
         $this->appid = WechatService::getAppid();
         $result = $this->init();
-        logger($result);
         return $result;
     }
 
@@ -220,16 +221,16 @@ class Index extends Controller
                 if (empty($info['music_url']) || empty($info['music_title']) || empty($info['music_desc'])) {
                     return false;
                 }
-                $media_id = empty($info['music_image']) ? '' : MediaService::uploadForeverMedia($info['music_image'], 'image');
+                $media_id = empty($info['music_image']) ? '' : MediaService::uploadForeverMedia($this->wechatInfo,$info['music_image'], 'image');
                 $data = ['title' => $info['music_title'], 'description' => $info['music_desc'], 'musicurl' => $info['music_url'], 'hqmusicurl' => $info['music_url'], 'thumb_media_id' => $media_id];
                 return $this->sendMessage('music', $data);
             case 'voice':
-                if (empty($info['voice_url']) || !($media_id = MediaService::uploadForeverMedia($info['voice_url'], 'voice'))) {
+                if (empty($info['voice_url']) || !($media_id = MediaService::uploadForeverMedia($this->wechatInfo,$info['voice_url'], 'voice'))) {
                     return false;
                 }
                 return $this->sendMessage('voice', ['media_id' => $media_id]);
             case 'image':
-                if (empty($info['image_url']) || !($media_id = MediaService::uploadForeverMedia($info['image_url'], 'image'))) {
+                if (empty($info['image_url']) || !($media_id = MediaService::uploadForeverMedia($this->wechatInfo,$info['image_url'], 'image'))) {
                     return false;
                 }
                 return $this->sendMessage('image', ['media_id' => $media_id]);
@@ -238,7 +239,7 @@ class Index extends Controller
                     return false;
                 }
                 $videoData = ['title' => $info['video_title'], 'introduction' => $info['video_desc']];
-                if (!($media_id = MediaService::uploadForeverMedia($info['video_url'], 'video', $videoData))) {
+                if (!($media_id = MediaService::uploadForeverMedia($this->wechatInfo,$info['video_url'], 'video', $videoData))) {
                     return false;
                 }
                 $data = ['media_id' => $media_id, 'title' => $info['video_title'], 'description' => $info['video_desc']];
@@ -355,7 +356,7 @@ class Index extends Controller
     protected function updateFansinfo($subscribe = true)
     {
         if ($subscribe) {
-            $userInfo = WechatService::WeChatUser()->getUserInfo($this->openid);
+            $userInfo = WechatService::WeChatUser($this->wechatInfo)->getUserInfo($this->openid);
             $userInfo['subscribe'] = intval($subscribe);
             FansService::set($userInfo);
         } else {

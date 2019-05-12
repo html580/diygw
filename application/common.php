@@ -15,7 +15,7 @@
 use service\DataService;
 use service\NodeService;
 use think\Db;
-
+use think\Exception;
 /**
  * 生成随机字符串
  * @param $length int 字符串长度
@@ -319,28 +319,32 @@ function getWechatPayInfo($mpid){
 
 
 function getPayConfig($mpid,$isxcx,$dashboarid){
+    try{
+        $wechatInfo = getWechatInfo($mpid);
+        if((!empty($isxcx)&&$isxcx=='1')){
+            $wechatXcxInfo  = getWechatXcxInfo($mpid,$dashboarid);
+            $wechatInfo['appid'] = $wechatXcxInfo['appid'];
+            $wechatInfo['appsecret'] = $wechatXcxInfo['appsecret'];
+        }
+        $wechatPayInfo  = getWechatPayInfo($mpid);
+        if(empty($wechatInfo) || empty($wechatPayInfo)){
+            return null;
+        }
+        $config = [
+            'token'          => $wechatInfo['valid_token'],
+            'appid'          => $wechatInfo['appid'],
+            'appsecret'      => $wechatInfo['appsecret'],
+            'encodingaeskey' => $wechatInfo['encodingaeskey'],
+            'mch_id'         => $wechatPayInfo['mchid'],
+            'mch_key'        => $wechatPayInfo['paysignkey'],
+            'ssl_cer'        => $wechatPayInfo['apiclient_cert'],
+            'ssl_key'        => $wechatPayInfo['apiclient_key']
+        ];
+        return $config;
+    }catch (Exception $e){
+        throw $e;
+    }
 
-    $wechatInfo = getWechatInfo($mpid);
-    if((!empty($isxcx)&&$isxcx=='1')){
-        $wechatXcxInfo  = getWechatXcxInfo($mpid,$dashboarid);
-        $wechatInfo['appid'] = $wechatXcxInfo['appid'];
-        $wechatInfo['appsecret'] = $wechatXcxInfo['appsecret'];
-    }
-    $wechatPayInfo  = getWechatPayInfo($mpid);
-    if(empty($wechatInfo) || empty($wechatPayInfo)){
-        return null;
-    }
-    $config = [
-        'token'          => $wechatInfo['valid_token'],
-        'appid'          => $wechatInfo['appid'],
-        'appsecret'      => $wechatInfo['appsecret'],
-        'encodingaeskey' => $wechatInfo['encodingaeskey'],
-        'mch_id'         => $wechatPayInfo['mchid'],
-        'mch_key'        => $wechatPayInfo['paysignkey'],
-        'ssl_cer'        => $wechatPayInfo['apiclient_cert'],
-        'ssl_key'        => $wechatPayInfo['apiclient_key']
-    ];
-    return $config;
 }
 
 /* 定义logger来写日志 用来调试 */
@@ -368,39 +372,43 @@ function logger($content){
  */
 function payByWexinJsApi($parment_id = '')
 {
-    $payment = \think\Db::name('Payment')->where('payment_id',$parment_id)->find();
-    if (empty($payment)) {
-        return ['status' =>'error', 'message' => '订单不存在'];
-    }
-    // 生成预支付码
+    try{
+        $payment = \think\Db::name('Payment')->where('payment_id',$parment_id)->find();
+        if (empty($payment)) {
+            return ['status' =>'error', 'message' => '订单不存在'];
+        }
+        // 生成预支付码
 
-    $mpid = $payment['mpid'];
-    $isxcx = $payment['isxcx'];
-    $config = getPayConfig($mpid,$isxcx,$payment['dashboard_id']);
-    $wechat = new WeChat\Pay($config);
+        $mpid = $payment['mpid'];
+        $isxcx = $payment['isxcx'];
+        $config = getPayConfig($mpid,$isxcx,$payment['dashboard_id']);
+        $wechat = new WeChat\Pay($config);
 
-    $options = [
-        'body'             => $payment['title'],
-        'out_trade_no'     => $payment['trade_no'],
-        'total_fee'        => $payment['money'] * 100,
-        'openid'           => $payment['openid'],
-        'trade_type'       => 'JSAPI',
-        'notify_url'       => url('@wechat/pay/notify', '', true, true),
-        'spbill_create_ip' => app('request')->ip(),
-    ];
-    $result = $wechat->createOrder($options);
+        $options = [
+            'body'             => $payment['title'],
+            'out_trade_no'     => $payment['trade_no'],
+            'total_fee'        => $payment['money'] * 100,
+            'openid'           => $payment['openid'],
+            'trade_type'       => 'JSAPI',
+            'notify_url'       => url('@wechat/pay/notify', '', true, true),
+            'spbill_create_ip' => app('request')->ip(),
+        ];
+        $result = $wechat->createOrder($options);
 
-    // 创建JSAPI参数签名
-    $options = $wechat->createParamsForJsApi($result['prepay_id']);
+        // 创建JSAPI参数签名
+        $options = $wechat->createParamsForJsApi($result['prepay_id']);
 
 
-    // JSSDK 签名配置
-    if((!empty($isxcx)&&$isxcx=='1')){
-        return ['status' =>'success','option'=>$options];
-    }else{
-        $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
-        $configJSON = json_encode(service\WechatService::webJsSDK(), JSON_UNESCAPED_UNICODE);
-        return ['status' =>'success', 'config'=>$configJSON,'option'=>$optionJSON];
+        // JSSDK 签名配置
+        if((!empty($isxcx)&&$isxcx=='1')){
+            return ['status' =>'success','option'=>$options];
+        }else{
+            $optionJSON = json_encode($options, JSON_UNESCAPED_UNICODE);
+            $configJSON = json_encode(service\WechatService::webJsSDK(), JSON_UNESCAPED_UNICODE);
+            return ['status' =>'success', 'config'=>$configJSON,'option'=>$optionJSON];
+        }
+    }catch (Exception $e){
+        throw $e;
     }
 }
 

@@ -122,12 +122,13 @@
             $rootScope.list = [];
             $rootScope.item = {};
 
+            {if !empty($id)}
             $.form.load('{:request()->url()}', {output: 'json'}, 'get', function (ret) {
                 return $rootScope.$apply(function () {
                     apply((ret.data || {articles: []}).articles || []);
                 }), false;
             });
-
+            {/if}
             function apply(data) {
                 if (data.length < 1) {
                     data.push({

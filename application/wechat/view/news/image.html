@@ -23,7 +23,8 @@
 
 {block name="script"}
 <script>
-    $(function () {
+    var $ = layui.$;
+   // $(function () {
         /*! 分页事件切换处理 */
         $('body').off('change', '.pagination-trigger select').on('change', '.pagination-trigger select', function () {
             var urls = this.options[this.selectedIndex].getAttribute('data-url').split('#');
@@ -37,6 +38,6 @@
             top.$('[name="{$field}"]').val(src).trigger('change');
             parent.layer.close(parent.layer.getFrameIndex(window.name));
         });
-    });
+   // });
 </script>
 {/block}

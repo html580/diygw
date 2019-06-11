@@ -271,13 +271,21 @@ class BasicData extends Controller
                 $selectTables = array();
                 $wheres = array();
 
+                $dbid=$this->request->request("dbid");
+                $aliasindex = 0;
                 foreach ($tables as $formid => $columns) {
                     $map=[];
-                    $map["name"]=$dashboardid."_".$formid;
-                    $tableName = $this->getTbName($map["name"]);
-                    if(!$tableName){
-                        $tableName = $this->getTbName($formid);
+                    if(empty($dbid)){
+                        $map["name"]=$dashboardid."_".$formid;
+                        $tableName = $this->getTbName($map["name"]);
+                        if(!$tableName){
+                            $tableName = $this->getTbName($formid);
+                        }
+                    }else{
+                        $tableName = $this->getTbName($formid,false);
                     }
+
+
                     if(!$tableName){
                         $message=[
                             'status'       => "error",
@@ -288,9 +296,14 @@ class BasicData extends Controller
                         echo json_encode($message);
                         return;
                     }
-
+                    $askey=0;
+                    if($aliasindex>0){
+                        $askey = $aliasindex;
+                    }
+                    $aliasindex++;
                     $tableAlias["name"]=$tableName;
-                    $alias = "t".$formid;
+                    $alias = "t".$askey;
+
                     $tableAlias["alias"]=$alias;
                     $selectTables[] = $tableAlias;
 
@@ -325,14 +338,17 @@ class BasicData extends Controller
                             $sql=$sql." ".$alias.".".$field.", ";
                         }
                     }
-                    if(!$idExist){
+                    if(!$idExist && in_array('id',$existfields)){
                         $sql=$sql." ".$alias.".id"." id_".$formid."_1 , ";
                     }
                 }
                 $sql=substr($sql,0,strripos($sql,","));
                 $sql.=" from ";
+
+                $tableset = array();;
                 foreach ($selectTables as $i=>$alias) {
                     $sql=$sql." ".$alias["name"]." as ".$alias["alias"].", ";
+                    $tableset[$alias["name"]]=$alias["alias"];
                 }
                 $sql=substr($sql,0,strripos($sql,","));
 
@@ -341,22 +357,37 @@ class BasicData extends Controller
 
                 foreach ($links as $i=>$link) {
                     $fromOperator = $link->fromOperator;
-                    $fromOperator =substr($fromOperator,4);
                     $fromConnector = $link->fromConnector;
                     $fromConnector =substr($fromConnector,7);
+
                     $toOperator = $link->toOperator;
-                    $toOperator =substr($toOperator,4);
                     $toConnector = $link->toConnector;
                     $toConnector =substr($toConnector,6);
-                    $sql.=" where t$fromOperator.$fromConnector=t$toOperator.$toConnector";
+
+                    if(empty($dbid)) {
+                        foreach ($selectTables as $i=>$alias) {
+                            if(strpos($alias["name"],$fromOperator)){
+                                $fromOperator=$alias["alias"];
+                            }
+                            if(strpos($alias["name"],$toOperator)){
+                                $toOperator=$alias["alias"];
+                            }
+                        }
+                        $sql .= " where $fromOperator.$fromConnector=$toOperator.$toConnector";
+                    }else{
+                        $sql .= " where $tableset[$fromOperator].$fromConnector=$tableset[$toOperator].$toConnector";
+                    }
+
                 }
 
-                $sql .=" order by ";
-                foreach ($selectTables as $i=>$alias) {
-                    $sql=$sql." ".$alias["alias"].".create_time, ";
+                if(empty($dbid)) {
+                    $sql .= " order by ";
+                    foreach ($selectTables as $i => $alias) {
+                        $sql = $sql . " " . $alias["alias"] . ".create_time, ";
+                    }
+                    $sql = substr($sql, 0, strripos($sql, ","));
+                    $sql .= " desc ";
                 }
-                $sql=substr($sql,0,strripos($sql,","));
-                $sql .=" desc ";
 
                 $psize 	= 10;
                 $r=$this->request->request('r');
@@ -374,10 +405,10 @@ class BasicData extends Controller
 
                 $countSql = " select count(1) total from ($sql) t";
 
-                $totalResult = \think\Db::query($countSql);
+                $totalResult = $this->getUserDb()->query($countSql);
 
                 $sql.=" limit $offset , $psize ";
-                $resultSet = \think\Db::query($sql);
+                $resultSet = $this->getUserDb()->query($sql);
                 $results = array();
                 foreach ($resultSet as $key => $result) {
                     $results[] = $result;

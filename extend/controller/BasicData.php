@@ -270,9 +270,13 @@ class BasicData extends Controller
                 $sql = "select ";
                 $selectTables = array();
                 $wheres = array();
+                $wherelikes = array();
 
                 $dbid=$this->request->request("dbid");
                 $aliasindex = 0;
+
+                $params =  request()->except(['order','offset','columns','limit','links','action','formid','dashboardid','isinfinite']);
+
                 foreach ($tables as $formid => $columns) {
                     $map=[];
                     if(empty($dbid)){
@@ -316,6 +320,17 @@ class BasicData extends Controller
                         $existfields[] = $value["Field"];
                     }
 
+
+                    foreach ($params as $key => $value) {
+                        if(strpos($key,'zdcs')!==false){
+                            $field = substr($key,4);
+                            if (in_array($field, $existfields)) {
+                                $wherelikes[$alias.".".$field] = $value;
+                            }
+                        }
+                    }
+
+
                     foreach ($columns as $column) {//遍历配置字段拼接SQL
                         $field = $column['field'];
                         if(!in_array($field,$existfields)){
@@ -355,6 +370,11 @@ class BasicData extends Controller
                 $links = $this->request->request("links");
                 $links = json_decode($links);
 
+                $sql = $sql." where 1=1 ";
+                foreach ($wherelikes as $key=>$value) {
+                    $sql=$sql." and ".$key." like '%".$value."%' ";
+                }
+
                 foreach ($links as $i=>$link) {
                     $fromOperator = $link->fromOperator;
                     $fromConnector = $link->fromConnector;
@@ -373,12 +393,14 @@ class BasicData extends Controller
                                 $toOperator=$alias["alias"];
                             }
                         }
-                        $sql .= " where $fromOperator.$fromConnector=$toOperator.$toConnector";
+                        $sql .= " and $fromOperator.$fromConnector=$toOperator.$toConnector";
                     }else{
-                        $sql .= " where $tableset[$fromOperator].$fromConnector=$tableset[$toOperator].$toConnector";
+                        $sql .= " and $tableset[$fromOperator].$fromConnector=$tableset[$toOperator].$toConnector";
                     }
 
                 }
+
+
 
                 if(empty($dbid)) {
                     $sql .= " order by ";

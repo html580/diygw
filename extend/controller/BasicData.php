@@ -341,7 +341,11 @@ class BasicData extends Controller
                         }
                         $fields[]=$field;
                         if($field=="id"){
-                            $sql=$sql." ".$alias.".id"." id_".$formid."_1 , ";
+                            if(empty($dbid)) {
+                                $sql = $sql . " " . $alias . ".id" . " id_" . $formid . "_1 , ";
+                            }else{
+                                $sql = $sql . " " . $alias . ".id," ;
+                            }
                             $idExist= true;
                         }else if($field=="user_id"){
                             $sql=$sql." ".$alias.".create_time"." id_".$formid."_2 , ";
@@ -463,12 +467,17 @@ class BasicData extends Controller
 
             if(empty($map["id"])){
                 //$map['user_id'] = $this->getUid();
-                $map["id"]=create_guid();
-                $map["create_time"] =  date("Y-m-d H:i:s", time());
-                $map["update_time"] =  date("Y-m-d H:i:s", time());
-                if(empty($map["status"])){
-                    $map["status"] = "1";
+                $dbid = $this->request->request("dbid");
+                if(empty($dbid)){
+                    $map["id"]=create_guid();
+                    $map["create_time"] =  date("Y-m-d H:i:s", time());
+                    $map["update_time"] =  date("Y-m-d H:i:s", time());
+                    if(empty($map["status"])){
+                        $map["status"] = "1";
+                    }
                 }
+
+
                 try{
                     $this->getUserDb()->table($table)->insert($map);
                     $info = ['id'=>$map["id"],'status'=>'success', 'message'=>'保存数据成功'];
@@ -596,6 +605,10 @@ class BasicData extends Controller
         $dbid = $this->request->request("dbid");
         if(!empty($dbid)){
             $db = $this->getUserDb();
+            if(empty($formid)){
+                $formid = $this->request->request("tableName");
+            }
+
             $table_name=$formid;
             $sql = "SHOW TABLES LIKE '$table_name'";
             $res = count($db->query($sql));
@@ -608,7 +621,7 @@ class BasicData extends Controller
 
         $tablename = $this->getLocalTableName();
         if(!empty($tablename)){
-            $forbidTable=['wechat','member','system','payment','db','addons','hooks'];
+            $forbidTable=['member','system','payment','db','addons','hooks'];
             foreach ($forbidTable as $value) {
                if(strpos(strtolower($tablename),strtolower(config('database.prefix').$value))!==false) {
                    return null;
@@ -661,10 +674,14 @@ class BasicData extends Controller
             $table = $this->getTable();//获取不带前缀的表名
             $ids    =   $this->request->request('values/a');
             $field    =   $this->request->request('field');
+            $db = $this->getUserDb();
             if(!empty($field)&&strpos($field,"_")){
-                $db= Db::table($table)->find(substr($field,0,strpos($field,"_")),$ids);
+                $db->table($table)->whereIn(substr($field,0,strpos($field,"_")),$ids);
             }else{
-                $db= Db::table($table)->whereIn('id',$ids);
+                if(empty($field)){
+                    $field='id';
+                }
+                $db->table($table)->whereIn($field,$ids);
             }
             if($db->delete()){
                 $info = ['status'=>'success', 'message'=>'删除数据成功'];

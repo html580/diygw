@@ -239,8 +239,9 @@ function aesEncrypt($data){
 function aesDecrypt($data){
     $privateKey = "diygwcomdiygwcom";
     $iv    = "diygwcomdiygwcom";
-    $encryptedData = base64_decode($data);
-    $decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $privateKey, $encryptedData, MCRYPT_MODE_CBC, $iv);
+
+    //$decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $privateKey, $encryptedData, MCRYPT_MODE_CBC, $iv);
+    $decrypted =openssl_decrypt($data,"aes-128-cbc",$privateKey,OPENSSL_ZERO_PADDING,$iv);
     return $decrypted;
 }
 

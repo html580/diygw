@@ -33,7 +33,8 @@ class User extends BasicAdmin
      * @var string
      */
     public $table = 'SystemUser';
-
+    public $currentMenuUrl='user/index';
+    public $formSuccessUrl='user/index';
     /**
      * 用户列表
      * @return array|string
@@ -116,7 +117,7 @@ class User extends BasicAdmin
         }
         $data = ['id' => $post['id'], 'password' => md5($post['password'])];
         if (DataService::save($this->table, $data, 'id')) {
-            $this->success('密码修改成功，下次请使用新密码登录！', '');
+            $this->success('密码修改成功，下次请使用新密码登录！', $this->formSuccessUrl);
         }
         $this->error('密码修改失败，请稍候再试！');
     }
@@ -158,7 +159,7 @@ class User extends BasicAdmin
             $this->error('系统超级账号禁止删除！');
         }
         if (DataService::update($this->table)) {
-            $this->success("用户删除成功！", '');
+            $this->success("用户删除成功！", $this->formSuccessUrl);
         }
         $this->error("用户删除失败，请稍候再试！");
     }
@@ -174,7 +175,7 @@ class User extends BasicAdmin
             $this->error('系统超级账号禁止操作！');
         }
         if (DataService::update($this->table)) {
-            $this->success("用户禁用成功！", '');
+            $this->success("用户禁用成功！", $this->formSuccessUrl);
         }
         $this->error("用户禁用失败，请稍候再试！");
     }
@@ -187,7 +188,7 @@ class User extends BasicAdmin
     public function resume()
     {
         if (DataService::update($this->table)) {
-            $this->success("用户启用成功！", '');
+            $this->success("用户启用成功！", $this->formSuccessUrl);
         }
         $this->error("用户启用失败，请稍候再试！");
     }

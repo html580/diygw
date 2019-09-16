@@ -2,7 +2,7 @@
 
 {block name="button"}
 {if auth("$classuri/add")}
-<button data-modal='{:url("$classuri/add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
+<button data-open='{:url("$classuri/add")}' data-title="添加用户" class='layui-btn layui-btn-sm layui-btn-primary'>添加用户</button>
 {/if}
 
 {if auth("$classuri/del")}

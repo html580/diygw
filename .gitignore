@@ -18,3 +18,4 @@ application/middleware.php
 config/install.lock
 application/index/controller/Video.php
 addons
+test.php

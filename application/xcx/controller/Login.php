@@ -160,6 +160,7 @@ class Login extends Controller
         cookie("user".session('mpid'),json_encode($member));
         echo json_encode(['status'=>'success','message'=>'登录册成功!']);
     }
+
     public function register()
     {
         $data= $this->request->request();

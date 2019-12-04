@@ -1,5 +1,25 @@
 {extend name='admin@public/content'}
 
 {block name="content"}
+<style>
+    .sys_info{
+        display: flex
+    }
+    .sys_info div{
+        padding:15px;
+    }
+</style>
+<div class="col-md-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">系统版本</div>
+        <div class="sys_info">
+            <div>当前版本：{$version}</div>
+            {if !empty($diygw_cloud_version)}
+            <div>服务器最新版本为{$diygw_cloud_version}</div>
+            <div><a data-update="true"  data-message="您确定要更新吗？" data-successmsg="更新成功" data-action="{:url('update')}">点击更新</a></div>
+            {/if}
+        </div>
+    </div>
+</div>
 {:hook('AdminIndex')}
 {/block}

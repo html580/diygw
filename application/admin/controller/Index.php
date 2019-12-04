@@ -1,19 +1,20 @@
 <?php
 
 // +----------------------------------------------------------------------
-// | ThinkAdmin
+// | Diygw
 // +----------------------------------------------------------------------
-// | 版权所有 2014~2017 广州楚才信息科技有限公司 [ http://www.cuci.cc ]
+// | 版权所有 2014~2018 DIY官网 [ http://www.diygw.com ]
 // +----------------------------------------------------------------------
-// | 官方网站: http://think.ctolog.com
+// | 官方网站: http://www.diygw.com
 // +----------------------------------------------------------------------
 // | 开源协议 ( https://mit-license.org )
 // +----------------------------------------------------------------------
-// | github开源项目：https://github.com/zoujingli/ThinkAdmin
+// | github开源项目：https://github.com/html580/diygw
 // +----------------------------------------------------------------------
 
 namespace app\admin\controller;
 
+use app\diygw\common\PclZip;
 use controller\BasicAdmin;
 use service\DataService;
 use service\NodeService;
@@ -46,6 +47,20 @@ class Index extends BasicAdmin
         if (!session('user.id')) {
             $this->redirect('@admin/login');
         }
+        $headers = array('content-type' => 'application/x-www-form-urlencoded');
+        $vresion = ihttp_request('http://cloud.diygw.com/admin/cloud/getVersion.html', '', $headers, 1);
+        $versions = json_decode($vresion['content'],true);
+        $version  = sysconf("diygw_cloud_version");
+        if(empty($version)){$version=20191201000000;};
+        $this->assign('version',$version);
+        if(!empty($versions['dir'])){
+            $cloundVersion = explode('.',$versions['dir'][count($versions['dir'])-1])[0];
+            if($version<$cloundVersion){
+                $this->assign('diygw_cloud_version', $cloundVersion);
+            }else{
+                $this->assign('version',$version.'最新版');
+            }
+        }
         return $this->fetch('main', ['title' => '系统管理']);
     }
 
@@ -56,6 +71,7 @@ class Index extends BasicAdmin
      */
     public function main()
     {
+
         $_version = Db::query('select version() as ver');
         return $this->fetch('', [
             'title'     => '后台首页',
@@ -148,5 +164,39 @@ class Index extends BasicAdmin
         closedir($handle);
 
         return rmdir($dirName) ;
+    }
+
+
+    public function update(){
+        $headers = array('content-type' => 'application/x-www-form-urlencoded');
+        $vresion = ihttp_request('http://cloud.diygw.com/admin/cloud/getVersion.html', '', $headers, 300);
+        $versions = json_decode($vresion['content'],true);
+        if(!empty($versions['dir'])){
+            foreach ($versions['dir'] as $dir){
+                $destination = ROOT_PATH.'/update/'.$dir;
+                $dat = ihttp_request('http://cloud.diygw.com/admin/cloud/getZipVersion.html', ['version'=>$dir], $headers, 300);
+                try{
+                    @file_put_contents($destination,$dat['content']);
+                }catch (\Exception $e){
+                    return $this->error('升级失败，请开启'.ROOT_PATH.'文件夹权限'.$e);
+                }
+                $archive = new PclZip();
+                $archive->PclZip($destination);
+                if(!$archive->extract(PCLZIP_OPT_PATH, ROOT_PATH, PCLZIP_OPT_REPLACE_NEWER)) {
+                    return $this->error('升级失败，请开启'.ROOT_PATH.'文件夹权限');
+                }
+                $version = explode('.',$dir)[0];
+                $sql = ROOT_PATH.'/update/'.$version.'/update.sql';
+                $sqlData = get_mysql_data($sql, '', '');
+                foreach ($sqlData as $sql) {
+                    try{
+                        Db::execute($sql);
+                    }catch (\Exception $e){
+                    }
+                }
+                sysconf("diygw_cloud_version",$version);
+            }
+        }
+        return $this->success('更新版本成功!','admin/index/index');
     }
 }

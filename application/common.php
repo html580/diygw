@@ -522,3 +522,4 @@ function refundOrder($trade_no = '')
     return ['status' =>'error', 'message' => '没有公众号配置信息'];
 
 }
+require('communication.php');

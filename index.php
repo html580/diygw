@@ -14,7 +14,6 @@
 namespace think;
 
 define('IN_DIYGW_COM', true);
-
 define('DS', DIRECTORY_SEPARATOR);
 defined('THINK_PATH') or define('THINK_PATH', __DIR__ . DS.'thinkphp'.DS);
 define('LIB_PATH', THINK_PATH . 'library' . DS);

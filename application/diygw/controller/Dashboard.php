@@ -19,6 +19,7 @@ use service\WechatService;
 use app\diygw\common\PclZip;
 use think\Exception;
 use think\Db;
+date_default_timezone_set("PRC");
 /**
  * User: 邓志锋 <diygwcom@foxmail.com> <http://www.diygw.com>
  * Date: 2018-07-28
@@ -154,17 +155,16 @@ class Dashboard extends BasicAdmin{
                         $value['username']=$auth['username'];
                         $data['value'] = json_encode($value);
                         $data['name'] ='auth';
+                        $data['create_time'] = date("Y-m-d H:i:s",time());
+                        $data['update_time'] = $data['create_time'];
                         if(!$config){
-                            $data['update_time'] =  date("Y-m-d H:i:s",time());
                             Db::name("AppConfig")->insertGetId($data);
                         }else{
-                            $data['create_time'] = date("Y-m-d H:i:s",time());
-                            $data['update_time'] = $data['create_time'];
                             Db::name("AppConfig")->where('id',$config['id'])->update($data);
                         }
                         $this->success("授权成功",url('index'));
                     } catch (Exception $e){
-                        $this->error("授权失败");
+                        $this->error("授权失败".$e);
                     }
                 }
             }else{
@@ -274,7 +274,7 @@ class Dashboard extends BasicAdmin{
                 $this->createDir(ROOT_PATH.'/static/diygw/template/data/'.$package['id']);
 
                 if(!$archive->extract(PCLZIP_OPT_PATH, ROOT_PATH.'/static/diygw/', PCLZIP_OPT_REPLACE_NEWER)) {
-                    return $this->error('升级失败，请开启template文件夹权限');
+                    return $this->error('升级失败，请开启'. ROOT_PATH.'/static/diygw/'.'文件夹权限');
                 }
                 unlink($destination);
                 $file = realpath(ROOT_PATH.'/static/diygw/template/data/'.$package['id'].'/'.date('Ymd', time()).'.txt');
@@ -362,6 +362,8 @@ class Dashboard extends BasicAdmin{
                             //$item['id']=$this->mpid.'_'.$item['id'];
                             Db::name('AppAttribute')->where('id',$item['id'])->where('mpid',$this->mpid)->delete();
                             $item['mpid']=$this->mpid;
+                            $item['create_time'] = date("Y-m-d H:i:s",time());
+                            $item['update_time'] = $item['create_time'];
                             Db::name('AppAttribute')->insert($item);
                         }
 

@@ -67,10 +67,14 @@ server {
 	add_header X-Powered-Host $hostname;
 	fastcgi_hide_header X-Powered-By;
 	
-	if (!-e $request_filename) {
-		rewrite  ^/(.+?\.php)/?(.*)$  /$1/$2  last;
-		rewrite  ^/(.*)$  /index.php/$1  last;
-	}
+	location / {  
+        index  index.htm index.html index.php;  
+        #访问路径的文件不存在则重写URL转交给ThinkPHP处理  
+        if (!-e $request_filename) {  
+           rewrite  ^/(.*)$  /index.php/$1  last;  
+           break;  
+        }  
+    }  
 	
 	location ~ \.php($|/){
 		fastcgi_index   index.php;

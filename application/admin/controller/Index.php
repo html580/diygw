@@ -188,10 +188,12 @@ class Index extends BasicAdmin
                 $version = explode('.',$dir)[0];
                 $sql = ROOT_PATH.'/update/'.$version.'/update.sql';
                 $sqlData = get_mysql_data($sql, '', '');
-                foreach ($sqlData as $sql) {
-                    try{
-                        Db::execute($sql);
-                    }catch (\Exception $e){
+                if(!empty($sqlData)){
+                    foreach ($sqlData as $sql) {
+                        try{
+                            Db::execute($sql);
+                        }catch (\Exception $e){
+                        }
                     }
                 }
                 sysconf("diygw_cloud_version",$version);

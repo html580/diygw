@@ -171,7 +171,6 @@ class BasicData extends Controller
             }
         }
 
-
         $db = $model->order($orderArray);
 
         $page = $db->paginate($this->getPageRow(), false, ['query' => $where,'page'=>$this->getPageNum()]);
@@ -537,15 +536,21 @@ class BasicData extends Controller
                 $isUser=true;
             }
             if(strpos($key,'zdcs')!==false){
-                $field = substr($key,4,strrpos($key,'_')-4);
-                $condition = substr($key,strrpos($key,'_')+1);
-                if(!empty($value)){
-                    if($condition=='eq'){
-                        $map[$field]=$value;
-                    }if($condition=='like'){
-                        $map[$field]=array('like',$value);
+                $field = substr($key,4);
+                if(in_array($field, $fields)){
+                    $map[$field]=$value;
+                }else{
+                    $field = substr($key,4,strrpos($key,'_')-4);
+                    $condition = substr($key,strrpos($key,'_')+1);
+                    if(!empty($value)){
+                        if($condition=='eq'){
+                            $map[$field]=$value;
+                        }if($condition=='like'){
+                            $map[$field]=array('like',$value);
+                        }
                     }
                 }
+
             }
             if (!in_array($key, $fields)) {
                 if($key=='user_id'){

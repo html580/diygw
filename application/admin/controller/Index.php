@@ -171,32 +171,39 @@ class Index extends BasicAdmin
         $headers = array('content-type' => 'application/x-www-form-urlencoded');
         $vresion = ihttp_request('http://cloud.diygw.com/admin/cloud/getVersion.html', '', $headers, 300);
         $versions = json_decode($vresion['content'],true);
+
+        $localversion  = sysconf("diygw_cloud_version");
         if(!empty($versions['dir'])){
             foreach ($versions['dir'] as $dir){
                 $destination = ROOT_PATH.'/update/'.$dir;
-                $dat = ihttp_request('http://cloud.diygw.com/admin/cloud/getZipVersion.html', ['version'=>$dir], $headers, 300);
-                try{
-                    @file_put_contents($destination,$dat['content']);
-                }catch (\Exception $e){
-                    return $this->error('升级失败，请开启'.ROOT_PATH.'文件夹权限'.$e);
-                }
-                $archive = new PclZip();
-                $archive->PclZip($destination);
-                if(!$archive->extract(PCLZIP_OPT_PATH, ROOT_PATH, PCLZIP_OPT_REPLACE_NEWER)) {
-                    return $this->error('升级失败，请开启'.ROOT_PATH.'文件夹权限');
-                }
                 $version = explode('.',$dir)[0];
-                $sql = ROOT_PATH.'/update/'.$version.'/update.sql';
-                $sqlData = get_mysql_data($sql, '', '');
-                if(!empty($sqlData)){
-                    foreach ($sqlData as $sql) {
-                        try{
-                            Db::execute($sql);
-                        }catch (\Exception $e){
+                if($localversion<$version){
+                    $dat = ihttp_request('http://cloud.diygw.com/admin/cloud/getZipVersion.html', ['version'=>$dir], $headers, 300);
+                    try{
+                        @file_put_contents($destination,$dat['content']);
+                    }catch (\Exception $e){
+                        return $this->error('升级失败，请开启'.ROOT_PATH.'文件夹权限'.$e);
+                    }
+                    $archive = new PclZip();
+                    $archive->PclZip($destination);
+                    if(!$archive->extract(PCLZIP_OPT_PATH, ROOT_PATH, PCLZIP_OPT_REPLACE_NEWER)) {
+                        return $this->error('升级失败，请开启'.ROOT_PATH.'文件夹权限');
+                    }
+
+                    $sql = ROOT_PATH.'/update/'.$version.'/update.sql';
+                    $sqlData = get_mysql_data($sql, '', '');
+                    if(!empty($sqlData)){
+                        foreach ($sqlData as $sql) {
+                            try{
+                                Db::execute($sql);
+                            }catch (\Exception $e){
+                            }
                         }
                     }
+                    sysconf("diygw_cloud_version",$version);
+                    $localversion= $version;
                 }
-                sysconf("diygw_cloud_version",$version);
+
             }
         }
         return $this->success('更新版本成功!','admin/index/index');

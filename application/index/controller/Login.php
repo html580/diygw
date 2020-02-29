@@ -100,7 +100,7 @@ class Login extends Controller
             $data['status']=1;
             $id = Db::name('Member')->insertGetId($data);
             session('uid'.$data['mpid'],$id);
-            cookie('uid'.$data('mpid'),$id);
+            cookie('uid'.$data['mpid'],$id);
             unset($member['password']);
             cookie("user".session('mpid'),json_encode($member));
             echo json_encode(['status'=>'success','message'=>'注册成功!']);

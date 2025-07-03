@@ -82,3 +82,8 @@ SSL证书配置：
 你的域名/super/index.html		输入用户名密码即可访问
 
 6、结合diygw-ui-admin生成管理界面  你的域名/admin/index.html		输入用户名密码即可访问 
+
+
+## ⚡ 赞助
+
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?repository-url=https%3A%2F%2Fgithub.com%2Fhtml580%2Fdiygw)

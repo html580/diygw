@@ -1,0 +1,25 @@
+<?php
+// +----------------------------------------------------------------------
+// | Diygw PHP
+// +----------------------------------------------------------------------
+// | Copyright (c) 2022~{%year%} https://www.diygw.com All rights reserved.
+// +----------------------------------------------------------------------
+// | Author: diygw <diygwcom@diygw.com>
+// +----------------------------------------------------------------------
+declare (strict_types = 1);
+
+namespace {%namespace%};
+
+use diygw\model\DiygwModel;
+
+/**
+ * @package {%namespace%}
+ */
+class {%className%}Model extends DiygwModel
+{
+    // 表名
+    public $name = '{%module%}{%classNameLower%}';
+
+    // 相似查询字段
+    protected $likeField=[];
+}

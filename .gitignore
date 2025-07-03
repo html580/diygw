@@ -1,0 +1,11 @@
+*.log
+composer.phar
+composer.lock
+.DS_Store
+Thumbs.db
+/.idea
+/.vscode
+/.settings
+/.buildpath
+/.project
+/config/install.lock

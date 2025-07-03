@@ -1,0 +1,36 @@
+{
+  "name": "itbdw/ip-database",
+  "type": "library",
+  "description": "IP位置数据库（解析为国家、省、市、县、运营商）",
+  "keywords": [
+    "ip",
+    "database",
+    "location",
+    "chinese",
+    "china",
+    "数据库",
+    "纯真",
+    "位置",
+    "地区"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "马秉尧"
+    },
+    {
+      "name": "itbdw",
+      "email": "itbudaoweng@gmail.com",
+      "role": "Developer",
+      "homepage": "http://github.com/itbdw"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.3"
+  },
+  "autoload": {
+    "psr-4": {
+      "itbdw\\Ip\\": "src/"
+    }
+  }
+}

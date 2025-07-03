@@ -1,0 +1,60 @@
+{
+    "name": "topthink/think",
+    "description": "the new thinkphp framework",
+    "type": "project",
+    "keywords": [
+        "framework",
+        "thinkphp",
+        "ORM"
+    ],
+    "homepage": "https://www.thinkphp.cn/",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "liu21st",
+            "email": "liu21st@gmail.com"
+        },
+        {
+            "name": "yunwuxin",
+            "email": "448901948@qq.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.0.0",
+        "topthink/framework": "^8.0",
+        "topthink/think-orm": "^3.0",
+        "topthink/think-filesystem": "^2.0",
+        "topthink/think-multi-app": "^1.0",
+        "topthink/think-view": "^2.0",
+        "w7corp/easywechat": "^6.8",
+        "thans/tp-jwt-auth": "^2.2",
+        "overtrue/easy-sms": "^2.5",
+        "qcloud/cos-sdk-v5": "^2.6",
+        "qiniu/php-sdk": "^7.11",
+        "aliyuncs/oss-sdk-php": "^2.6",
+        "myclabs/php-enum": "^1.8",
+        "itbdw/ip-database": "^2.0",
+        "phpoffice/phpspreadsheet": "^2.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": ">=4.2",
+        "topthink/think-trace": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app"
+        },
+        "psr-0": {
+            "": "extend/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@php think service:discover",
+            "@php think vendor:publish"
+        ]
+    }
+}
